@@ -14,8 +14,10 @@
   },
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "android:go": "expo start --android",
+    "ios:go": "expo start --ios",
     "web": "expo start --web"
   },
   "private": true
