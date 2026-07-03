@@ -27,6 +27,16 @@
       "eas": {
         "projectId": "444a55c7-c52b-4d5b-9cb9-ddd1bb7cde8c"
       }
-    }
+    },
+    "plugins": [
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "pipeline",
+          "organization": "projectstudio"
+        }
+      ]
+    ]
   }
 }
