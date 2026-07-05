@@ -36,7 +36,9 @@
           "project": "pipeline",
           "organization": "projectstudio"
         }
-      ]
+      ],
+      "expo-splash-screen",
+      "expo-font"
     ]
   }
 }

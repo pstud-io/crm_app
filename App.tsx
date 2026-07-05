@@ -1,6 +1,14 @@
-import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, View } from "react-native";
 import * as Sentry from "@sentry/react-native";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { FirstComponent } from "@/components/FirstComponent";
+import * as SplashScreen from "expo-splash-screen";
+
+SplashScreen.preventAutoHideAsync();
+
+SplashScreen.setOptions({
+  duration: 500,
+  fade: true,
+});
 
 Sentry.init({
   dsn: "https://3ff2b1f1c2fe7df4cd8d16d23fc5064f@o4511659883036672.ingest.de.sentry.io/4511671023829072",
@@ -26,24 +34,8 @@ Sentry.init({
 
 export default Sentry.wrap(function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <Button
-        title="Try!"
-        onPress={() => {
-          Sentry.captureException(new Error("First error"));
-        }}
-      />
-      <StatusBar style="auto" />
-    </View>
+    <ThemeProvider>
+      <FirstComponent />
+    </ThemeProvider>
   );
-});
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
 });
