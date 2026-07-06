@@ -8,13 +8,22 @@ import {
   THEME_KEY,
 } from "@/types/themeTypes";
 import { loadTheme, updateTheme } from "@/utils/themeFunctions";
-import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useColorScheme } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import { loadFonts } from "@/utils/typographyFunctions";
+import { useAuth } from "@/hooks/useAuth";
+import { loadAuth } from "@/utils/authFunctions";
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const systemTheme = useColorScheme();
+  const { setAuthLoading, setRole } = useAuth();
   const [themeMode, setThemeMode] = useState<ThemeMode>(ThemeMode.System);
   const [isReady, setIsReady] = useState<boolean>(false);
 
@@ -23,6 +32,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     const load: () => Promise<void> = async () => {
       await loadTheme(THEME_KEY, setThemeMode);
       await loadFonts();
+      await loadAuth(setRole, setAuthLoading);
       setIsReady(true);
     };
     load();

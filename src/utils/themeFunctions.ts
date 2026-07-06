@@ -1,6 +1,7 @@
 import { ThemeMode } from "@/types/themeTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Dispatch, SetStateAction } from "react";
+import { storage, StorageKeys } from "./storageFunctions";
 
 function isThemeMode(value: string): value is ThemeMode {
   return Object.values(ThemeMode).includes(value as ThemeMode);
@@ -14,10 +15,10 @@ export async function getTheme() {
 }
 
 export async function loadTheme(
-  THEME_KEY: "theme",
+  THEME_KEY: StorageKeys.THEME_KEY,
   setThemeMode: Dispatch<SetStateAction<ThemeMode>>,
 ) {
-  const stored = await AsyncStorage.getItem(THEME_KEY);
+  const stored = await storage.get(THEME_KEY);
   if (stored && isThemeMode(stored)) {
     setThemeMode(stored);
   }
@@ -25,9 +26,9 @@ export async function loadTheme(
 
 export async function updateTheme(
   themeMode: ThemeMode,
-  THEME_KEY: "theme",
+  THEME_KEY: StorageKeys.THEME_KEY,
   setThemeMode: Dispatch<SetStateAction<ThemeMode>>,
 ) {
   setThemeMode(themeMode);
-  await AsyncStorage.setItem(THEME_KEY, themeMode);
+  await storage.set(THEME_KEY, themeMode);
 }

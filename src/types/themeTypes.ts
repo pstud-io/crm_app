@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { ViewStyle } from "react-native";
 import { Shadow } from "./shadowTypes";
+import { StorageKeys } from "@/utils/storageFunctions";
 
 export enum ThemeMode {
   Light = "light",
@@ -11,15 +12,15 @@ export interface ThemeProviderProps {
   children: React.ReactNode;
 }
 
-export const THEME_KEY: "theme" = "theme";
+export const THEME_KEY: StorageKeys.THEME_KEY = StorageKeys.THEME_KEY;
 
 export type ThemeContextType = {
   theme: Theme;
   themeMode: ThemeMode;
-  THEME_KEY: "theme";
+  THEME_KEY: StorageKeys.THEME_KEY;
   updateTheme: (
     themeMode: ThemeMode,
-    THEME_KEY: "theme",
+    THEME_KEY: StorageKeys.THEME_KEY,
     setThemeMode: Dispatch<SetStateAction<ThemeMode>>,
   ) => Promise<void>;
   setThemeMode: Dispatch<SetStateAction<ThemeMode>>;
