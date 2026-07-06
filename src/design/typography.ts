@@ -7,7 +7,7 @@ function letterSpacingFromPercent(
   return (letterSpacingPercent / 100) * fontSize;
 }
 
-export const heading: HeadingTypography = {
+export const heading = {
   xxl: {
     thin: {
       fontFamily: "Inter-Thin", // change based on weight

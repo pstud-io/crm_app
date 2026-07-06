@@ -1,9 +1,14 @@
 import { Theme } from "@/types/themeTypes";
+import { primaryColors, secondaryColors } from "./colors";
+import { lightShadows, darkShadows } from "./shadows";
 
 export const lightTheme: Theme = {
-  background: "#FFFFFF",
+  header: "white",
+  footer: "white",
+  background: secondaryColors.blueGray[50],
+  text: secondaryColors.gray[900],
+  shadow: lightShadows,
   surface: "#F6F6F6",
-  text: "#000000",
   textSecondary: "#666666",
   primary: "#2D6CDF",
   secondary: "#7E57C2",
@@ -14,9 +19,12 @@ export const lightTheme: Theme = {
 };
 
 export const darkTheme: Theme = {
-  background: "#121212",
+  header: "black",
+  footer: "black",
+  background: secondaryColors.blueGray[900],
+  text: secondaryColors.gray[50],
+  shadow: darkShadows,
   surface: "#1E1E1E",
-  text: "#FFFFFF",
   textSecondary: "#BBBBBB",
   primary: "#5C9DFF",
   secondary: "#B388FF",
