@@ -9,7 +9,8 @@
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "ai.projectstudio.pipeline"
+      "bundleIdentifier": "ai.projectstudio.pipeline",
+      "associatedDomains": ["applinks:pipeline.projectstudio.ai"]
     },
     "android": {
       "adaptiveIcon": {
@@ -19,7 +20,21 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "ai.projectstudio.pipeline"
+      "package": "ai.projectstudio.pipeline",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "pipeline.projectstudio.ai",
+              "pathPrefix": "/"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
