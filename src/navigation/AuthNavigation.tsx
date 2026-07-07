@@ -6,17 +6,17 @@ import {
   Theme,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Auth } from "@/screens/auth/Auth";
+import { SignIn } from "@/screens/signin/SignIn";
 const AuthStack = createNativeStackNavigator({
-  initialRouteName: "Auth",
+  initialRouteName: "SignIn",
   screenOptions: {
     headerShown: false,
     headerTitle: undefined,
   },
   screens: {
-    Auth: {
+    SignIn: {
       linking: "/",
-      screen: Auth,
+      screen: SignIn,
     },
   },
 });

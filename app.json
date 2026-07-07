@@ -10,7 +10,9 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "ai.projectstudio.pipeline",
-      "associatedDomains": ["applinks:pipeline.projectstudio.ai"]
+      "associatedDomains": [
+        "applinks:pipeline.projectstudio.ai"
+      ]
     },
     "android": {
       "adaptiveIcon": {
@@ -32,7 +34,10 @@
               "pathPrefix": "/"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
@@ -54,7 +59,8 @@
         }
       ],
       "expo-splash-screen",
-      "expo-font"
+      "expo-font",
+      "expo-secure-store"
     ]
   }
 }

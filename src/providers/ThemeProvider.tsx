@@ -30,9 +30,11 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   useLayoutEffect(() => {
     if (isReady) return;
     const load: () => Promise<void> = async () => {
-      await loadTheme(THEME_KEY, setThemeMode);
-      await loadFonts();
-      await loadAuth(setRole, setAuthLoading);
+      await Promise.all([
+        loadTheme(THEME_KEY, setThemeMode),
+        loadFonts(),
+        loadAuth(setRole, setAuthLoading),
+      ]);
       setIsReady(true);
     };
     load();

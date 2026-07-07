@@ -1,37 +1,22 @@
 import { Role } from "@/types/AuthTypes";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import CryptoJS from "crypto-js";
 import { Dispatch, SetStateAction } from "react";
-import { storage, StorageKeys } from "./storageFunctions";
-// const secretKey = process.env.EXPO_TOKEN_SECRET_KEY;
-const secretKey = "secret" as const;
-const tokenKey = StorageKeys.TOKEN_KEY;
+import { StorageKeys } from "./storageFunctions";
+import * as SecureStore from "expo-secure-store";
 
-export const encryptToken = (token: string): string => {
-  console.log("Env variables", tokenKey, secretKey);
-  return CryptoJS.AES.encrypt(token, secretKey).toString();
-};
+export async function storeToken(token: string) {
+  await SecureStore.setItemAsync(StorageKeys.TOKEN_KEY, token);
+  return;
+}
 
-export const decryptToken = (ciphertext: string): string => {
-  const bytes = CryptoJS.AES.decrypt(ciphertext, secretKey);
-  return bytes.toString(CryptoJS.enc.Utf8);
-};
+export async function getToken() {
+  const token = await SecureStore.getItemAsync(StorageKeys.TOKEN_KEY);
+  return token;
+}
 
-export const storeToken = async (token: string): Promise<void> => {
-  const encrypted = encryptToken(token);
-  await storage.set(tokenKey, encrypted);
-};
-
-export const getToken = async (): Promise<string | null> => {
-  console.log("Run getToken with key,", tokenKey, secretKey);
-  const encrypted = await storage.get(tokenKey);
-  if (!encrypted) return null;
-  return decryptToken(encrypted);
-};
-
-export const removeToken = async (): Promise<void> => {
-  await storage.remove(tokenKey);
-};
+export async function removeToken() {
+  await SecureStore.deleteItemAsync(StorageKeys.TOKEN_KEY);
+  return;
+}
 
 export async function loadAuth(
   setRole: Dispatch<SetStateAction<Role>>,

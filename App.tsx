@@ -1,10 +1,11 @@
 import * as Sentry from "@sentry/react-native";
-import { ThemeProvider } from "@/components/ThemeProvider";
-import { FirstComponent } from "@/components/FirstComponent";
+import { ThemeProvider } from "@/providers/ThemeProvider";
+import { FirstComponent } from "@/providers/FirstComponent";
 import * as SplashScreen from "expo-splash-screen";
-import AuthProvider from "@/components/AuthProvider";
+import AuthProvider from "@/providers/AuthProvider";
 import { Navigation } from "@/navigation/Navigation";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { QueryProvider } from "@/providers/QueryProvider";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -39,12 +40,14 @@ export default Sentry.wrap(function App() {
   return (
     <SafeAreaProvider style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
-        <AuthProvider>
-          <ThemeProvider>
-            {/* <FirstComponent /> */}
-            <Navigation />
-          </ThemeProvider>
-        </AuthProvider>
+        <QueryProvider>
+          <AuthProvider>
+            <ThemeProvider>
+              {/* <FirstComponent /> */}
+              <Navigation />
+            </ThemeProvider>
+          </AuthProvider>
+        </QueryProvider>
       </SafeAreaView>
     </SafeAreaProvider>
   );

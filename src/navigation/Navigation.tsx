@@ -1,8 +1,8 @@
 import { ActivityIndicator } from "react-native";
 import { useAuth } from "@/hooks/useAuth";
-import { AuthNavigation } from "./auth/AuthNavigation";
+import { AuthNavigation } from "./AuthNavigation";
 import { useTheme } from "@/hooks/useTheme";
-import { UserNavigation } from "./auth/UserNavigation";
+import { UserNavigation } from "./UserNavigation";
 export const Navigation = () => {
   const { role, authLoading } = useAuth();
   const { theme } = useTheme();
