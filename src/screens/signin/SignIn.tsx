@@ -1,14 +1,26 @@
 import { useForm, Controller } from "react-hook-form";
-import { Button, Text, TextInput, View } from "react-native";
+import { Button, Image, StyleSheet, Text, TextInput, View } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/hooks/useAuth";
 import { SignInFormSchema, SignInFormType } from "./types/signinTypes";
 import { useSignInEndpoints } from "./hooks/useSignInEndpoints";
+import {
+  center,
+  fullSize,
+  fullWidth,
+  topCenter,
+  ystack,
+} from "@/design/layout";
+import images from "@/images";
+import { spacing } from "@/design/spacing";
+import { useState } from "react";
+import { body } from "@/design/typography";
 export const SignIn = () => {
   const { theme } = useTheme();
   const { setRole } = useAuth();
   const { loading, onSubmitSignIn } = useSignInEndpoints();
+  const [authMode, setAuthMode] = useState<"otp" | "password">("otp");
   const {
     control,
     handleSubmit,
@@ -24,7 +36,32 @@ export const SignIn = () => {
 
   return (
     <>
-      <View id="Test">
+      <View
+        id="signin"
+        style={[
+          ystack,
+          fullSize,
+          topCenter,
+          { paddingTop: spacing.max, gap: 16 },
+        ]}
+      >
+        <Image source={images.logo} resizeMode="contain" style={styles.logo} />
+        <View
+          id="signin"
+          style={[
+            ystack,
+            fullWidth,
+            topCenter,
+            { gap: 8, backgroundColor: "#fff000" },
+          ]}
+        >
+          <Text style={[body.xxl.semiBold]}>Welcome Back</Text>
+          <Text style={[body.md.regular]}>
+            {authMode === "password"
+              ? "Enter your phone number & password to access your account"
+              : "Enter your phone number to share OTP"}
+          </Text>
+        </View>
         <Controller
           control={control}
           rules={{
@@ -79,3 +116,7 @@ export const SignIn = () => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  logo: { height: 45, width: 200, marginBottom: 20 },
+});

@@ -41,3 +41,8 @@ export interface Theme {
   warning: string;
   error: string;
 }
+
+export interface appThemeType {
+  light: Theme;
+  dark: Theme;
+}

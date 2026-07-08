@@ -1,4 +1,4 @@
-import { Theme } from "@/types/themeTypes";
+import { appThemeType, Theme } from "@/types/themeTypes";
 import { primaryColors, secondaryColors } from "./colors";
 import { lightShadows, darkShadows } from "./shadows";
 
@@ -32,4 +32,9 @@ export const darkTheme: Theme = {
   success: "#66BB6A",
   warning: "#FFB74D",
   error: "#EF5350",
+};
+
+export const appTheme: appThemeType = {
+  light: lightTheme,
+  dark: darkTheme,
 };

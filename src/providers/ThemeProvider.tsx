@@ -7,7 +7,11 @@ import {
   ThemeProviderProps,
   THEME_KEY,
 } from "@/types/themeTypes";
-import { loadTheme, updateTheme } from "@/utils/themeFunctions";
+import {
+  loadTheme,
+  loadThemeUnistyles,
+  updateTheme,
+} from "@/utils/themeFunctions";
 import React, {
   useContext,
   useEffect,
@@ -32,6 +36,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     const load: () => Promise<void> = async () => {
       await Promise.all([
         loadTheme(THEME_KEY, setThemeMode),
+        // loadThemeUnistyles(THEME_KEY),
         loadFonts(),
         loadAuth(setRole, setAuthLoading),
       ]);
