@@ -6,7 +6,12 @@ export const lightTheme: Theme = {
   header: "white",
   footer: "white",
   background: secondaryColors.blueGray[50],
+  backgroundInverse: secondaryColors.blueGray[900],
   text: secondaryColors.gray[900],
+  textInverse: secondaryColors.gray[50],
+  placeholderText: secondaryColors.gray[400],
+  button: secondaryColors.blueGray[900],
+  buttonInverse: secondaryColors.blueGray[50],
   shadow: lightShadows,
   surface: "#F6F6F6",
   textSecondary: "#666666",
@@ -15,14 +20,19 @@ export const lightTheme: Theme = {
   border: "#DDDDDD",
   success: "#4CAF50",
   warning: "#FF9800",
-  error: "#F44336",
+  error: primaryColors.error[400],
 };
 
 export const darkTheme: Theme = {
-  header: "black",
-  footer: "black",
-  background: secondaryColors.blueGray[900],
+  header: secondaryColors.gray[900],
+  footer: secondaryColors.gray[900],
+  background: "black",
+  backgroundInverse: secondaryColors.blueGray[50],
+  placeholderText: secondaryColors.gray[500],
+  button: secondaryColors.blueGray[50],
+  buttonInverse: "black",
   text: secondaryColors.gray[50],
+  textInverse: secondaryColors.gray[900],
   shadow: darkShadows,
   surface: "#1E1E1E",
   textSecondary: "#BBBBBB",
@@ -31,7 +41,7 @@ export const darkTheme: Theme = {
   border: "#333333",
   success: "#66BB6A",
   warning: "#FFB74D",
-  error: "#EF5350",
+  error: primaryColors.error[700],
 };
 
 export const appTheme: appThemeType = {

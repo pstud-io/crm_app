@@ -12,4 +12,5 @@ export const spacing = {
   xxl: 24,
   huge: 28,
   max: 32,
+  extreme: 64,
 } as const satisfies Spacing;

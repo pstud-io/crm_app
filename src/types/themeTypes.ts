@@ -25,14 +25,19 @@ export type ThemeContextType = {
   ) => Promise<void>;
   setThemeMode: Dispatch<SetStateAction<ThemeMode>>;
   isDark: boolean;
+  darkTheme: Theme;
+  lightTheme: Theme;
 };
 export interface Theme {
   header: string;
   footer: string;
   background: string;
+  backgroundInverse: string;
   shadow: Shadow;
   surface: string;
   text: string;
+  textInverse: string;
+  placeholderText: string;
   textSecondary: string;
   primary: string;
   secondary: string;
@@ -40,6 +45,8 @@ export interface Theme {
   success: string;
   warning: string;
   error: string;
+  button: string;
+  buttonInverse: string;
 }
 
 export interface appThemeType {

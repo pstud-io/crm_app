@@ -98,3 +98,12 @@ export const fullScreen = {
   width: SCREEN_WIDTH,
   height: SCREEN_HEIGHT,
 } as const satisfies ViewStyle;
+
+export const noPadding = {
+  paddingHorizontal: 0,
+  paddingVertical: 0,
+  paddingLeft: 0,
+  paddingRight: 0,
+  paddingTop: 0,
+  paddingBottom: 0,
+} as const satisfies ViewStyle;

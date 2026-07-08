@@ -5,14 +5,14 @@ import { Role } from "@/types/AuthTypes";
 import { storeToken } from "@/utils/authFunctions";
 
 export const useSignInEndpoints = () => {
-  const [loading, setLoading] = useState(false);
+  const [signingIn, setSigningIn] = useState(false);
 
   const onSubmitSignIn = async (
     data: SignInFormType,
     setRole: Dispatch<SetStateAction<Role>>,
   ) => {
     console.log("Data auth", data);
-    setLoading(true);
+    setSigningIn(true);
     try {
       const response = await signIn(data);
       await storeToken(response.data.result.token);
@@ -24,9 +24,9 @@ export const useSignInEndpoints = () => {
         console.error("Sign-in error:", error);
       }
     } finally {
-      setLoading(false);
+      setSigningIn(false);
     }
   };
 
-  return { loading, setLoading, onSubmitSignIn };
+  return { signingIn, onSubmitSignIn };
 };

@@ -9,6 +9,7 @@ export type SpacingKeys =
   | "xl"
   | "xxl"
   | "huge"
-  | "max";
+  | "max"
+  | "extreme";
 
 export type Spacing = Record<SpacingKeys, number>;

@@ -11,6 +11,7 @@ export type BorderRadiusKeys =
   | "xxl"
   | "huge"
   | "max"
+  | "extreme"
   | "full";
 
 export type BorderRadius = Record<BorderRadiusKeys, number>;

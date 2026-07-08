@@ -14,6 +14,7 @@ export const borderRadius = {
   xxl: 24,
   huge: 28,
   max: 32,
+  extreme: 64,
   full: 9999,
 } as const satisfies BorderRadius;
 
