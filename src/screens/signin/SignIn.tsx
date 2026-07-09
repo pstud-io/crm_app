@@ -2,16 +2,28 @@ import { useForm, Controller } from "react-hook-form";
 import {
   Image,
   Keyboard,
+  KeyboardEvent,
+  KeyboardEventName,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from "react-native";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  Easing,
+} from "react-native-reanimated";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/hooks/useAuth";
-import { SignInFormSchema, SignInFormType } from "./types/signinTypes";
+import {
+  SignInFormSchemaPassword,
+  SignInFormTypePassword,
+} from "./types/signinTypes";
 import { useSignInEndpoints } from "./hooks/useSignInEndpoints";
 import {
   bottomCenter,
@@ -24,28 +36,49 @@ import {
 } from "@/design/layout";
 import images from "@/images";
 import { spacing } from "@/design/spacing";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { body, heading } from "@/design/typography";
 import { borderRadius } from "@/design/borders";
 import { StatusBar } from "expo-status-bar";
 import { Button } from "@/components/Button";
+import { OTPForm } from "./components/OTPForm";
+import { PasswordForm } from "./components/PasswordForm";
 export const SignIn = () => {
+  console.count("SignIn render");
   const { theme, isDark } = useTheme();
-  const { setRole } = useAuth();
-  const { signingIn, onSubmitSignIn } = useSignInEndpoints();
-  const [authMode, setAuthMode] = useState<"otp" | "password">("otp");
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignInFormType>({
-    resolver: zodResolver(SignInFormSchema),
-    mode: "onBlur",
-    defaultValues: {
-      username: "",
-      password: "",
-    },
-  });
+  const cardHeight = useSharedValue<number>(80);
+  const radius = useSharedValue<number>(borderRadius.extreme);
+  const [authModeOTP, setAuthModeOTP] = useState<boolean>(true);
+
+  useEffect(() => {
+    const keyboardShow: KeyboardEventName =
+      Platform.OS == "android" ? "keyboardDidShow" : "keyboardWillShow";
+    const keyboardHide: KeyboardEventName =
+      Platform.OS == "android" ? "keyboardDidHide" : "keyboardWillHide";
+
+    const show = Keyboard.addListener(keyboardShow, (e) => {
+      console.log("Keyboard shown");
+      cardHeight.value = withTiming(100, {
+        duration: Platform.OS === "android" ? 300 : 400,
+      });
+      radius.value = withTiming(0);
+    });
+
+    const hide = Keyboard.addListener(keyboardHide, () => {
+      cardHeight.value = withTiming(80);
+      radius.value = withTiming(borderRadius.extreme);
+    });
+
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    height: `${cardHeight.value}%`,
+    borderTopLeftRadius: radius.value,
+  }));
 
   return (
     <>
@@ -61,17 +94,15 @@ export const SignIn = () => {
       >
         {/* <Image source={images.logo} resizeMode="contain" style={styles.logo} /> */}
 
-        <Pressable
+        <Animated.View
           id="signin"
-          onPress={() => Keyboard.dismiss()}
           style={[
             ystack,
             fullWidth,
             topCenter,
+            animatedStyle,
             {
               backgroundColor: theme.background,
-              height: "80%",
-              borderTopLeftRadius: borderRadius.extreme,
               paddingHorizontal: spacing.max,
               gap: spacing.xl,
             },
@@ -89,113 +120,17 @@ export const SignIn = () => {
           >
             Login
           </Text>
-          <View
-            style={[
-              ystack,
-              fullWidth,
-              {
-                backgroundColor: theme.header,
-                padding: spacing.md,
-                borderRadius: borderRadius.lg,
-                gap: spacing.sm,
-                boxShadow: theme.shadow.xs,
-              },
-            ]}
-          >
-            <Text style={[body.sm.regular, { color: theme.text }]}>
-              Phone Number
-            </Text>
-            <Controller
-              control={control}
-              rules={{
-                maxLength: 100,
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  onChangeText={onChange}
-                  value={value}
-                  placeholder="9999999999"
-                  style={[body.sm.regular, noPadding]}
-                  placeholderTextColor={theme.placeholderText}
-                  onBlur={onBlur}
-                />
-              )}
-              name="username"
-            />
-            {errors.username && (
-              <Text style={[body.xs.regular, { color: theme.error }]}>
-                {errors.username.message}
-              </Text>
-            )}
-          </View>
-          <View
-            style={[
-              ystack,
-              fullWidth,
-              {
-                backgroundColor: theme.header,
-                padding: spacing.md,
-                borderRadius: borderRadius.lg,
-                gap: spacing.sm,
-                boxShadow: theme.shadow.xs,
-              },
-            ]}
-          >
-            <Text style={[body.sm.regular, { color: theme.text }]}>
-              Password
-            </Text>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-                minLength: 8,
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  onChangeText={onChange}
-                  value={value}
-                  placeholder="********"
-                  onBlur={onBlur}
-                  style={[body.sm.regular, noPadding]}
-                  placeholderTextColor={theme.placeholderText}
-                />
-              )}
-              name="password"
-            />
-            {errors.password && (
-              <Text style={[body.xs.regular, { color: theme.error }]}>
-                {errors.password.message}
-              </Text>
-            )}
-          </View>
-          <View
-            style={[
-              ystack,
-              fullWidth,
-              center,
-              { gap: spacing.lg, paddingVertical: spacing.lg },
-            ]}
-          >
-            <Button
-              label={signingIn ? "Signing In..." : "Login"}
-              loading={signingIn}
-              onPress={handleSubmit(async (data: SignInFormType) => {
-                await onSubmitSignIn(data, setRole);
-              })}
-              style={{ ...fullWidth }}
-            />
-            <Text style={[body.xs.regular, { color: theme.text }]}>or</Text>
-            <Button
-              label={
-                authMode === "password" ? "Login using " : "Login using OTP"
-              }
-              loading={false}
-              onPress={() => {}}
-              style={{ ...fullWidth }}
-              themeInverse
-            />
-          </View>
-        </Pressable>
+          {authModeOTP && <OTPForm />}
+          {!authModeOTP && <PasswordForm />}
+
+          <Button
+            label={authModeOTP ? "Login using Password" : "Login using OTP"}
+            loading={false}
+            onPress={() => setAuthModeOTP(!authModeOTP)}
+            style={{ ...fullWidth }}
+            themeInverse
+          />
+        </Animated.View>
         <StatusBar style={isDark ? "light" : "dark"} />
       </Pressable>
     </>

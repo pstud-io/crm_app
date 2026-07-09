@@ -6,6 +6,8 @@ import AuthProvider from "@/providers/AuthProvider";
 import { Navigation } from "@/navigation/Navigation";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { QueryProvider } from "@/providers/QueryProvider";
+import { NavigationContainer } from "@react-navigation/native";
+import { FloatingButtons } from "@/components/FloatingButtons";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -43,8 +45,10 @@ export default Sentry.wrap(function App() {
         <QueryProvider>
           <AuthProvider>
             <ThemeProvider>
-              {/* <FirstComponent /> */}
-              <Navigation />
+              <NavigationContainer>
+                <Navigation />
+                <FloatingButtons />
+              </NavigationContainer>
             </ThemeProvider>
           </AuthProvider>
         </QueryProvider>
