@@ -1,22 +1,87 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Dashboard } from "@/screens/Dashboard";
+import { Dashboard } from "@/screens/dashboard/Dashboard";
+import {
+  createStaticNavigation,
+  DefaultTheme,
+  LinkingOptions,
+  NavigationIndependentTree,
+  StaticParamList,
+  Theme,
+} from "@react-navigation/native";
+import {
+  createNativeStackNavigator,
+  NativeStackHeaderProps,
+  NativeStackNavigationProp,
+} from "@react-navigation/native-stack";
+import { createNavigationContainerRef } from "@react-navigation/native";
+import { DashboardHeader } from "@/screens/dashboard/components/DashboardHeader";
+import { useTheme } from "@/hooks/useTheme";
+import { TasksStack } from "./TasksNavigation";
 
-export type UserStackParamList = {
-  Dashboard: undefined;
-};
+const UserStack = createNativeStackNavigator({
+  initialRouteName: "Dashboard",
+  screenOptions: {
+    headerShown: false,
+    headerTitle: undefined,
+  },
+  screens: {
+    Dashboard: {
+      linking: "dashboard",
+      screen: Dashboard,
+      options: {
+        headerShown: true,
+        header: (props: NativeStackHeaderProps) => (
+          <DashboardHeader {...props} />
+        ),
+        animation: "fade",
+      },
+    },
+    Tasks: {
+      linking: "tasks",
+      screen: TasksStack,
+      options: {
+        headerShown: false,
+      },
+    },
+  },
+});
 
-const Stack = createNativeStackNavigator<UserStackParamList>();
+export type UserStackParamsList = StaticParamList<typeof UserStack>;
+declare global {
+  namespace ReactNavigation {
+    interface UserParamsList extends UserStackParamsList {}
+  }
+}
+
+const StaticUserNavigation = createStaticNavigation(UserStack);
+
+export const userNavigationRef =
+  createNavigationContainerRef<UserStackParamsList>();
+
+export type UserNavigationProp = NativeStackNavigationProp<UserStackParamsList>;
 
 export const UserNavigation = () => {
+  const linking: LinkingOptions<ReactNavigation.UserParamsList> = {
+    prefixes: ["pipeline://"],
+    enabled: true,
+  };
+
+  const { theme } = useTheme();
+
+  const navigationTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: theme.background,
+    },
+  };
+
   return (
-    <Stack.Navigator
-      initialRouteName="Dashboard"
-      screenOptions={{
-        headerShown: false,
-        headerTitle: undefined,
-      }}
-    >
-      <Stack.Screen name="Dashboard" component={Dashboard} />
-    </Stack.Navigator>
+    <NavigationIndependentTree>
+      <StaticUserNavigation
+        linking={linking}
+        theme={navigationTheme}
+        ref={userNavigationRef}
+      />
+    </NavigationIndependentTree>
   );
 };

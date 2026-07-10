@@ -33,6 +33,11 @@ export const topRight = {
 } as const satisfies ViewStyle;
 
 export const centerLeft = {
+  alignItems: "center",
+  justifyContent: "flex-start",
+} as const satisfies ViewStyle;
+
+export const centerLeftY = {
   alignItems: "flex-start",
   justifyContent: "center",
 } as const satisfies ViewStyle;

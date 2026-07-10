@@ -45,10 +45,8 @@ export default Sentry.wrap(function App() {
         <QueryProvider>
           <AuthProvider>
             <ThemeProvider>
-              <NavigationContainer>
-                <Navigation />
-                <FloatingButtons />
-              </NavigationContainer>
+              <Navigation />
+              <FloatingButtons />
             </ThemeProvider>
           </AuthProvider>
         </QueryProvider>

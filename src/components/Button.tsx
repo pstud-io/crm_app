@@ -6,11 +6,13 @@ import { useTheme } from "@/hooks/useTheme";
 import { ActivityIndicator, Pressable, Text, ViewStyle } from "react-native";
 
 type CustomButton = {
-  label: string;
+  label: string | null;
   loading: boolean;
   onPress: () => void | Promise<void>;
   style?: ViewStyle;
   themeInverse?: boolean;
+  leftIcon?: React.ReactNode | null;
+  hasBorder?: boolean;
 };
 
 export const Button = ({
@@ -19,6 +21,8 @@ export const Button = ({
   onPress,
   style,
   themeInverse = false,
+  leftIcon = null,
+  hasBorder = true,
 }: CustomButton) => {
   const { theme } = useTheme();
   return (
@@ -32,6 +36,8 @@ export const Button = ({
           borderRadius: borderRadius.lg,
           gap: spacing.lg,
           backgroundColor: themeInverse ? theme.buttonInverse : theme.button,
+        },
+        hasBorder && {
           borderWidth: themeInverse ? borderWidth.xs : borderWidth.none,
           borderColor: themeInverse ? theme.backgroundInverse : "transparent",
         },
@@ -40,14 +46,17 @@ export const Button = ({
       disabled={loading}
       onPress={onPress}
     >
-      <Text
-        style={[
-          themeInverse ? body.sm.regular : body.sm.semiBold,
-          { color: themeInverse ? theme.text : theme.textInverse },
-        ]}
-      >
-        {label}
-      </Text>
+      {leftIcon && leftIcon}
+      {label && (
+        <Text
+          style={[
+            themeInverse ? body.sm.regular : body.sm.semiBold,
+            { color: themeInverse ? theme.text : theme.textInverse },
+          ]}
+        >
+          {label}
+        </Text>
+      )}
       {loading && (
         <ActivityIndicator
           size={10}

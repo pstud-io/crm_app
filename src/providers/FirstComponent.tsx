@@ -35,6 +35,13 @@ export const FirstComponent = () => {
           }
         }}
       />
+      {/* <Button
+        title="Log Out!"
+        onPress={async () => {
+          setRole(Role.GUEST);
+          await removeToken();
+        }}
+      /> */}
       <StatusBar style={isDark ? "light" : "dark"} />
     </View>
   );

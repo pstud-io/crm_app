@@ -4,18 +4,25 @@ import { heading } from "@/design/typography";
 import { useTheme } from "@/hooks/useTheme";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { UserStackParamList } from "@/navigation/UserNavigation";
+import HomeIcon from "assets/icons/HomeIcon";
+import PlusIcon from "assets/icons/PlusIcon";
+import { userNavigationRef } from "@/navigation/UserNavigation";
 export const FloatingButtons = () => {
   const insets = useSafeAreaInsets();
   const { theme } = useTheme();
-  const navigation =
-    useNavigation<NativeStackNavigationProp<UserStackParamList>>();
   return (
     <>
       <Pressable
-        onPress={() => console.log("This is the navigation passed", navigation)}
+        onPress={() =>
+          userNavigationRef.reset({
+            index: 0,
+            routes: [
+              {
+                name: "Dashboard",
+              },
+            ],
+          })
+        }
         style={[
           xstack,
           center,
@@ -24,13 +31,20 @@ export const FloatingButtons = () => {
             height: 52,
             borderRadius: borderRadius.full,
             position: "absolute",
-            backgroundColor: "#fff000",
+            backgroundColor: theme.backgroundInverse,
             bottom: insets.bottom + 16,
             left: 16,
+            boxShadow: theme.shadow.lg,
           },
         ]}
       >
-        <Text>*</Text>
+        <HomeIcon
+          width={24}
+          height={24}
+          fill={theme.textInverse}
+          stroke={theme.textInverse}
+          strokeWidth={0}
+        />
       </Pressable>
 
       <Pressable
@@ -45,12 +59,17 @@ export const FloatingButtons = () => {
             backgroundColor: theme.backgroundInverse,
             bottom: insets.bottom + 16,
             right: 16,
+            boxShadow: theme.shadow.lg,
           },
         ]}
       >
-        <Text style={[heading.sm.extraLight, { color: theme.textInverse }]}>
-          +
-        </Text>
+        <PlusIcon
+          width={24}
+          height={24}
+          fill={theme.textInverse}
+          stroke={theme.textInverse}
+          strokeWidth={2}
+        />
       </Pressable>
     </>
   );
