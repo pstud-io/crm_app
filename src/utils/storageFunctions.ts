@@ -2,18 +2,20 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export enum StorageKeys {
   TOKEN_KEY = "token",
-  RefreshToken = "refresh_token",
+  REFRESH_TOKEN = "refresh_token",
   THEME_KEY = "theme",
-  User = "user",
+  USER = "user",
+  PROFILE = "profile",
 }
 
 export const storage = {
-  async get(key: StorageKeys) {
-    return AsyncStorage.getItem(key);
+  async get<T>(key: StorageKeys): Promise<T | null> {
+    const value = await AsyncStorage.getItem(key);
+    return value ? JSON.parse(value) : null;
   },
 
-  async set(key: StorageKeys, value: string) {
-    return AsyncStorage.setItem(key, value);
+  async set<T>(key: StorageKeys, value: T) {
+    return AsyncStorage.setItem(key, JSON.stringify(value));
   },
 
   async remove(key: StorageKeys) {

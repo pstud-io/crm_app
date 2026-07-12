@@ -15,7 +15,7 @@ const AuthStack = createNativeStackNavigator({
   },
   screens: {
     SignIn: {
-      linking: "/",
+      linking: "/signin",
       screen: SignIn,
     },
   },

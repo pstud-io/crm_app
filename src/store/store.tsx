@@ -1,17 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { counterSlice, decremented, incremented } from "./slices/counter";
-
-const store = configureStore({
-  reducer: counterSlice.reducer,
+import { profileSlice } from "./slices/profileSlice";
+import { authSlice } from "./slices/authSlice";
+import { projectSlice } from "./slices/projectSlice";
+export const store = configureStore({
+  reducer: {
+    profile: profileSlice.reducer,
+    auth: authSlice.reducer,
+    project: projectSlice.reducer,
+  },
 });
 
-// Can still subscribe to the store
 store.subscribe(() => console.log(store.getState()));
-
-// Still pass action objects to `dispatch`, but they're created for us
-store.dispatch(incremented());
-// {value: 1}
-store.dispatch(incremented());
-// {value: 2}
-store.dispatch(decremented());
-// {value: 1}

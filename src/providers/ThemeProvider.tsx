@@ -24,13 +24,17 @@ import * as SplashScreen from "expo-splash-screen";
 import { loadFonts } from "@/utils/typographyFunctions";
 import { useAuth } from "@/hooks/useAuth";
 import { loadAuth } from "@/utils/authFunctions";
+import { loadProfile } from "@/store/slices/profileSlice";
+import { useDispatch } from "react-redux";
+import { useGeneralEndpoints } from "@/hooks/useGeneralEndpoints";
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const systemTheme = useColorScheme();
   const { setAuthLoading, setRole } = useAuth();
   const [themeMode, setThemeMode] = useState<ThemeMode>(ThemeMode.System);
   const [isReady, setIsReady] = useState<boolean>(false);
-
+  const dispatch = useDispatch();
+  const { getProjects } = useGeneralEndpoints();
   useLayoutEffect(() => {
     if (isReady) return;
     const load: () => Promise<void> = async () => {
@@ -39,7 +43,9 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
         // loadThemeUnistyles(THEME_KEY),
         loadFonts(),
         loadAuth(setRole, setAuthLoading),
+        loadProfile(dispatch),
       ]);
+      await getProjects([], () => {}, 1, true, "", 1);
       setIsReady(true);
     };
     load();

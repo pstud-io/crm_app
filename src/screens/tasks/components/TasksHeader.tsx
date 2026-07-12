@@ -1,5 +1,6 @@
 import { Button } from "@/components/Button";
 import ChevronDown from "@/components/ChevronDown";
+import { SelectProject } from "@/components/SelectProject";
 import { borderRadius } from "@/design/borders";
 import { height, width } from "@/design/distance";
 import {
@@ -17,7 +18,9 @@ import { useTheme } from "@/hooks/useTheme";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import FilterIcon from "assets/icons/FilterIcon";
 import UserOutline from "assets/icons/UserIcon";
+import { useRef } from "react";
 import { Pressable, Text, View } from "react-native";
+import { useSelector } from "react-redux";
 
 export const TasksHeader = ({
   navigation,
@@ -25,6 +28,17 @@ export const TasksHeader = ({
   options,
   back,
 }: NativeStackHeaderProps) => {
+  const token = useSelector((state: any) => state.auth.token);
+  const organization_id = useSelector(
+    (state: any) => state.profile.organization_id,
+  );
+  console.log("these are the token", token);
+  console.log("these are the organiztaion id", organization_id);
+  const selectedProject = useSelector(
+    (state: any) => state.project.selectedProject,
+  );
+  console.log("this is the selected poroject", selectedProject);
+  const dropdownRef = useRef(null);
   const { theme } = useTheme();
   return (
     <View
@@ -39,7 +53,54 @@ export const TasksHeader = ({
         },
       ]}
     >
-      <Pressable
+      <View style={[xstack, grow, centerLeft, { gap: spacing.sm }]}>
+        <View
+          style={[
+            xstack,
+            center,
+            {
+              backgroundColor: theme.backgroundInverse,
+              width: width[40],
+              height: height[40],
+              borderRadius: borderRadius.md,
+            },
+          ]}
+        >
+          <UserOutline
+            width={width[16]}
+            height={height[16]}
+            strokeWidth={width[2]}
+            stroke={theme.textInverse}
+            fill={"none"}
+          />
+        </View>
+        <View
+          style={[
+            ystack,
+            centerLeftY,
+            grow,
+            {
+              justifyContent: "space-between",
+            },
+          ]}
+        >
+          <Text
+            style={[body.sm.regular, { color: theme.text }]}
+            onPress={() => dropdownRef.current?.open()}
+            suppressHighlighting
+          >
+            {selectedProject?.project_name || "Select Project"}
+          </Text>
+          <SelectProject
+            getProjectsController={null}
+            dropdownRef={dropdownRef}
+          />
+          <Text style={[body.sm.regular, { color: theme.text }]}>
+            Sales Manager
+          </Text>
+        </View>
+      </View>
+      {/* <Pressable
         style={[xstack, grow, centerLeft, { gap: spacing.sm }]}
         onPress={() => navigation.pop()}
       >
@@ -61,11 +122,8 @@ export const TasksHeader = ({
           ]}
         >
           <Text style={[body.xl.semiBold, { color: theme.text }]}>Tasks</Text>
-          {/* <Text style={[body.sm.regular, { color: theme.text }]}>
-            Sales Manager
-          </Text> */}
         </View>
-      </Pressable>
+      </Pressable> */}
       <Button
         label={null}
         loading={false}

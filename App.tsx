@@ -8,7 +8,8 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { NavigationContainer } from "@react-navigation/native";
 import { FloatingButtons } from "@/components/FloatingButtons";
-
+import { Provider } from "react-redux";
+import { store } from "@/store/store";
 SplashScreen.preventAutoHideAsync();
 
 SplashScreen.setOptions({
@@ -42,14 +43,17 @@ export default Sentry.wrap(function App() {
   return (
     <SafeAreaProvider style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
-        <QueryProvider>
-          <AuthProvider>
-            <ThemeProvider>
-              <Navigation />
-              <FloatingButtons />
-            </ThemeProvider>
-          </AuthProvider>
-        </QueryProvider>
+        <Provider store={store}>
+          <QueryProvider>
+            <AuthProvider>
+              <ThemeProvider>
+                <Navigation />
+                <FirstComponent />
+                <FloatingButtons />
+              </ThemeProvider>
+            </AuthProvider>
+          </QueryProvider>
+        </Provider>
       </SafeAreaView>
     </SafeAreaProvider>
   );

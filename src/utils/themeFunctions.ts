@@ -18,14 +18,14 @@ export async function loadTheme(
   THEME_KEY: StorageKeys.THEME_KEY,
   setThemeMode: Dispatch<SetStateAction<ThemeMode>>,
 ) {
-  const stored = await storage.get(THEME_KEY);
+  const stored = await storage.get<string>(THEME_KEY);
   if (stored && isThemeMode(stored)) {
     setThemeMode(stored);
   }
 }
 
 export async function loadThemeUnistyles(THEME_KEY: StorageKeys.THEME_KEY) {
-  const stored = await storage.get(THEME_KEY);
+  const stored = await storage.get<string>(THEME_KEY);
   if (stored && isThemeMode(stored)) {
     const theme = stored as keyof UnistylesThemes;
     UnistylesRuntime.setTheme(theme);
