@@ -48,7 +48,7 @@ export default Sentry.wrap(function App() {
             <AuthProvider>
               <ThemeProvider>
                 <Navigation />
-                <FirstComponent />
+                {/* <FirstComponent /> */}
                 <FloatingButtons />
               </ThemeProvider>
             </AuthProvider>

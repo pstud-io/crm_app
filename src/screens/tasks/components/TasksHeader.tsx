@@ -15,30 +15,24 @@ import {
 import { spacing } from "@/design/spacing";
 import { body } from "@/design/typography";
 import { useTheme } from "@/hooks/useTheme";
+import { RootState } from "@/store/store";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import FilterIcon from "assets/icons/FilterIcon";
 import UserOutline from "assets/icons/UserIcon";
-import { useRef } from "react";
+import { ComponentRef, useRef } from "react";
 import { Pressable, Text, View } from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
 import { useSelector } from "react-redux";
-
+import { IDropdownRef } from "react-native-element-dropdown";
 export const TasksHeader = ({
   navigation,
   route,
   options,
   back,
 }: NativeStackHeaderProps) => {
-  const token = useSelector((state: any) => state.auth.token);
-  const organization_id = useSelector(
-    (state: any) => state.profile.organization_id,
-  );
-  console.log("these are the token", token);
-  console.log("these are the organiztaion id", organization_id);
-  const selectedProject = useSelector(
-    (state: any) => state.project.selectedProject,
-  );
-  console.log("this is the selected poroject", selectedProject);
-  const dropdownRef = useRef(null);
+  const selectedProject = useSelector((state: RootState) => state.project);
+  console.log("Selected Project in tasks header", selectedProject);
+  const dropdownRef = useRef<IDropdownRef>(null);
   const { theme } = useTheme();
   return (
     <View
@@ -85,16 +79,13 @@ export const TasksHeader = ({
           ]}
         >
           <Text
-            style={[body.sm.regular, { color: theme.text }]}
-            onPress={() => dropdownRef.current?.open()}
+            style={[body.lg.semiBold, { color: theme.text }]}
+            onPress={dropdownRef.current?.open}
             suppressHighlighting
           >
             {selectedProject?.project_name || "Select Project"}
           </Text>
-          <SelectProject
-            getProjectsController={null}
-            dropdownRef={dropdownRef}
-          />
+          <SelectProject dropdownRef={dropdownRef} />
           <Text style={[body.sm.regular, { color: theme.text }]}>
             Sales Manager
           </Text>
@@ -147,9 +138,6 @@ export const TasksHeader = ({
           />
         }
       />
-      {/* <View style={[xstack, grow, center]}>
-        <Text>hello</Text>
-      </View> */}
     </View>
   );
 };

@@ -1,7 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { profileSlice } from "./slices/profileSlice";
-import { authSlice } from "./slices/authSlice";
-import { projectSlice } from "./slices/projectSlice";
+import { profileSlice } from "./slices/profileSlice/profileSlice";
+import { authSlice } from "./slices/authSlice/authSlice";
+import { projectSlice } from "./slices/projectSlice/projectSlice";
+
 export const store = configureStore({
   reducer: {
     profile: profileSlice.reducer,
@@ -10,4 +11,4 @@ export const store = configureStore({
   },
 });
 
-store.subscribe(() => console.log(store.getState()));
+export type RootState = ReturnType<typeof store.getState>;

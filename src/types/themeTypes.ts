@@ -47,6 +47,7 @@ export interface Theme {
   error: string;
   button: string;
   buttonInverse: string;
+  backgroundDisabled: string;
 }
 
 export interface appThemeType {

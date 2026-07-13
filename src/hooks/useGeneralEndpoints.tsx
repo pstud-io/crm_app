@@ -1,32 +1,20 @@
 import { apiEndpoint } from "@/api/client";
-import { setSelectedProject } from "@/store/slices/projectSlice";
+import { setSelectedProject } from "@/store/slices/projectSlice/projectSlice";
+import { ProjectRecord } from "@/store/slices/projectSlice/projectSliceTypes";
+import { RootState } from "@/store/store";
 import { fetchProjects } from "@/utils/generaEndpoints";
 import axios from "axios";
-import { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, Ref, SetStateAction, useState } from "react";
 import Toast from "react-native-toast-message";
 import { useDispatch, useSelector } from "react-redux";
+import { GetDataProps } from "./usePaginatedSearch";
 
 export const useGeneralEndpoints = () => {
   const [generalLoading, setGeneralLoading] = useState({
     getProjects: false,
   });
   const dispatch = useDispatch();
-  const token = useSelector((state: any) => state.auth.token);
-  const profile = useSelector((state: any) => state.profile);
-  const organization_id = useSelector(
-    (state: any) => state.profile.organization_id,
-  );
-  const organization_contact_id = useSelector(
-    (state: any) => state.profile.organization_contact_id,
-  );
-  const selectedProject = useSelector(
-    (state: any) => state.project.selectedProject,
-  );
-  console.log("This is the profile id", profile);
-  console.log(
-    "this is the selected poroject in useGeneralEndpoints",
-    selectedProject,
-  );
+  const selectedProject = useSelector((state: RootState) => state.project);
 
   const getOrganizationDetails = async (
     setLoading: Dispatch<SetStateAction<any>>,
@@ -111,15 +99,20 @@ export const useGeneralEndpoints = () => {
     }
   };
 
-  const getProjects = async (
-    projectsData: any[],
-    setProjects: Dispatch<SetStateAction<any>>,
-    page: number,
-    hasMore: boolean,
-    searchTerm: string,
-    pageSize: number = 25,
-  ) => {
-    if (!hasMore && page !== 1) return;
+  const getProjects = async ({
+    data,
+    setData,
+    page,
+    hasMore,
+    searchTerm,
+    abortSignal,
+    pageSize,
+  }: GetDataProps<ProjectRecord>): Promise<
+    Record<"hasMore", boolean> | undefined
+  > => {
+    if (!hasMore && page !== 1) {
+      return { hasMore: false };
+    }
     setGeneralLoading((prev) => ({ ...prev, getProjects: true }));
     const initialProject = { id: "all_projects", project_name: "All Projects" };
 
@@ -127,36 +120,35 @@ export const useGeneralEndpoints = () => {
       const response = await fetchProjects(
         page,
         searchTerm,
-        organization_contact_id,
-        token,
-        organization_id,
         pageSize,
+        abortSignal,
       );
-      if (response.status >= 200 && response.status < 300) {
-        console.log("Projects fetched successfully:", response.data);
-        const titles = response.data.results.map((project: any) => ({
-          project_name: project.project_name,
-          id: project.id,
-          // client_details: project.client_details,
-        }));
 
-        const updatedProjects =
-          page === 1
-            ? [initialProject, ...titles]
-            : [...projectsData, ...titles];
-        setProjects(updatedProjects);
+      if (response && response.status >= 200 && response.status < 300) {
+        const titles: ProjectRecord[] = response.data.results.map(
+          (project: any): ProjectRecord => ({
+            project_name: project.project_name,
+            id: project.id,
+          }),
+        );
+
+        const updatedProjects: ProjectRecord[] =
+          page === 1 ? [initialProject, ...titles] : [...data, ...titles];
+
+        setData(updatedProjects);
         const hasMore = response.data.next !== null;
-        if (!selectedProject && titles.length > 0) {
+
+        if (!selectedProject.id && titles.length > 0) {
+          console.log("In correct if");
           dispatch(setSelectedProject(titles[0]));
-        } else if (!selectedProject && titles.length === 0) {
+        } else if (!selectedProject.id && titles.length === 0) {
           dispatch(setSelectedProject(initialProject));
         }
-        return { hasMore };
-      }
 
-      console.log("Response of get projects", response);
+        return { hasMore: hasMore };
+      }
     } catch (e) {
-      console.log(e);
+      console.log("Logging from general endpoints", e);
     } finally {
       setGeneralLoading((prev) => ({ ...prev, getProjects: false }));
     }

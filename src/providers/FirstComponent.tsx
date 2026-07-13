@@ -6,7 +6,7 @@ import { ThemeMode } from "@/types/themeTypes";
 import { body } from "@/design/typography";
 import { useAuth } from "@/hooks/useAuth";
 import { Role } from "@/types/AuthTypes";
-import { removeToken } from "@/utils/authFunctions";
+import { deleteToken } from "@/utils/authFunctions";
 
 export const FirstComponent = () => {
   const { theme, isDark, themeMode, updateTheme, THEME_KEY, setThemeMode } =
@@ -43,7 +43,7 @@ export const FirstComponent = () => {
         title="Log Out!"
         onPress={async () => {
           setRole(Role.GUEST);
-          await removeToken();
+          await deleteToken();
         }}
       />
       <StatusBar style={isDark ? "light" : "dark"} />

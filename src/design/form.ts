@@ -1,10 +1,13 @@
 import { primaryColors, secondaryColors } from "./colors";
 import { body } from "./typography";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, TextStyle, ViewStyle } from "react-native";
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get("window");
 const DROPDOWN_HEIGHT = SCREEN_HEIGHT * 0.5;
 const DROPDOWN_WIDTH = SCREEN_WIDTH * 0.7;
-export const formElementsStyles = {
+export const formElementsStyles: Record<
+  string,
+  ViewStyle | { color: string } | string | TextStyle
+> = {
   triggerStyle: {
     display: "flex",
     flexDirection: "row",

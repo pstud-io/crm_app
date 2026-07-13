@@ -18,6 +18,7 @@ export type PrimaryColors = {
   error: ColorShades;
   warning: ColorShades;
   success: ColorShades;
+  gray: ColorShades;
 };
 
 export type SecondaryColors = {

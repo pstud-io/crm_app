@@ -13,7 +13,7 @@ export async function getToken() {
   return token;
 }
 
-export async function removeToken() {
+export async function deleteToken() {
   await SecureStore.deleteItemAsync(StorageKeys.TOKEN_KEY);
   return;
 }

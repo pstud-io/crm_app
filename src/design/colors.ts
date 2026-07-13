@@ -66,6 +66,19 @@ export const primaryColors = {
     800: "#05603A",
     900: "#054F31",
   },
+  gray: {
+    25: "#FCFCFC",
+    50: "#F8F8F8",
+    100: "#F2F2F2",
+    200: "#E5E5E5",
+    300: "#D4D4D4",
+    400: "#A3A3A3",
+    500: "#737373",
+    600: "#525252",
+    700: "#404040",
+    800: "#262626",
+    900: "#171717",
+  },
 } as const satisfies PrimaryColors;
 
 export const secondaryColors = {

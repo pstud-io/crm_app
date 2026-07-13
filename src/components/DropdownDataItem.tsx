@@ -2,6 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { primaryColors, secondaryColors } from "@/design/colors";
 import { body } from "@/design/typography";
 import Radio from "assets/icons/Radio";
+import { useTheme } from "@/hooks/useTheme";
 
 export const DropdownDataItem = ({
   itemName,
@@ -10,6 +11,8 @@ export const DropdownDataItem = ({
   itemName: string;
   isSelected: boolean | undefined;
 }) => {
+  const { theme } = useTheme();
+
   return (
     <View
       style={{
@@ -19,24 +22,19 @@ export const DropdownDataItem = ({
         flex: 1,
         height: 44,
         gap: 8,
-        // paddingHorizontal: SW(14),
-        // backgroundColor: isSelected ? "#E8F3FD" : "#f5f5f5",
-        // borderWidth: StyleSheet.hairlineWidth,
-        // borderColor: isSelected ? Colors.primary : Colors.gray_line_color,
-        // marginBottom: SH(12),
       }}
     >
       <Radio
         width={16}
         height={16}
         strokeWidth={1}
-        stroke={secondaryColors.gray[500]}
+        stroke={theme.border}
         selected={isSelected}
       />
       <Text
         style={{
           ...body.md.regular,
-          color: isSelected ? primaryColors.brand[900] : "#111",
+          color: theme.text,
           flex: 1,
         }}
         numberOfLines={1}

@@ -11,52 +11,15 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import Toast from "react-native-toast-message";
 import { useGeneralEndpoints } from "@/hooks/useGeneralEndpoints";
-import { saveProfile } from "@/store/slices/profileSlice";
-import { saveToken } from "@/store/slices/authSlice";
+import { saveProfile } from "@/store/slices/profileSlice/profileSlice";
+import { saveToken } from "@/store/slices/authSlice/authSlice";
+import { ProfileSliceState } from "@/store/slices/profileSlice/profileSliceTypes";
 
 export const useSignInEndpoints = () => {
   const [signingIn, setSigningIn] = useState(false);
   const [sendingOTP, setSendingOTP] = useState(false);
   const dispatch = useDispatch();
-  const { getOrganizationPermissions, getOrganizationDetails, getProjects } =
-    useGeneralEndpoints();
-
-  const handleAuthSuccess = async (result: any) => {
-    const {
-      token,
-      organization_id,
-      permissions,
-      is_admin,
-      name,
-      phone,
-      organization_contact_id,
-      organization_details,
-      fk_user_role,
-    } = result;
-    console.log("Result of login", result);
-    const logo_url = organization_details?.asset_details?.url;
-
-    if (permissions) {
-      console.log("In permissions");
-      saveToken(token, dispatch);
-      saveProfile(
-        {
-          name,
-          phone,
-          organization_contact_id,
-          organization_id,
-          logo_url,
-          is_admin,
-          organization_details,
-          fk_user_role,
-        },
-        dispatch,
-      );
-      await getProjects([], () => {}, 1, true, "", 1);
-      return true;
-    }
-    return false;
-  };
+  const { getProjects } = useGeneralEndpoints();
 
   const onSubmitSignIn = async (
     data: SignInFormTypeOTP | SignInFormTypePassword,
@@ -66,10 +29,43 @@ export const useSignInEndpoints = () => {
     setSigningIn(true);
     try {
       const response = await signIn(data);
-      console.log("the response is", response?.data?.result);
-      await storeToken(response.data.result.token);
+      const result = response.data.result;
+      console.log("Result of login", result);
+      const {
+        token,
+        name,
+        phone,
+        is_admin,
+        permissions,
+        fk_user_role,
+        organization_contact_id,
+        organization_details,
+        organization_id,
+      } = result;
+      const profile: ProfileSliceState = {
+        name,
+        phone,
+        is_admin,
+        permissions,
+        fk_user_role,
+        organization_contact_id,
+        organization_details,
+        organization_id,
+        logo_url: organization_details?.asset_details?.url,
+      };
+      console.log("the response is", result);
       setRole(Role.USER);
-      await handleAuthSuccess(response.data.result);
+      saveToken(token, dispatch);
+      saveProfile(profile, dispatch);
+      await getProjects({
+        data: [],
+        setData: () => {},
+        page: 1,
+        hasMore: true,
+        searchTerm: "",
+        abortSignal: undefined,
+        pageSize: 1,
+      });
     } catch (error) {
       if (error instanceof Error) {
         console.error("Sign-in error:", error.message);

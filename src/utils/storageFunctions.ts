@@ -2,9 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export enum StorageKeys {
   TOKEN_KEY = "token",
-  REFRESH_TOKEN = "refresh_token",
   THEME_KEY = "theme",
-  USER = "user",
   PROFILE = "profile",
 }
 

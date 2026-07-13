@@ -13,6 +13,7 @@ import {
   updateTheme,
 } from "@/utils/themeFunctions";
 import React, {
+  createRef,
   useContext,
   useEffect,
   useLayoutEffect,
@@ -24,7 +25,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { loadFonts } from "@/utils/typographyFunctions";
 import { useAuth } from "@/hooks/useAuth";
 import { loadAuth } from "@/utils/authFunctions";
-import { loadProfile } from "@/store/slices/profileSlice";
+import { loadProfile } from "@/store/slices/profileSlice/profileSlice";
 import { useDispatch } from "react-redux";
 import { useGeneralEndpoints } from "@/hooks/useGeneralEndpoints";
 
@@ -45,7 +46,15 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
         loadAuth(setRole, setAuthLoading),
         loadProfile(dispatch),
       ]);
-      await getProjects([], () => {}, 1, true, "", 1);
+      await getProjects({
+        data: [],
+        setData: () => {},
+        page: 1,
+        hasMore: true,
+        searchTerm: "",
+        abortSignal: undefined,
+        pageSize: 1,
+      });
       setIsReady(true);
     };
     load();

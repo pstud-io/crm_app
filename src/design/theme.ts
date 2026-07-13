@@ -17,10 +17,11 @@ export const lightTheme: Theme = {
   textSecondary: "#666666",
   primary: "#2D6CDF",
   secondary: "#7E57C2",
-  border: "#DDDDDD",
+  border: secondaryColors.gray[300],
   success: "#4CAF50",
   warning: "#FF9800",
   error: primaryColors.error[400],
+  backgroundDisabled: secondaryColors.gray[400],
 };
 
 export const darkTheme: Theme = {
@@ -38,10 +39,11 @@ export const darkTheme: Theme = {
   textSecondary: "#BBBBBB",
   primary: "#5C9DFF",
   secondary: "#B388FF",
-  border: "#333333",
+  border: secondaryColors.gray[200],
   success: "#66BB6A",
   warning: "#FFB74D",
   error: primaryColors.error[700],
+  backgroundDisabled: secondaryColors.gray[400],
 };
 
 export const appTheme: appThemeType = {

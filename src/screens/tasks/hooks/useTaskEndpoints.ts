@@ -1,0 +1,88 @@
+import { useEffect, useState } from "react";
+import { fetchTasks } from "../utils/taskEndpoints";
+import Toast from "react-native-toast-message";
+
+export const useTaskEndpoints = () => {
+  const [tasksLoading, setTasksLoading] = useState({
+    getTasks: false,
+    addTask: false,
+  });
+
+  const getTasks = async (
+    page: number,
+    searchQuery: string,
+    hasMore: boolean,
+    tasksData: any,
+    setTasksData: any,
+    setCompletedTasks: any,
+    setCreatedTasks: any,
+    setInProgressTasks: any,
+    setOnHoldTasks: any,
+    setDiscardedTasks: any,
+  ) => {
+    if (!hasMore && page !== 1) return;
+
+    setTasksLoading((prev: any) => ({ ...prev, getTasks: true }));
+    try {
+      const response = await fetchTasks(page, searchQuery);
+
+      if (response.status >= 200 && response.status < 300) {
+        const allTasks = response.data.results;
+
+        const updatedTasks =
+          page === 1 ? allTasks : [...tasksData, ...allTasks];
+
+        setTasksData(updatedTasks);
+        const hasMore = response.data.next !== null;
+
+        const completed = [];
+        const created = [];
+        const inProgress = [];
+        const onHold = [];
+        const discarded = [];
+        console.log("Before for loop");
+        for (const task of updatedTasks) {
+          const stage = task.stage;
+
+          if (stage === "created") {
+            created.push(task);
+          } else if (stage === "in_progress") {
+            inProgress.push(task);
+          } else if (stage === "hold") {
+            onHold.push(task);
+          } else if (stage === "discarded") {
+            discarded.push(task);
+          } else if (
+            stage === "completed" ||
+            stage === "rejected" ||
+            stage === "approved"
+          ) {
+            completed.push(task);
+          }
+        }
+
+        setCreatedTasks(created);
+        setCompletedTasks(completed);
+        setInProgressTasks(inProgress);
+        setOnHoldTasks(onHold);
+        setDiscardedTasks(discarded);
+        console.log("Before return");
+        return { hasMore };
+      }
+    } catch (error: any) {
+      console.error("Error loading tasks:", error);
+
+      Toast.show({
+        type: "error",
+        text1: "Error Loading Tasks",
+        text2:
+          error.response?.data?.result ||
+          "Failed to fetch tasks data. Check your network connection.",
+      });
+    } finally {
+      setTasksLoading((prev: any) => ({ ...prev, getTasks: false }));
+    }
+  };
+
+  return { getTasks, tasksLoading };
+};
