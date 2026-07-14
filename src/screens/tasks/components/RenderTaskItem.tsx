@@ -12,8 +12,8 @@ import {
   getTaskTypeColor,
   getUpdatedStatus,
 } from "../utils/taskFunctions";
-import { formatAdjustedDate, formatDate } from "@/utils/generalFunctions";
 import { useSelector } from "react-redux";
+import { formatAdjustedDate, formatDate } from "@/utils/GeneralFunctions";
 import { body } from "@/design/typography";
 // import { Badge } from "@/components/UI/Badge/Badge";
 import EditIcon from "assets/icons/EditIcon";
