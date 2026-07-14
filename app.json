@@ -10,9 +10,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "ai.projectstudio.pipeline",
-      "associatedDomains": [
-        "applinks:pipeline.projectstudio.ai"
-      ]
+      "associatedDomains": ["applinks:pipeline.projectstudio.ai"]
     },
     "android": {
       "adaptiveIcon": {
@@ -34,10 +32,7 @@
               "pathPrefix": "/"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ]
     },
@@ -64,7 +59,16 @@
       "@sentry/react-native",
       "@react-native-community/datetimepicker",
       "expo-image",
-      "expo-video"
-    ]
+      "expo-video",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ]
+    ],
+    "assetBundlePatterns": ["**/*", "assets/pdfjs/*"]
   }
 }
