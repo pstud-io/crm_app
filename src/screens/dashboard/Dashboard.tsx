@@ -14,7 +14,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { useModulesData } from "@/hooks/useModulesData";
 import { useTheme } from "@/hooks/useTheme";
 import { Role } from "@/types/AuthTypes";
-import { removeToken } from "@/utils/authFunctions";
 import { StatusBar } from "expo-status-bar";
 import { View, Text, Button, ScrollView, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";

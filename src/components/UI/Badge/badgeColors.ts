@@ -1,5 +1,4 @@
-import { primaryColors, secondaryColors } from "../DesignSystem/colorPalette";
-
+import { primaryColors, secondaryColors } from "@/design/colors";
 const badgeColors = {
   primary: {
     background: primaryColors.brand[50],
@@ -59,12 +58,16 @@ const badgeColors = {
   },
   black: {
     background: primaryColors.gray[100],
-    text: primaryColors.brand[1000],
+    text: primaryColors.gray[900],
   },
   white: {
     background: primaryColors.gray[500],
     text: primaryColors.gray[25],
   },
-};
+} as const;
+
+export type BadgeColor = keyof typeof badgeColors;
+
+export type BadgeColorConfig = (typeof badgeColors)[BadgeColor];
 
 export default badgeColors;

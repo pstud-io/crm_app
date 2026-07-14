@@ -1,6 +1,17 @@
 import { useEffect, useState } from "react";
 import { fetchTasks } from "../utils/taskEndpoints";
 import Toast from "react-native-toast-message";
+import { ProjectRecord } from "@/store/slices/projectSlice/projectSliceTypes";
+import { GetDataProps } from "@/hooks/usePaginatedSearch";
+
+export type TasksExtraParams = {
+  setCompletedTasks: React.Dispatch<React.SetStateAction<any>>;
+  setCreatedTasks: React.Dispatch<React.SetStateAction<any>>;
+  setInProgressTasks: React.Dispatch<React.SetStateAction<any>>;
+  setOnHoldTasks: React.Dispatch<React.SetStateAction<any>>;
+  setDiscardedTasks: React.Dispatch<React.SetStateAction<any>>;
+  project: ProjectRecord;
+};
 
 export const useTaskEndpoints = () => {
   const [tasksLoading, setTasksLoading] = useState({
@@ -8,31 +19,39 @@ export const useTaskEndpoints = () => {
     addTask: false,
   });
 
-  const getTasks = async (
-    page: number,
-    searchQuery: string,
-    hasMore: boolean,
-    tasksData: any,
-    setTasksData: any,
-    setCompletedTasks: any,
-    setCreatedTasks: any,
-    setInProgressTasks: any,
-    setOnHoldTasks: any,
-    setDiscardedTasks: any,
-  ) => {
+  const getTasks = async ({
+    page,
+    searchTerm,
+    hasMore,
+    data,
+    setData,
+    abortSignal,
+    pageSize,
+
+    setCompletedTasks,
+    setCreatedTasks,
+    setInProgressTasks,
+    setOnHoldTasks,
+    setDiscardedTasks,
+    project,
+  }: GetDataProps<any> & TasksExtraParams) => {
     if (!hasMore && page !== 1) return;
 
     setTasksLoading((prev: any) => ({ ...prev, getTasks: true }));
     try {
-      const response = await fetchTasks(page, searchQuery);
-
-      if (response.status >= 200 && response.status < 300) {
+      const response = await fetchTasks(
+        page,
+        searchTerm,
+        pageSize,
+        abortSignal,
+        project,
+      );
+      if (response && response.status >= 200 && response.status < 300) {
         const allTasks = response.data.results;
 
-        const updatedTasks =
-          page === 1 ? allTasks : [...tasksData, ...allTasks];
+        const updatedTasks = page === 1 ? allTasks : [...data, ...allTasks];
 
-        setTasksData(updatedTasks);
+        setData(updatedTasks);
         const hasMore = response.data.next !== null;
 
         const completed = [];

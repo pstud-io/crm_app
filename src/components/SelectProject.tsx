@@ -28,6 +28,7 @@ export const SelectProject = ({ dropdownRef }: SelectProjectType) => {
     getData: getProjects,
     loading: generalLoading.getProjects,
     pageSize: 25,
+    extraParams: {},
   });
   const selectedProject = useSelector((state: RootState) => state.project);
   const dispatch = useDispatch();

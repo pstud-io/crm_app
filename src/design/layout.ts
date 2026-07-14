@@ -17,6 +17,10 @@ export const center = {
   justifyContent: "center",
 } as const satisfies ViewStyle;
 
+export const transparent = {
+  backgroundColor: "transparent",
+} as const satisfies ViewStyle;
+
 export const topLeft = {
   alignItems: "flex-start",
   justifyContent: "flex-start",
@@ -64,6 +68,10 @@ export const bottomRight = {
 
 export const spaceBetween = {
   justifyContent: "space-between",
+} as const satisfies ViewStyle;
+
+export const alignCenter = {
+  alignItems: "center",
 } as const satisfies ViewStyle;
 
 export const spaceAround = {

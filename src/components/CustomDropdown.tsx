@@ -5,7 +5,7 @@ import { DropdownProps } from "react-native-element-dropdown/lib/typescript/comp
 import { useFormElementsStyles } from "@/hooks/useFormElementsStyles";
 import { DropdownDataItem } from "./DropdownDataItem";
 import LoadingIndicatorFooter from "./LoadingIndicatorFooter";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 
 type CustomDropdownProps = DropdownProps<any> & {
   itemDisplayField: string;
@@ -69,7 +69,7 @@ export const CustomDropdown = forwardRef<IDropdownRef, CustomDropdownProps>(
               await props.onEndReached();
             },
             ListFooterComponent: props.loading ? (
-              <LoadingIndicatorFooter size={8} width="100%" />
+              <LoadingIndicatorFooter size={10} width="100%" />
             ) : null,
           }}
         />

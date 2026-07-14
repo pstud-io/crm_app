@@ -10,23 +10,25 @@ export interface GetDataProps<T> {
   pageSize: number;
 }
 
-export interface PaginatedSearch<T> {
+export interface PaginatedSearch<T, K extends object = {}> {
   data: T[];
   setData: Dispatch<SetStateAction<T[]>> | (() => void);
   getData: (
-    params: GetDataProps<T>,
+    params: GetDataProps<T> & K,
   ) => Promise<Record<"hasMore", boolean> | undefined>;
   loading: boolean;
   pageSize: number;
+  extraParams: K;
 }
 
-export function usePaginatedSearch<T>({
+export function usePaginatedSearch<T, K extends object = {}>({
   data,
   setData,
   getData,
   loading,
   pageSize,
-}: PaginatedSearch<T>) {
+  extraParams,
+}: PaginatedSearch<T, K>) {
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -40,6 +42,12 @@ export function usePaginatedSearch<T>({
     abortControllerRef.current = controller;
     return controller;
   }, []);
+
+  const resetStates = () => {
+    setPage(1);
+    setSearchTerm("");
+    setHasMore(true);
+  };
 
   const onSearch = useCallback(
     async (text: string) => {
@@ -62,6 +70,7 @@ export function usePaginatedSearch<T>({
           searchTerm: text,
           abortSignal: controller.signal,
           pageSize,
+          ...extraParams,
         });
         if (res) setHasMore(res.hasMore);
       }, 500);
@@ -73,6 +82,7 @@ export function usePaginatedSearch<T>({
     if (!loading && hasMore) {
       const nextPage = page + 1;
       console.log("From on end reached");
+      setPage(nextPage);
       const controller = await createController();
       const res = await getData({
         data,
@@ -82,9 +92,9 @@ export function usePaginatedSearch<T>({
         searchTerm: searchTerm,
         abortSignal: controller.signal,
         pageSize: pageSize,
+        ...extraParams,
       });
       console.log("This is next page and has more", nextPage, res?.hasMore);
-      setPage(nextPage);
       if (res) setHasMore(res.hasMore);
     }
   }, [
@@ -101,6 +111,7 @@ export function usePaginatedSearch<T>({
 
   const onFocus = useCallback(async () => {
     console.log("From on animate");
+    resetStates();
     const controller = await createController();
     const res = await getData({
       data,
@@ -110,12 +121,14 @@ export function usePaginatedSearch<T>({
       searchTerm: "",
       abortSignal: controller.signal,
       pageSize: pageSize,
+      ...extraParams,
     });
     if (res) setHasMore(res?.hasMore);
   }, [data, setData, getData, pageSize, createController]);
 
   const onRefresh = useCallback(async () => {
     console.log("From on animate");
+    resetStates();
     const controller = await createController();
     const res = await getData({
       data,
@@ -125,6 +138,7 @@ export function usePaginatedSearch<T>({
       searchTerm: "",
       abortSignal: controller.signal,
       pageSize: pageSize,
+      ...extraParams,
     });
     if (res) setHasMore(res?.hasMore);
   }, [data, setData, getData, pageSize, createController]);
@@ -142,5 +156,8 @@ export function usePaginatedSearch<T>({
     refreshing,
     setRefreshing,
     onAbort,
+    page,
+    searchTerm,
+    setSearchTerm,
   };
 }
