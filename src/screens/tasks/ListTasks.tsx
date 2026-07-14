@@ -7,7 +7,7 @@ import {
 import { TasksExtraParams, useTaskEndpoints } from "./hooks/useTaskEndpoints";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RenderTaskItem } from "./components/RenderTaskItem";
 import { UserNavigationProp } from "@/navigation/UserNavigation";
 import { ListWrapper } from "@/components/ListWrapper";
@@ -65,8 +65,10 @@ import { Badge } from "../../components/UI/Badge/Badge";
 import badgeColors from "@/components/UI/Badge/badgeColors";
 import { FilterChip } from "@/components/FilterChip";
 import { OverdueCustomRangeFilterPopover } from "./components/OverdueCustomRangeFilterPopover";
+import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
 
 export const ListTasks = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation<UserNavigationProp>();
   const [tasksData, setTasksData] = useState<Task[]>([]);
   const { getTasks, tasksLoading } = useTaskEndpoints();
@@ -317,6 +319,12 @@ export const ListTasks = () => {
       };
       fetchTasks();
     }, [selectedProject]),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(setActiveSubButtonGlobal("tasks"));
+    }, []),
   );
 
   const returnTasksCount = (title: string) => {

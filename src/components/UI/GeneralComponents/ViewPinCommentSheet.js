@@ -26,9 +26,6 @@ import { Spacing } from "../../../components";
 import { BottomButton } from "../../../components/UI/GeneralComponents/BottomButton";
 import { CommentCard } from "./CommentCard";
 // import { useDispatch, useSelector } from "react-redux";
-import { setActiveMedia } from "../../../store/slices/activeMediaSlice";
-import { setActiveMediaPinCommentsData } from "../../../store/slices/activeMediaPinCommentsData";
-import { setActivePinComments } from "../../../store/slices/activePinComments";
 import { openNewPinCommentBottomSheet } from "../../common/NewPinCommentBottomSheetService";
 
 const ViewPinCommentSheet = ({

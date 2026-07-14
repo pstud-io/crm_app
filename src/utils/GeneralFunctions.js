@@ -1,4 +1,4 @@
-import { navigationRef } from "../navigation/NavigationService";
+import { userNavigationRef } from "@/navigation/UserNavigation";
 import * as FileSystem from "expo-file-system";
 
 export const generateTimestampString = () => {

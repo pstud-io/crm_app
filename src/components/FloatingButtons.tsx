@@ -7,8 +7,14 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import HomeIcon from "assets/icons/HomeIcon";
 import PlusIcon from "assets/icons/PlusIcon";
 import { userNavigationRef } from "@/navigation/UserNavigation";
+import { handleNavigation } from "@/utils/handleNavigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 export const FloatingButtons = () => {
   const insets = useSafeAreaInsets();
+  const activeSubButtonGlobal = useSelector(
+    (state: RootState) => state.activeSubButtonGlobal.activeSubButtonGlobal,
+  );
   const { theme } = useTheme();
   return (
     <>
@@ -62,6 +68,7 @@ export const FloatingButtons = () => {
             boxShadow: theme.shadow.lg,
           },
         ]}
+        onPress={() => handleNavigation(activeSubButtonGlobal)}
       >
         <PlusIcon
           width={24}

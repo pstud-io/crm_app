@@ -13,6 +13,7 @@ import {
 } from "@react-navigation/native-stack";
 import { ListTasks } from "@/screens/tasks/ListTasks";
 import { TasksHeader } from "@/screens/tasks/components/TasksHeader";
+import { AddTaskFromTasksTab } from "@/screens/AddTaskFromTasksTab";
 
 export const TasksStack = createNativeStackNavigator({
   initialRouteName: "ListTasks",
@@ -24,6 +25,14 @@ export const TasksStack = createNativeStackNavigator({
     ListTasks: {
       linking: "list-tasks",
       screen: ListTasks,
+      options: {
+        headerShown: true,
+        header: (props: NativeStackHeaderProps) => <TasksHeader {...props} />,
+      },
+    },
+    AddTask: {
+      linking: "add-task",
+      screen: AddTaskFromTasksTab,
       options: {
         headerShown: true,
         header: (props: NativeStackHeaderProps) => <TasksHeader {...props} />,
