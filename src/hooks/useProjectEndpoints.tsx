@@ -9,7 +9,7 @@ import Toast from "react-native-toast-message";
 import { useDispatch, useSelector } from "react-redux";
 import { GetDataProps } from "./usePaginatedSearch";
 
-export const useGeneralEndpoints = () => {
+export const useProjectEndpoints = () => {
   const [generalLoading, setGeneralLoading] = useState({
     getProjects: false,
   });

@@ -27,7 +27,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { loadAuth } from "@/utils/authFunctions";
 import { loadProfile } from "@/store/slices/profileSlice/profileSlice";
 import { useDispatch } from "react-redux";
-import { useGeneralEndpoints } from "@/hooks/useGeneralEndpoints";
+import { setSelectedProject } from "@/store/slices/projectSlice/projectSlice";
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const systemTheme = useColorScheme();
@@ -35,7 +35,6 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [themeMode, setThemeMode] = useState<ThemeMode>(ThemeMode.System);
   const [isReady, setIsReady] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const { getProjects } = useGeneralEndpoints();
   useLayoutEffect(() => {
     if (isReady) return;
     const load: () => Promise<void> = async () => {
@@ -45,16 +44,13 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
         loadFonts(),
         loadAuth(setRole, setAuthLoading),
         loadProfile(dispatch),
+        dispatch(
+          setSelectedProject({
+            id: "all_projects",
+            project_name: "All Projects",
+          }),
+        ),
       ]);
-      await getProjects({
-        data: [],
-        setData: () => {},
-        page: 1,
-        hasMore: true,
-        searchTerm: "",
-        abortSignal: undefined,
-        pageSize: 1,
-      });
       setIsReady(true);
     };
     load();

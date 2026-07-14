@@ -10,16 +10,15 @@ import { apiEndpoint } from "@/api/client";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import Toast from "react-native-toast-message";
-import { useGeneralEndpoints } from "@/hooks/useGeneralEndpoints";
 import { saveProfile } from "@/store/slices/profileSlice/profileSlice";
 import { saveToken } from "@/store/slices/authSlice/authSlice";
 import { ProfileSliceState } from "@/store/slices/profileSlice/profileSliceTypes";
+import { setSelectedProject } from "@/store/slices/projectSlice/projectSlice";
 
 export const useSignInEndpoints = () => {
   const [signingIn, setSigningIn] = useState(false);
   const [sendingOTP, setSendingOTP] = useState(false);
   const dispatch = useDispatch();
-  const { getProjects } = useGeneralEndpoints();
 
   const onSubmitSignIn = async (
     data: SignInFormTypeOTP | SignInFormTypePassword,
@@ -57,15 +56,12 @@ export const useSignInEndpoints = () => {
       setRole(Role.USER);
       saveToken(token, dispatch);
       saveProfile(profile, dispatch);
-      await getProjects({
-        data: [],
-        setData: () => {},
-        page: 1,
-        hasMore: true,
-        searchTerm: "",
-        abortSignal: undefined,
-        pageSize: 1,
-      });
+      dispatch(
+        setSelectedProject({
+          id: "all_projects",
+          project_name: "All Projects",
+        }),
+      );
     } catch (error) {
       if (error instanceof Error) {
         console.error("Sign-in error:", error.message);

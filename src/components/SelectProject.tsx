@@ -1,19 +1,11 @@
-import { useGeneralEndpoints } from "@/hooks/useGeneralEndpoints";
-import { useTheme } from "@/hooks/useTheme";
+import { useProjectEndpoints } from "@/hooks/useProjectEndpoints";
 import React, { useState } from "react";
-import { ActivityIndicator, TextStyle, View, ViewStyle } from "react-native";
-import { Dropdown, IDropdownRef } from "react-native-element-dropdown";
-// import { formElementsStyles } from "@/design/form";
-import LoadingIndicatorFooter from "./LoadingIndicatorFooter";
-import { primaryColors } from "@/design/colors";
-import DownArrow from "assets/icons/DownArrow";
-import { DropdownDataItem } from "./DropdownDataItem";
+import { IDropdownRef } from "react-native-element-dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedProject } from "@/store/slices/projectSlice/projectSlice";
 import { ProjectRecord } from "@/store/slices/projectSlice/projectSliceTypes";
 import { RootState } from "@/store/store";
 import { usePaginatedSearch } from "@/hooks/usePaginatedSearch";
-import { useFormElementsStyles } from "@/hooks/useFormElementsStyles";
 import { CustomDropdown } from "./CustomDropdown";
 interface SelectProjectType {
   dropdownRef: React.RefObject<IDropdownRef | null>;
@@ -21,7 +13,7 @@ interface SelectProjectType {
 
 export const SelectProject = ({ dropdownRef }: SelectProjectType) => {
   const [projectsData, setProjectsData] = useState<ProjectRecord[]>([]);
-  const { getProjects, generalLoading } = useGeneralEndpoints();
+  const { getProjects, generalLoading } = useProjectEndpoints();
   const projectSearch = usePaginatedSearch<ProjectRecord>({
     data: projectsData,
     setData: setProjectsData,

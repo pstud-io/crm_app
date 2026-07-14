@@ -60,7 +60,8 @@ import {
   SortState,
 } from "@/components/FilterSortPopover";
 import { fullWidth, xstack } from "@/design/layout";
-import { Badge } from "@/components/UI/Badge/Badge";
+// import { Badge } from "@/components/UI/Badge/Badge";
+import { Badge } from "../../components/UI/Badge/Badge";
 import badgeColors from "@/components/UI/Badge/badgeColors";
 import { FilterChip } from "@/components/FilterChip";
 import { OverdueCustomRangeFilterPopover } from "./components/OverdueCustomRangeFilterPopover";
