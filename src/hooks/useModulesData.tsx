@@ -49,7 +49,10 @@ export const useModulesData: (
       />
     ),
     onPress: async () => {
-      navigation.push("Tasks");
+      navigation.push("Tasks", {
+        screen: "ListTasks",
+        params: { task_type: "" },
+      });
     },
   };
 
@@ -70,7 +73,7 @@ export const useModulesData: (
       />
     ),
     onPress: async () => {
-      navigation.push("Tasks");
+      navigation.push("Notes");
     },
   };
 
@@ -91,7 +94,10 @@ export const useModulesData: (
       />
     ),
     onPress: async () => {
-      navigation.push("Tasks");
+      navigation.push("Tasks", {
+        screen: "ListTasks",
+        params: { task_type: "followup" },
+      });
     },
   };
 

@@ -15,9 +15,18 @@ export const FloatingButtons = () => {
   const activeSubButtonGlobal = useSelector(
     (state: RootState) => state.activeSubButtonGlobal.activeSubButtonGlobal,
   );
+  const project = useSelector((state: RootState) => state.project);
+
   const { theme } = useTheme();
 
-  const hideOn = ["add-task", "edit-task"];
+  const hideOn = [
+    "add-task",
+    "edit-task",
+    "task-details",
+    "signin",
+    "note-details",
+    "add-note",
+  ];
 
   if (activeSubButtonGlobal && hideOn.includes(activeSubButtonGlobal)) {
     return;
@@ -75,7 +84,7 @@ export const FloatingButtons = () => {
             boxShadow: theme.shadow.lg,
           },
         ]}
-        onPress={() => handleNavigation(activeSubButtonGlobal)}
+        onPress={() => handleNavigation(activeSubButtonGlobal, project)}
       >
         <PlusIcon
           width={24}

@@ -27,6 +27,9 @@ export const TasksStack = createNativeStackNavigator({
     ListTasks: {
       linking: "list-tasks",
       screen: ListTasks,
+      initialParams: {
+        task_type: "" as string,
+      },
       options: {
         headerShown: true,
         header: (props: NativeStackHeaderProps) => <TasksHeader {...props} />,

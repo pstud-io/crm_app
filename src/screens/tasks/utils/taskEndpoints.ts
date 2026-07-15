@@ -9,6 +9,7 @@ export const fetchTasks = async (
   pageSize: number,
   abortSignal: AbortSignal | undefined,
   project: ProjectRecord,
+  task_type: string = "",
 ) => {
   const profile = await storage.get<ProfileSliceState>(StorageKeys.PROFILE);
   if (!profile) {
@@ -25,5 +26,11 @@ export const fetchTasks = async (
     url = urlSpecific;
   }
 
-  return await api.post(url, {}, { signal: abortSignal });
+  return await api.post(
+    url,
+    {
+      task_type: task_type,
+    },
+    { signal: abortSignal },
+  );
 };

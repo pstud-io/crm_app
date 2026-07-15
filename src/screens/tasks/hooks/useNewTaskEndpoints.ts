@@ -11,6 +11,7 @@ export type TasksExtraParams = {
   setOnHoldTasks: React.Dispatch<React.SetStateAction<any>>;
   setDiscardedTasks: React.Dispatch<React.SetStateAction<any>>;
   project: ProjectRecord;
+  task_type: string;
 };
 
 export const useNewTaskEndpoints = () => {
@@ -34,6 +35,7 @@ export const useNewTaskEndpoints = () => {
     setOnHoldTasks,
     setDiscardedTasks,
     project,
+    task_type,
   }: GetDataProps<any> & TasksExtraParams) => {
     if (!hasMore && page !== 1) return;
 
@@ -45,6 +47,7 @@ export const useNewTaskEndpoints = () => {
         pageSize,
         abortSignal,
         project,
+        task_type,
       );
       if (response && response.status >= 200 && response.status < 300) {
         const allTasks = response.data.results;

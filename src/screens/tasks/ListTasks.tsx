@@ -71,7 +71,9 @@ import { OverdueCustomRangeFilterPopover } from "./components/OverdueCustomRange
 import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
 import { TaskHistoryBottomSheet } from "./components/TaskHistoryBottomSheet";
 
-export const ListTasks = () => {
+export const ListTasks = ({ route }: { route: any }) => {
+  const { task_type } = route.params;
+  console.log("Task type in list taks", task_type);
   const dispatch = useDispatch();
   const navigation = useNavigation<UserNavigationProp>();
   const [tasksData, setTasksData] = useState<Task[]>([]);
@@ -312,6 +314,7 @@ export const ListTasks = () => {
       setOnHoldTasks,
       setDiscardedTasks,
       project: selectedProject,
+      task_type: task_type,
     },
   });
 
@@ -325,9 +328,11 @@ export const ListTasks = () => {
     }, [selectedProject]),
   );
 
+  const setButton = task_type === "followup" ? "followups" : "tasks";
+
   useFocusEffect(
     useCallback(() => {
-      dispatch(setActiveSubButtonGlobal("tasks"));
+      dispatch(setActiveSubButtonGlobal(setButton));
     }, []),
   );
 
@@ -350,7 +355,10 @@ export const ListTasks = () => {
   return (
     <>
       <ListWrapper>
-        <SectionHeader title="Task" count={tasksData.length} />
+        <SectionHeader
+          title={task_type === "followup" ? "Follow Ups" : "Task"}
+          count={tasksData.length}
+        />
         <Spacing space={height[16]} />
         <SubTabBar
           data={subButtons}
@@ -380,7 +388,11 @@ export const ListTasks = () => {
             <FilterSortPopover
               id={"created-tasks"}
               title={"Created Tasks Filter"}
-              filterMethods={createdFilterMethods}
+              filterMethods={
+                task_type === "followup"
+                  ? [createdFilterMethods[0]]
+                  : createdFilterMethods
+              }
               filterState={createdFilterState}
               setFilterState={setCreatedFilterState}
               initialFilterState={initialCreatedFilterState}
@@ -394,7 +406,11 @@ export const ListTasks = () => {
             <FilterSortPopover
               id={"in-progress-tasks"}
               title={"In Progress Tasks Filter"}
-              filterMethods={inProgressFilterMethods}
+              filterMethods={
+                task_type === "followup"
+                  ? [inProgressFilterMethods[0]]
+                  : inProgressFilterMethods
+              }
               filterState={inProgressFilterState}
               setFilterState={setInProgressFilterState}
               initialFilterState={initialInProgressFilterState}
@@ -408,7 +424,11 @@ export const ListTasks = () => {
             <FilterSortPopover
               id={"hold-tasks"}
               title={"Hold Tasks Filter"}
-              filterMethods={onHoldFilterMethods}
+              filterMethods={
+                task_type === "followup"
+                  ? [onHoldFilterMethods[0]]
+                  : onHoldFilterMethods
+              }
               filterState={onHoldFilterState}
               setFilterState={setOnHoldFilterState}
               initialFilterState={initialOnHoldFilterState}
@@ -423,7 +443,11 @@ export const ListTasks = () => {
             <FilterSortPopover
               id={"completed-tasks"}
               title={"Completed Tasks Filter"}
-              filterMethods={completedFilterMethods}
+              filterMethods={
+                task_type === "followup"
+                  ? [completedFilterMethods[0]]
+                  : completedFilterMethods
+              }
               filterState={completedFilterState}
               setFilterState={setCompletedFilterState}
               initialFilterState={initialCompletedFilterState}
@@ -437,7 +461,11 @@ export const ListTasks = () => {
             <FilterSortPopover
               id={"discarded-tasks"}
               title={"Discarded Tasks Filter"}
-              filterMethods={discardedFilterMethods}
+              filterMethods={
+                task_type === "followup"
+                  ? [discardedFilterMethods[0]]
+                  : discardedFilterMethods
+              }
               filterState={discardedFilterState}
               setFilterState={setDiscardedFilterState}
               initialFilterState={initialDiscardedFilterState}

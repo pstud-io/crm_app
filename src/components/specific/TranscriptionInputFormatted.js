@@ -9,7 +9,12 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { Audio } from "expo-av";
+import {
+  AudioModule,
+  RecordingPresets,
+  setAudioModeAsync,
+  useAudioRecorder,
+} from "expo-audio";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import axios from "axios";
 import { Colors, SH, SW, SF } from "../../utils";
@@ -40,7 +45,7 @@ const TranscriptionInputFormatted = ({
   mentions = [],
 }) => {
   const [isRecording, setIsRecording] = useState(false);
-  const [audioRecording, setAudioRecording] = useState(null);
+  const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [jobID, setJobID] = useState("");
   const [isPreview, setIsPreview] = useState(false);
@@ -95,53 +100,46 @@ const TranscriptionInputFormatted = ({
 
   const startRecording = async () => {
     try {
-      const permission = await Audio.requestPermissionsAsync();
+      const permission = await AudioModule.requestRecordingPermissionsAsync();
+
       if (!permission.granted) {
         Alert.alert("Permission denied", "Please allow microphone access.");
         return;
       }
-      setIsPreview(false);
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: true,
-        playsInSilentModeIOS: true,
+
+      await setAudioModeAsync({
+        allowsRecording: true,
+        playsInSilentMode: true,
       });
-      const { recording } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets.HIGH_QUALITY,
-      );
-      setAudioRecording(recording);
+
+      await recorder.prepareToRecordAsync();
+      recorder.record();
+
       setIsRecording(true);
-      setRecordTime(0);
-      timerRef.current = setInterval(() => {
-        setRecordTime((prev) => prev + 1);
-      }, 1000);
     } catch (err) {
+      console.error(err);
       Alert.alert("Error", "Failed to start recording");
     }
   };
 
   const stopRecording = async () => {
-    setIsRecording(false);
-    clearInterval(timerRef.current);
-    if (audioRecording) {
-      try {
-        await audioRecording.stopAndUnloadAsync();
-        const uri = audioRecording.getURI();
-        if (uri) {
-          const is_enabled = await getOpenAIResponse();
-          if (is_enabled) {
-            await transcribeAudio(uri);
-          } else {
-            await transcribeAudioNew(uri);
-          }
-        }
-      } catch (error) {
-        Alert.alert("Error", "Error stopping recording");
-      } finally {
-        setAudioRecording(null);
+    try {
+      setIsRecording(false);
+
+      await recorder.stop();
+
+      await setAudioModeAsync({
+        allowsRecording: false,
+      });
+
+      if (recorder.uri) {
+        await transcribeAudio(recorder.uri);
       }
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error", "Error stopping recording");
     }
   };
-
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const waitForTranscription = async (jobId) => {

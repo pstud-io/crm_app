@@ -92,7 +92,11 @@ const AddTaskFromTasksTab = ({ route }) => {
   const [assigneesData, setAssigneesData] = useState([]);
   const [assignee, setAssignee] = useState(null);
   const [taskType, setTaskType] = useState(
-    task_type ? { id: "issue", name: "Issue" } : { id: "task", name: "Task" },
+    task_type
+      ? task_type === "followup"
+        ? { id: "followup", name: "Follow Up" }
+        : { id: "issue", name: "Issue" }
+      : { id: "task", name: "Task" },
   );
 
   const [allProjects, setAllProjects] = useState([]);

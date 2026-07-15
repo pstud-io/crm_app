@@ -18,6 +18,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { TasksStack } from "./TasksNavigation";
 import { CameraScreen } from "@/screens/CameraScreen";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { NotesStack } from "./NotesNavigation";
 
 const UserStack = createNativeStackNavigator({
   initialRouteName: "Dashboard",
@@ -43,6 +44,16 @@ const UserStack = createNativeStackNavigator({
       ),
       linking: "tasks",
       screen: TasksStack,
+      options: {
+        headerShown: false,
+      },
+    },
+    Notes: {
+      layout: ({ children }) => (
+        <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
+      ),
+      linking: "notes",
+      screen: NotesStack,
       options: {
         headerShown: false,
       },
