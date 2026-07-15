@@ -34,6 +34,7 @@
     "expo-video": "~57.0.0",
     "formik": "^2.4.9",
     "marked": "^18.0.6",
+    "patch-package": "^8.0.1",
     "pdfjs-dist": "^6.1.200",
     "react": "19.2.3",
     "react-hook-form": "^7.81.0",
@@ -51,6 +52,7 @@
     "react-native-render-html": "^6.3.4",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "4.25.2",
+    "react-native-shadow-2": "^7.1.2",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-svg": "15.15.4",
     "react-native-toast-message": "^2.4.0",
@@ -69,6 +71,7 @@
   },
   "scripts": {
     "start": "expo start",
+    "postinstall": "patch-package",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "android:go": "expo start --android",
@@ -76,7 +79,8 @@
     "web": "expo start --web",
     "clean:node": "rm -rf node_modules package-lock.json && npm install",
     "clean:expo": "rm -rf $TMPDIR/metro-* $TMPDIR/react-* $TMPDIR/haste-map-* $TMPDIR/expo-* && npx expo start -c",
-    "clean:apps": "npx expo prebuild --clean && npm run android && npm run ios"
+    "clean:apps": "npx expo prebuild --clean && npm run android && npm run ios",
+    "android:release": "cd android && ./gradlew assembleRelease && cd .."
   },
   "private": true
 }

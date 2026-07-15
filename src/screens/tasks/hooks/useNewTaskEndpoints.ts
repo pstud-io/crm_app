@@ -13,7 +13,7 @@ export type TasksExtraParams = {
   project: ProjectRecord;
 };
 
-export const useTaskEndpoints = () => {
+export const useNewTaskEndpoints = () => {
   const [tasksLoading, setTasksLoading] = useState({
     getTasks: false,
     addTask: false,

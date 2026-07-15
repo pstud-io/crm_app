@@ -16,7 +16,7 @@ import { openNewMRNBottomSheet } from "../../../screens/Eleganz/Utils/mrnBottomS
 import { openNewTimeSheetBottomSheet } from "../../../screens/TimeSheet/utils/timeSheetBottomSheetService";
 import { openAddFilesToChecklistBottomSheet } from "../../../screens/Checklist/utils/checklistBottomSheetService";
 const CustomAddButton = () => {
-  const project = useSelector((state) => state.project.selectedProject);
+  const project = useSelector((state) => state.project);
   const customAddButton = useSelector(
     (state) => state.customAddButton.customAddButton,
   );

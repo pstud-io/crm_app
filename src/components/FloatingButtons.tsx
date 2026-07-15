@@ -16,6 +16,13 @@ export const FloatingButtons = () => {
     (state: RootState) => state.activeSubButtonGlobal.activeSubButtonGlobal,
   );
   const { theme } = useTheme();
+
+  const hideOn = ["add-task", "edit-task"];
+
+  if (activeSubButtonGlobal && hideOn.includes(activeSubButtonGlobal)) {
+    return;
+  }
+
   return (
     <>
       <Pressable
@@ -38,7 +45,7 @@ export const FloatingButtons = () => {
             borderRadius: borderRadius.full,
             position: "absolute",
             backgroundColor: theme.backgroundInverse,
-            bottom: insets.bottom + 16,
+            bottom: 16,
             left: 16,
             boxShadow: theme.shadow.lg,
           },
@@ -63,7 +70,7 @@ export const FloatingButtons = () => {
             borderRadius: borderRadius.full,
             position: "absolute",
             backgroundColor: theme.backgroundInverse,
-            bottom: insets.bottom + 16,
+            bottom: 16,
             right: 16,
             boxShadow: theme.shadow.lg,
           },

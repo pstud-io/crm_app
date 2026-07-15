@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 export const useCreatePinComment = () => {
   const token = useSelector((state) => state.auth.token);
   const organization_id = useSelector((state) => state.profile.organization_id);
-  const project = useSelector((state) => state.project.selectedProject);
+  const project = useSelector((state) => state.project);
   const project_id = project.id;
 
   const createPinComment = async (
@@ -14,7 +14,7 @@ export const useCreatePinComment = () => {
     title,
     x_coordinate,
     y_coordinate,
-    setLoading
+    setLoading,
   ) => {
     setLoading((prev) => ({ ...prev, creatingPinComment: true }));
     const payload = {
@@ -35,7 +35,7 @@ export const useCreatePinComment = () => {
             Authorization: `token ${token}`,
             "X-OrganizationID": organization_id,
           },
-        }
+        },
       );
 
       if (response.status >= 200 && response.status < 300) {

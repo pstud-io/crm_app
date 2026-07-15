@@ -4,7 +4,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { TasksExtraParams, useTaskEndpoints } from "./hooks/useTaskEndpoints";
+import {
+  TasksExtraParams,
+  useNewTaskEndpoints,
+} from "./hooks/useNewTaskEndpoints";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
@@ -66,12 +69,13 @@ import badgeColors from "@/components/UI/Badge/badgeColors";
 import { FilterChip } from "@/components/FilterChip";
 import { OverdueCustomRangeFilterPopover } from "./components/OverdueCustomRangeFilterPopover";
 import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
+import { TaskHistoryBottomSheet } from "./components/TaskHistoryBottomSheet";
 
 export const ListTasks = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation<UserNavigationProp>();
   const [tasksData, setTasksData] = useState<Task[]>([]);
-  const { getTasks, tasksLoading } = useTaskEndpoints();
+  const { getTasks, tasksLoading } = useNewTaskEndpoints();
   const [activeSubButton, setActiveSubButton] =
     useState<SubButtonId>("created");
 
@@ -569,6 +573,7 @@ export const ListTasks = () => {
         visible={visible}
         modalRef={modalRef}
       />
+      <TaskHistoryBottomSheet />
     </>
   );
 };

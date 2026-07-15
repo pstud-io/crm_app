@@ -43,7 +43,7 @@ const ProjectInfo = forwardRef((props, ref) => {
   const [clientDetails, setClientDetails] = useState(null);
   const stageDropdownRef = useRef(null);
 
-  const project = useSelector((state) => state.project.selectedProject);
+  const project = useSelector((state) => state.project);
   const organization_id = useSelector((state) => state.profile.organization_id);
   const profile = useSelector((state) => state.profile);
   const permissions = useSelector(

@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-element-dropdown/src/components/Dropdown/index.tsx b/node_modules/react-native-element-dropdown/src/components/Dropdown/index.tsx
+index 2a73f2f..a5faa36 100644
+--- a/node_modules/react-native-element-dropdown/src/components/Dropdown/index.tsx
++++ b/node_modules/react-native-element-dropdown/src/components/Dropdown/index.tsx
+@@ -679,6 +679,7 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
+               visible={visible}
+               supportedOrientations={['landscape', 'portrait']}
+               onRequestClose={showOrClose}
++              animationType="fade"
+             >
+               <TouchableWithoutFeedback onPress={showOrClose}>
+                 <View

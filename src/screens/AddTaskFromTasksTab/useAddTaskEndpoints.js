@@ -6,8 +6,9 @@ import { useCustomFieldEndpoints } from "../../hooks/useCustomFieldEndpoints";
 import { useGeneralEndpoints } from "../../hooks/useGeneralEndpoints";
 import Toast from "react-native-toast-message";
 import { useNavigation } from "@react-navigation/native";
+import { api } from "@/api/client";
 
-export const useTaskEndpoints = () => {
+export const useAddTaskEndpoints = () => {
   const token = useSelector((state) => state.auth.token);
   const navigation = useNavigation();
   const organization_id = useSelector((state) => state.profile.organization_id);
@@ -46,9 +47,7 @@ export const useTaskEndpoints = () => {
   };
 
   const getPresignedUrls = async (payload) => {
-    return axios.post(`${apiEndpoint}/core/presignedurls/`, payload, {
-      headers,
-    });
+    return api.post(`${apiEndpoint}/core/presignedurls/`, payload);
   };
 
   const handleFullTaskCreation = async (fk_project, payload, extras) => {
@@ -161,15 +160,9 @@ export const useTaskEndpoints = () => {
       console.log("Payload for adding task:", payload);
 
       const project_id = fk_project;
-      const response = await axios.post(
+      const response = await api.post(
         `${apiEndpoint}/crm/tasks/?project_id=${project_id}`,
         payload,
-        {
-          headers: {
-            Authorization: `token ${token}`,
-            "X-OrganizationID": organization_id,
-          },
-        },
       );
 
       if (response.status >= 200 && response.status < 300) {
@@ -204,15 +197,9 @@ export const useTaskEndpoints = () => {
             }),
           );
 
-          const taskAssetStatusResponse = await axios.post(
+          const taskAssetStatusResponse = await api.post(
             `${apiEndpoint}/crm/multitaskassets/?task_id=${task_id}`,
             folderAssetsPayload,
-            {
-              headers: {
-                Authorization: `token ${token}`,
-                "X-OrganizationID": organization_id,
-              },
-            },
           );
 
           if (

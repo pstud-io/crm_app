@@ -27,7 +27,6 @@ import SelectionPopover from "./SelectionPopover";
 import { formElementsStyles } from "../../Dropdown/formElementStyles";
 import Toast from "react-native-toast-message";
 import { DatePicker2 } from "../DatePicker2";
-import { useTaskEndpoints } from "../../../../screens/Home/Tab/Tasks/hooks/useTasksEndpoints";
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 

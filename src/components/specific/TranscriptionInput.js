@@ -8,7 +8,12 @@ import {
   Alert,
   TextInput,
 } from "react-native";
-import { useAudioPlayer } from "expo-audio";
+import {
+  AudioModule,
+  RecordingPresets,
+  useAudioRecorder,
+  setAudioModeAsync,
+} from "expo-audio";
 import { MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";
 import { SH, SW } from "../../utils";
@@ -37,9 +42,8 @@ const TranscriptionInput = ({
   hasIcon = true,
   usesBottomSheet = false,
 }) => {
-  const Audio = useAudioPlayer();
   const [isRecording, setIsRecording] = useState(false);
-  const [audioRecording, setAudioRecording] = useState(null);
+  const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [contacts, setContacts] = useState([]);
   const [contactsFetched, setContactsFetched] = useState(false);
@@ -123,42 +127,43 @@ const TranscriptionInput = ({
 
   const startRecording = async () => {
     try {
-      const permission = await Audio.requestPermissionsAsync();
+      const permission = await AudioModule.requestRecordingPermissionsAsync();
+
       if (!permission.granted) {
         Alert.alert("Permission denied", "Please allow microphone access.");
         return;
       }
 
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: true,
-        playsInSilentModeIOS: true,
+      await setAudioModeAsync({
+        allowsRecording: true,
+        playsInSilentMode: true,
       });
-      const { recording } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets.HIGH_QUALITY,
-      );
-      setAudioRecording(recording);
+
+      await recorder.prepareToRecordAsync();
+      recorder.record();
+
       setIsRecording(true);
     } catch (err) {
+      console.error(err);
       Alert.alert("Error", "Failed to start recording");
     }
   };
-
   const stopRecording = async () => {
-    setIsRecording(false);
-    if (audioRecording) {
-      try {
-        await audioRecording.stopAndUnloadAsync();
-        await Audio.setAudioModeAsync({ allowsRecordingIOS: false });
+    try {
+      setIsRecording(false);
 
-        const uri = audioRecording.getURI();
-        if (uri) {
-          await transcribeAudio(uri);
-        }
-      } catch (error) {
-        Alert.alert("Error", "Error stopping recording");
-      } finally {
-        setAudioRecording(null);
+      await recorder.stop();
+
+      await setAudioModeAsync({
+        allowsRecording: false,
+      });
+
+      if (recorder.uri) {
+        await transcribeAudio(recorder.uri);
       }
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error", "Error stopping recording");
     }
   };
 

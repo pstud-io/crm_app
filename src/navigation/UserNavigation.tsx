@@ -16,6 +16,8 @@ import { createNavigationContainerRef } from "@react-navigation/native";
 import { DashboardHeader } from "@/screens/dashboard/components/DashboardHeader";
 import { useTheme } from "@/hooks/useTheme";
 import { TasksStack } from "./TasksNavigation";
+import { CameraScreen } from "@/screens/CameraScreen";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 const UserStack = createNativeStackNavigator({
   initialRouteName: "Dashboard",
@@ -36,8 +38,18 @@ const UserStack = createNativeStackNavigator({
       },
     },
     Tasks: {
+      layout: ({ children }) => (
+        <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
+      ),
       linking: "tasks",
       screen: TasksStack,
+      options: {
+        headerShown: false,
+      },
+    },
+    CameraScreen: {
+      linking: "camera",
+      screen: CameraScreen,
       options: {
         headerShown: false,
       },

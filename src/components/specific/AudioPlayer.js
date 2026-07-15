@@ -1,70 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useAudioPlayer } from "expo-audio";
-import { ChevronUp, CloseOutlineIcon, LeftArrowOutlineIcon } from "../../svg";
-import { SH, SW } from "../../utils";
-import { StyleSheet, View } from "react-native";
-import { TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  createAudioPlayer,
+  setAudioModeAsync,
+  useAudioPlayerStatus,
+} from "expo-audio";
 
 const AudioPlayer = ({ uri }) => {
-  const [sound, setSound] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const Audio = useAudioPlayer();
+  const [player] = useState(() => createAudioPlayer({ uri }));
+  const status = useAudioPlayerStatus(player);
 
-  React.useEffect(() => {
-    loadSound();
+  useEffect(() => {
+    setAudioModeAsync({
+      playsInSilentMode: true,
+      shouldPlayInBackground: false,
+    });
 
     return () => {
-      console.log("In return of audIo useeffect");
-      if (sound) {
-        console.log("In if statement of audIo useeffect");
-        sound.unloadAsync();
-      }
+      player.remove();
     };
-  }, [sound]);
-
-  const loadSound = async () => {
-    if (sound) return;
-
-    const { sound: newSound } = await Audio.Sound.createAsync({ uri });
-    setSound(newSound);
-
-    newSound.setOnPlaybackStatusUpdate((status) => {
-      if (status.didJustFinish && !status.isLooping) {
-        // Defer position reset to next play call
-        setIsPlaying(false);
-      }
-    });
-  };
+  }, [player]);
 
   const togglePlayPause = async () => {
-    if (!sound) {
-      await loadSound();
+    if (status.playing) {
+      player.pause();
       return;
     }
 
-    const status = await sound.getStatusAsync();
-
-    if (status.isPlaying) {
-      await sound.pauseAsync();
-      setIsPlaying(false);
-    } else {
-      if (
-        status.didJustFinish ||
-        status.positionMillis === status.durationMillis
-      ) {
-        await sound.setPositionAsync(0); // Reset only once
-      }
-      await sound.playAsync();
-      setIsPlaying(true);
+    if (status.duration > 0 && status.currentTime >= status.duration) {
+      player.seekTo(0);
     }
+
+    player.play();
   };
 
   return (
     <View style={styles.audioPlayer}>
       <TouchableOpacity onPress={togglePlayPause} style={styles.audioButton}>
         <MaterialIcons
-          name={isPlaying ? "pause-circle-filled" : "play-circle-filled"}
+          name={status.playing ? "pause-circle-filled" : "play-circle-filled"}
           size={64}
           color="white"
         />

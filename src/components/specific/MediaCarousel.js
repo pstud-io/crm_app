@@ -1,6 +1,6 @@
 import { useState, useRef, forwardRef } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
-// import Carousel from "react-native-snap-carousel";
+import Carousel from "react-native-snap-carousel";
 import { ChevronUp, CloseOutlineIcon } from "../../svg";
 import { SW } from "../../utils";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -111,33 +111,32 @@ const MediaCarousel = forwardRef(
                 </TouchableOpacity>
               )}
             {isAnimated && (
-              <></>
-              // <Carousel
-              //   ref={carouselRef}
-              //   data={patchedMediaFiles}
-              //   renderItem={({ item, index }) => {
-              //     if (index === 0) return <View style={{ flex: 1 }} />;
-              //     return (
-              //       <RenderCarouselItem
-              //         item={item}
-              //         setShowActionButtonsNCS={setShowActionButtonsNCS}
-              //         setShowActionButtonsVCS={setShowActionButtonsVCS}
-              //         activeIndex={currentIndex - 1}
-              //         itemIndex={index - 1}
-              //         pdfRef={pdfRef}
-              //       />
-              //     );
-              //   }}
-              //   sliderWidth={SW(300)}
-              //   itemWidth={screenWidth}
-              //   itemHeight={screenHeight}
-              //   firstItem={initialIndex + 1}
-              //   enableMomentum={false}
-              //   scrollEnabled={false}
-              //   onBeforeSnapToItem={async (index) => {
-              //     setCurrentIndex(index);
-              //   }}
-              // />
+              <Carousel
+                ref={carouselRef}
+                data={patchedMediaFiles}
+                renderItem={({ item, index }) => {
+                  if (index === 0) return <View style={{ flex: 1 }} />;
+                  return (
+                    <RenderCarouselItem
+                      item={item}
+                      setShowActionButtonsNCS={setShowActionButtonsNCS}
+                      setShowActionButtonsVCS={setShowActionButtonsVCS}
+                      activeIndex={currentIndex - 1}
+                      itemIndex={index - 1}
+                      pdfRef={pdfRef}
+                    />
+                  );
+                }}
+                sliderWidth={SW(300)}
+                itemWidth={screenWidth}
+                itemHeight={screenHeight}
+                firstItem={initialIndex + 1}
+                enableMomentum={false}
+                scrollEnabled={false}
+                onBeforeSnapToItem={async (index) => {
+                  setCurrentIndex(index);
+                }}
+              />
             )}
             {showActionButtonsNCS && showActionButtonsVCS && (
               <TouchableOpacity

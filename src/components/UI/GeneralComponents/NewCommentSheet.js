@@ -24,8 +24,8 @@ import {
   newCommentBottomSheetRef,
   closeNewCommentBottomSheet,
 } from "../../common/NewCommentBottomSheetService";
-import { Spacing, TranscriptionInput } from "../..";
 import { TranscriptionInput } from "@/components/specific";
+import { Spacing } from "@/components/common";
 import { BottomButton } from "./BottomButton";
 import { primaryColors } from "../DesignSystem/colorPalette";
 import { formElementsStyles } from "../Dropdown/formElementStyles";

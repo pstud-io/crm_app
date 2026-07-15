@@ -14,6 +14,7 @@ import { saveProfile } from "@/store/slices/profileSlice/profileSlice";
 import { saveToken } from "@/store/slices/authSlice/authSlice";
 import { ProfileSliceState } from "@/store/slices/profileSlice/profileSliceTypes";
 import { setSelectedProject } from "@/store/slices/projectSlice/projectSlice";
+import { savePermissions } from "@/store/slices/permissionSlice";
 
 export const useSignInEndpoints = () => {
   const [signingIn, setSigningIn] = useState(false);
@@ -56,6 +57,7 @@ export const useSignInEndpoints = () => {
       setRole(Role.USER);
       saveToken(token, dispatch);
       saveProfile(profile, dispatch);
+      dispatch(savePermissions(permissions));
       dispatch(
         setSelectedProject({
           id: "all_projects",

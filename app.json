@@ -59,7 +59,13 @@
       "@sentry/react-native",
       "@react-native-community/datetimepicker",
       "expo-image",
-      "expo-video",
+      [
+        "expo-video",
+        {
+          "supportsBackgroundPlayback": true,
+          "supportsPictureInPicture": true
+        }
+      ],
       [
         "expo-camera",
         {

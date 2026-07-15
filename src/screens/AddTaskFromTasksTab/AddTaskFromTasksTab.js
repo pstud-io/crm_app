@@ -27,7 +27,7 @@ import { MediaCarousel, TranscriptionInput } from "../../components";
 import Toast from "react-native-toast-message";
 import { InputTextStyles } from "../../styles/InputTextStyles";
 import { Dropdown } from "react-native-element-dropdown";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import apiEndpoint from "../../config/apiConfig";
 import { Input } from "react-native-elements";
@@ -56,19 +56,21 @@ import { CustomFieldsRenderer } from "../../components/UI/GeneralComponents/Cust
 import { useCustomFieldEndpoints } from "../../hooks/useCustomFieldEndpoints";
 import { DatePicker } from "../../components/UI/GeneralComponents/DatePicker";
 import { TimePicker } from "../../components/UI/GeneralComponents/TimePicker";
-import { useTaskEndpoints } from "./useAddTaskEndpoints";
+import { useAddTaskEndpoints } from "./useAddTaskEndpoints";
 import { SlowNetworkCard } from "../../components/UI/GeneralComponents/SlowNetworkCard";
 import { useCheckNetworkPerformance } from "@/hooks/useCheckNetworkPerformance";
+import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
+import { api } from "@/api/client";
 const IMAGE_SIZE = SW(100);
 
 const AddTaskFromTasksTab = ({ route }) => {
+  const dispatch = useDispatch();
   const { voiceInput, onRefresh, task_type, fk_checkpoint } = route.params;
   console.log("Route is", route);
   const { showActionSheetWithOptions } = useActionSheet();
-  const token = useSelector((state) => state.auth.token);
-  const selectedProject = useSelector((state) => state.project.selectedProject);
+  const selectedProject = useSelector((state) => state.project);
   const organization_id = useSelector((state) => state.profile.organization_id);
-  const { handleAddTask } = useTaskEndpoints();
+  const { handleAddTask } = useAddTaskEndpoints();
   const [selectedMedia, setSelectedMedia] = useState([]);
   const {
     latency,
@@ -102,6 +104,12 @@ const AddTaskFromTasksTab = ({ route }) => {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const mediaCarouselRef = useRef(null);
 
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(setActiveSubButtonGlobal("add-task"));
+    }, []),
+  );
+
   const [loading, setLoading] = useState({
     AddTaskFromTasksTab: false,
     getCCForDropdown: false,
@@ -117,14 +125,26 @@ const AddTaskFromTasksTab = ({ route }) => {
 
   useFocusEffect(
     useCallback(() => {
-      if (token) {
-        getCCForDropdown();
-        getCustomFields(() => {}, "task", setCustomFields);
-      }
-      if (selectedProject.id === "all_projects") {
-        getAllProjects(setLoading, setAllProjects);
-      }
-    }, [token]),
+      const fetchData = async () => {
+        console.log("In fetch data of add task");
+        const promises = [
+          getCCForDropdown(),
+          getCustomFields(() => {}, "task", setCustomFields),
+        ];
+
+        if (selectedProject.id === "all_projects") {
+          promises.push(getAllProjects(setLoading, setAllProjects));
+        }
+
+        try {
+          await Promise.all(promises);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+
+      fetchData();
+    }, [selectedProject.id]),
   );
   // useFocusEffect(
   //   useCallback(() => {
@@ -299,16 +319,10 @@ const AddTaskFromTasksTab = ({ route }) => {
 
   const getCCForDropdown = async () => {
     setLoading({ ...loading, getCCForDropdown: true });
-    let data = [];
+    console.log("In get cc for dripdown");
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `${apiEndpoint}/core/organization/contacts/lite/`,
-        {
-          headers: {
-            Authorization: `token ${token}`,
-            "X-OrganizationID": organization_id,
-          },
-        },
       );
 
       //console.log("response:", response.data.result);

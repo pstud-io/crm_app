@@ -7,12 +7,12 @@ export const usePaymentSummaryEndpoints = () => {
   const token = useSelector((state) => state.auth.token);
   const organization_id = useSelector((state) => state.profile.organization_id);
   const organization_contact_id = useSelector(
-    (state) => state.profile.organization_contact_id
+    (state) => state.profile.organization_contact_id,
   );
-  const selectedProject = useSelector((state) => state.project.selectedProject);
+  const selectedProject = useSelector((state) => state.project);
 
   const getOrganizationPaymentSummary = async (
-    organizationContactId = null
+    organizationContactId = null,
   ) => {
     try {
       const params = {};
@@ -29,7 +29,7 @@ export const usePaymentSummaryEndpoints = () => {
             "X-OrganizationID": organization_id,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       if (response.status >= 200 && response.status < 300) {
@@ -49,7 +49,7 @@ export const usePaymentSummaryEndpoints = () => {
 
   const getProjectPaymentSummary = async (
     projectId,
-    organizationContactId = null
+    organizationContactId = null,
   ) => {
     try {
       const params = {
@@ -69,7 +69,7 @@ export const usePaymentSummaryEndpoints = () => {
             "X-OrganizationID": organization_id,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       if (response.status >= 200 && response.status < 300) {

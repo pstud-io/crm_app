@@ -28,6 +28,8 @@ import { loadAuth } from "@/utils/authFunctions";
 import { loadProfile } from "@/store/slices/profileSlice/profileSlice";
 import { useDispatch } from "react-redux";
 import { setSelectedProject } from "@/store/slices/projectSlice/projectSlice";
+import { loadToken } from "@/store/slices/authSlice/authSlice";
+import { loadPermissions } from "@/store/slices/permissionSlice";
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const systemTheme = useColorScheme();
@@ -44,6 +46,8 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
         loadFonts(),
         loadAuth(setRole, setAuthLoading),
         loadProfile(dispatch),
+        loadToken(dispatch),
+        loadPermissions(dispatch),
         dispatch(
           setSelectedProject({
             id: "all_projects",

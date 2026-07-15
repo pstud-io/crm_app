@@ -18,14 +18,14 @@ import {
   FlatList,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Input } from "react-native-elements";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Toast from "react-native-toast-message";
 import axios from "axios";
 
 // --- HOOKS & HELPERS ---
-import { useTaskEndpoints } from "./useAddTaskEndpoints";
+import { useAddTaskEndpoints } from "./useAddTaskEndpoints";
 import { useCustomFieldEndpoints } from "../../hooks/useCustomFieldEndpoints";
 import apiEndpoint from "../../config/apiConfig";
 
@@ -52,9 +52,11 @@ import { useCameraScreen } from "../../hooks/useCameraScreen";
 import { RenderMedia } from "../../components/UI/GeneralComponents/RenderMedia";
 import { RenderMediaItem } from "../../components/UI/GeneralComponents/RenderMediaItem";
 import { useGeneralEndpoints } from "../../hooks/useGeneralEndpoints";
+import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
 
 const EditTask = ({ navigation, route }) => {
   const { task, onRefresh } = route.params;
+  const dispatch = useDispatch();
   console.log("Task to edit is ", task);
   const token = useSelector((state) => state.auth.token);
   const [selectedMedia, setSelectedMedia] = useState([]);
@@ -63,7 +65,7 @@ const EditTask = ({ navigation, route }) => {
     setSelectedMedia,
   });
   const { uploadMedia } = useGeneralEndpoints();
-  const { getContacts } = useTaskEndpoints();
+  const { getContacts } = useAddTaskEndpoints();
   const {
     getCustomFields,
     saveCustomFieldItemValue,
@@ -166,6 +168,12 @@ const EditTask = ({ navigation, route }) => {
       };
       fetchData();
     }, [task]),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(setActiveSubButtonGlobal("add-task"));
+    }, []),
   );
 
   const hasChanges = () => {

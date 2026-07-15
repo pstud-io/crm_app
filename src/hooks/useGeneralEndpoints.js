@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Alert } from "react-native";
 import Toast from "react-native-toast-message";
 import { generateTimestampString } from "../utils";
-import * as FileSystem from "expo-file-system";
+import * as FileSystem from "expo-file-system/legacy";
 import { useNavigation } from "@react-navigation/native";
+import { api } from "@/api/client";
 
 export const useGeneralEndpoints = () => {
   const token = useSelector((state) => state.auth.token);
   const organization_id = useSelector((state) => state.profile.organization_id);
-  const selectedProject = useSelector((state) => state.project.selectedProject);
+  const selectedProject = useSelector((state) => state.project);
   const profile = useSelector((state) => state.profile);
   const navigation = useNavigation();
   const organization_contact_id = useSelector(
@@ -27,14 +28,8 @@ export const useGeneralEndpoints = () => {
     console.log("in getAllProjects");
     setLoading((prev) => ({ ...prev, fetchingProjects: true }));
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `${apiEndpoint}/customers/project/lite/?organization_contact_id=${organization_contact_id}`,
-        {
-          headers: {
-            Authorization: `token ${token}`,
-            "X-OrganizationID": organization_id,
-          },
-        },
       );
 
       if (response.status >= 200 && response.status < 300) {
@@ -167,17 +162,11 @@ export const useGeneralEndpoints = () => {
       progress = "failed after mediauploadrequests";
 
       // Step 1: Presigned URLs
-      const presignedResponse = await axios.post(
+      const presignedResponse = await api.post(
         `${apiEndpoint}/core/presignedurls/`,
         {
           bucket: "ps-organization-assets",
           data: mediaUploadRequests,
-        },
-        {
-          headers: {
-            Authorization: `token ${token}`,
-            "X-OrganizationID": organization_id,
-          },
         },
       );
 
@@ -198,15 +187,9 @@ export const useGeneralEndpoints = () => {
         progress = `failed after upload with concurrency, ${uploadResponses[0]?.url}`;
 
         // Step 3: Add assets in core/assets
-        const assetResponse = await axios.post(
+        const assetResponse = await api.post(
           `${apiEndpoint}/core/assets/`,
           uploadResponses,
-          {
-            headers: {
-              Authorization: `token ${token}`,
-              "X-OrganizationID": organization_id,
-            },
-          },
         );
         if (assetResponse.status >= 200 && assetResponse.status < 300) {
           console.log("This is the asset response", assetResponse);

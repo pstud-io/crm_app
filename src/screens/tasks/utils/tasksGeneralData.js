@@ -139,8 +139,8 @@ export const initialCreatedFilterState = {
 };
 
 export const createdSortMethods = [
-  { id: "recent", value: "Recent" },
   { id: "oldest", value: "Oldest" },
+  { id: "recent", value: "Recent" },
 ];
 
 export const initialCreatedSortState = createdSortMethods[0].id;

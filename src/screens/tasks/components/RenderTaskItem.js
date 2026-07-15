@@ -12,28 +12,21 @@ import {
   getTaskTypeColor,
   getUpdatedStatus,
 } from "../utils/taskFunctions";
+import { primaryColors } from "@/components/UI/DesignSystem/colorPalette";
+
+import { Colors, SH, SW, SF, formatAdjustedDate, formatDate } from "@/utils";
 import { useSelector } from "react-redux";
-import { formatAdjustedDate, formatDate } from "@/utils/GeneralFunctions";
 import { body } from "@/design/typography";
-// import { Badge } from "@/components/UI/Badge/Badge";
-import EditIcon from "assets/icons/EditIcon";
-import History from "assets/icons/HistoryIcon";
-
+import { Badge } from "@/components/UI/Badge/Badge";
+import badgeColors from "@/components/UI/Badge/badgeColors";
+import { EditOutline, History } from "@/svg";
 import Popover from "react-native-popover-view";
+import { PopoverMenu } from "@/components/UI/GeneralComponents/PopoverMenu";
+import { useTaskUpdateOptions } from "../hooks/useTaskUpdateOptions";
+import { openTaskHistoryBottomSheet } from "../utils/taskHistoryBottomSheetService";
+import { UserCustomFieldsModal } from "@/components/UI/GeneralComponents/PopUps/UserCustomFieldsPopUp";
 import Toast from "react-native-toast-message";
-import { primaryColors } from "@/design/colors";
-
-const SW = (x) => {
-  return x;
-};
-
-const SH = (x) => {
-  return x;
-};
-
-const SF = (x) => {
-  return x;
-};
+import { useTaskEndpoints } from "../hooks/useTasksEndpoints";
 
 export const RenderTaskItem = ({
   task,
@@ -79,6 +72,21 @@ export const RenderTaskItem = ({
     pendingAction: null,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { updateCustomFieldInPopup } = useTaskEndpoints();
+
+  const { taskUpdateOptions } = useTaskUpdateOptions({
+    task,
+    onShowUserFields: (fields, action) => {
+      console.log("OPEN MODAL");
+      setUserFieldsModal({
+        visible: true,
+        fields,
+        pendingAction: action,
+      });
+    },
+    onRefresh: onRefresh,
+    popoverMenuRef: popoverMenuRef,
+  });
 
   const updatedStatus = getUpdatedStatus(status, due_date, task_type, stage);
   const taskTypeColor = getTaskTypeColor(task_type);
@@ -127,28 +135,10 @@ export const RenderTaskItem = ({
       disabled={!hasActionButtons}
       onPress={() => {
         if (fromOverview) {
-          navigation.push("TabNavigator", {
-            screen: "MoreStack",
-            params: {
-              screen: "TasksStack",
-              params: {
-                screen: "TaskDetails",
-                params: { task },
-              },
-            },
-          });
+          navigation.push("TaskDetails", { task });
         }
         if (!fromOverview) {
-          navigation.push("TabNavigator", {
-            screen: "MoreStack",
-            params: {
-              screen: "TasksStack",
-              params: {
-                screen: "TaskDetails",
-                params: { task },
-              },
-            },
-          });
+          navigation.push("TaskDetails", { task });
         }
       }}
       activeOpacity={0.9}
@@ -210,42 +200,24 @@ export const RenderTaskItem = ({
               <History
                 width={SH(24)}
                 height={SH(24)}
-                fill={primaryColors.brand[900]}
+                fill={primaryColors.brand[1000]}
               />
             </TouchableOpacity>
             {!hasActionButtons && (
               <TouchableOpacity
                 onPress={() => {
                   if (fromOverview) {
-                    navigation.push("TabNavigator", {
-                      screen: "MoreStack",
-                      params: {
-                        screen: "TasksStack",
-                        params: {
-                          screen: "EditTask",
-                          params: { task, onRefresh },
-                        },
-                      },
-                    });
+                    navigation.push("EditTask", { task, onRefresh });
                   }
                   if (!fromOverview) {
-                    navigation.push("TabNavigator", {
-                      screen: "MoreStack",
-                      params: {
-                        screen: "TasksStack",
-                        params: {
-                          screen: "EditTask",
-                          params: { task, onRefresh },
-                        },
-                      },
-                    });
+                    navigation.push("EditTask", { task, onRefresh });
                   }
                 }}
               >
-                <EditIcon
+                <EditOutline
                   width={SH(20)}
                   height={SH(20)}
-                  fill={primaryColors.brand[900]}
+                  fill={primaryColors.brand[1000]}
                   strokeWidth={0}
                 />
               </TouchableOpacity>
@@ -268,7 +240,7 @@ export const RenderTaskItem = ({
                 <Text
                   style={{
                     ...body.sm.semiBold,
-                    color: primaryColors.brand[900],
+                    color: primaryColors.brand[1000],
                   }}
                   numberOfLines={1}
                   ellipsizeMode="tail"
@@ -294,7 +266,7 @@ export const RenderTaskItem = ({
               </Text>
             </View>
           </Popover>
-          {/* <Badge
+          <Badge
             text={getTaskDisplayStatus(
               updatedStatus,
               due_date,
@@ -302,13 +274,13 @@ export const RenderTaskItem = ({
             )}
             color={getStatusColor(updatedStatus, due_date, completion_date)}
             size={"md"}
-          /> */}
+          />
         </View>
         {project.id === "all_projects" && project_details?.project_name && (
           <Text
             style={{
               ...body.sm.regular,
-              color: primaryColors.brand[900],
+              color: primaryColors.brand[1000],
             }}
           >
             {project_details.project_name}
@@ -384,7 +356,7 @@ export const RenderTaskItem = ({
             <Text
               style={{
                 ...body.sm.semiBold,
-                color: primaryColors.brand[900],
+                color: primaryColors.brand[1000],
               }}
             >
               {creator_contact_details?.name || "-"}
@@ -421,7 +393,7 @@ export const RenderTaskItem = ({
             <Text
               style={{
                 ...body.sm.semiBold,
-                color: primaryColors.brand[900],
+                color: primaryColors.brand[1000],
               }}
             >
               {task?.organization_contact_details?.owner_details?.name}
@@ -475,7 +447,7 @@ export const RenderTaskItem = ({
             <Text
               style={{
                 ...body.sm.semiBold,
-                color: primaryColors.brand[900],
+                color: primaryColors.brand[1000],
               }}
               numberOfLines={1}
               ellipsizeMode="middle"
@@ -515,7 +487,7 @@ export const RenderTaskItem = ({
             <Text
               style={{
                 ...body.sm.semiBold,
-                color: primaryColors.brand[900],
+                color: primaryColors.brand[1000],
               }}
             >
               {task.total_hours_in_progress
@@ -554,7 +526,7 @@ export const RenderTaskItem = ({
         <Text
           style={{
             ...body.xs.semiBold,
-            color: primaryColors.brand[900],
+            color: primaryColors.brand[1000],
           }}
         >
           {formatDate(task.created_on)}
@@ -590,41 +562,23 @@ export const RenderTaskItem = ({
                   borderRadius: SW(8),
                   flexGrow: 1,
                   borderWidth: SW(1),
-                  borderColor: primaryColors.brand[900],
+                  borderColor: primaryColors.brand[1000],
                   backgroundColor: primaryColors.gray[25],
                 }}
                 activeOpacity={0.9}
                 onPress={() => {
                   if (fromOverview) {
-                    navigation.push("TabNavigator", {
-                      screen: "MoreStack",
-                      params: {
-                        screen: "TasksStack",
-                        params: {
-                          screen: "EditTask",
-                          params: { task, onRefresh },
-                        },
-                      },
-                    });
+                    navigation.push("EditTask", { task, onRefresh });
                   }
                   if (!fromOverview) {
-                    navigation.push("TabNavigator", {
-                      screen: "MoreStack",
-                      params: {
-                        screen: "TasksStack",
-                        params: {
-                          screen: "EditTask",
-                          params: { task, onRefresh },
-                        },
-                      },
-                    });
+                    navigation.push("EditTask", { task, onRefresh });
                   }
                 }}
               >
                 <Text
                   style={{
                     ...body.sm.medium,
-                    color: primaryColors.brand[900],
+                    color: primaryColors.brand[1000],
                   }}
                 >
                   Edit Task
@@ -633,37 +587,37 @@ export const RenderTaskItem = ({
             )}
             {canUpdateTask && (
               <>
-                {/* <PopoverMenu
+                <PopoverMenu
                   options={taskUpdateOptions}
                   id={task.id}
                   key={id}
                   popoverMenuRef={popoverMenuRef}
-                  from={ */}
-                <TouchableOpacity
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingHorizontal: SW(12),
-                    paddingVertical: SH(8),
-                    borderRadius: SW(8),
-                    flexGrow: 1,
-                    backgroundColor: primaryColors.brand[900],
-                  }}
-                  activeOpacity={0.9}
-                >
-                  <Text
-                    style={{
-                      ...body.sm.medium,
-                      color: primaryColors.gray[25],
-                    }}
-                  >
-                    Update Task
-                  </Text>
-                </TouchableOpacity>
-                {/* } */}
-                {/* /> */}
+                  from={
+                    <TouchableOpacity
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        paddingHorizontal: SW(12),
+                        paddingVertical: SH(8),
+                        borderRadius: SW(8),
+                        flexGrow: 1,
+                        backgroundColor: primaryColors.brand[1000],
+                      }}
+                      activeOpacity={0.9}
+                    >
+                      <Text
+                        style={{
+                          ...body.sm.medium,
+                          color: primaryColors.gray[25],
+                        }}
+                      >
+                        Update Task
+                      </Text>
+                    </TouchableOpacity>
+                  }
+                />
               </>
             )}
           </View>
@@ -693,7 +647,7 @@ export const RenderTaskItem = ({
             <Text
               style={{
                 ...body.sm.semiBold,
-                color: primaryColors.brand[900],
+                color: primaryColors.brand[1000],
               }}
               numberOfLines={expanded ? undefined : 2}
               ellipsizeMode="tail"
@@ -707,7 +661,7 @@ export const RenderTaskItem = ({
           </View>
         </>
       )}
-      {/* <UserCustomFieldsModal
+      <UserCustomFieldsModal
         visible={userFieldsModal.visible}
         fields={userFieldsModal.fields}
         onClose={() => {
@@ -720,7 +674,7 @@ export const RenderTaskItem = ({
         }}
         onConfirm={handleUserFieldsSubmit}
         loading={isSubmitting}
-      /> */}
+      />
     </TouchableOpacity>
   );
 };
@@ -730,7 +684,7 @@ const styles = {
     width: SW(18),
     height: SW(18),
     borderRadius: SW(9),
-    backgroundColor: primaryColors.brand[900],
+    backgroundColor: Colors.primary,
     justifyContent: "center",
     alignItems: "center",
     marginRight: SW(6),
@@ -738,7 +692,7 @@ const styles = {
   avatarText: {
     fontFamily: "Inter-Bold",
     fontSize: SF(10),
-    color: "white",
+    color: Colors.white_text_color,
   },
   popoverContent: {
     display: "flex",
@@ -766,7 +720,7 @@ const styles = {
   ccName: {
     fontFamily: "Inter-Medium",
     fontSize: SF(14),
-    color: primaryColors.gray[200],
+    color: Colors.gray_text_color,
   },
   separator: {
     height: 12,
@@ -774,6 +728,6 @@ const styles = {
   emptyText: {
     fontFamily: "Inter-Medium",
     fontSize: SF(14),
-    color: primaryColors.gray[200],
+    color: Colors.gray_text_color,
   },
 };

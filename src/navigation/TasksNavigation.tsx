@@ -14,6 +14,8 @@ import {
 import { ListTasks } from "@/screens/tasks/ListTasks";
 import { TasksHeader } from "@/screens/tasks/components/TasksHeader";
 import { AddTaskFromTasksTab } from "@/screens/AddTaskFromTasksTab";
+import EditTask from "@/screens/AddTaskFromTasksTab/EditTask";
+import { TaskDetails } from "@/screens/TaskDetails";
 
 export const TasksStack = createNativeStackNavigator({
   initialRouteName: "ListTasks",
@@ -33,6 +35,22 @@ export const TasksStack = createNativeStackNavigator({
     AddTask: {
       linking: "add-task",
       screen: AddTaskFromTasksTab,
+      options: {
+        headerShown: true,
+        header: (props: NativeStackHeaderProps) => <TasksHeader {...props} />,
+      },
+    },
+    EditTask: {
+      linking: "edit-task",
+      screen: EditTask,
+      options: {
+        headerShown: true,
+        header: (props: NativeStackHeaderProps) => <TasksHeader {...props} />,
+      },
+    },
+    TaskDetails: {
+      linking: "task-details",
+      screen: TaskDetails,
       options: {
         headerShown: true,
         header: (props: NativeStackHeaderProps) => <TasksHeader {...props} />,

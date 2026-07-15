@@ -22,6 +22,7 @@ import Pdf from "react-native-pdf";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { MediaCarousel } from "../../components";
 import { FlatList } from "react-native";
+import { api } from "@/api/client";
 
 const IMAGE_SIZE = 75;
 
@@ -144,17 +145,11 @@ const ProgressMedia = ({ activity, item }) => {
       }));
 
       // Step 1: Presigned URLs
-      const presignedResponse = await axios.post(
+      const presignedResponse = await api.post(
         `${apiEndpoint}/core/presignedurls/`,
         {
           bucket: "ps-organization-assets",
           data: mediaUploadRequests,
-        },
-        {
-          headers: {
-            Authorization: `token ${token}`,
-            "X-OrganizationID": organization_id,
-          },
         },
       );
 

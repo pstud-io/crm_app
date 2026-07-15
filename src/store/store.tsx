@@ -6,6 +6,7 @@ import activeSubButtonGlobalReducer from "./slices/activeSubButtonGlobal";
 import networkCheckGlobal from "./slices/networkCheckGlobal";
 import syncDataCheckGlobal from "./slices/syncDataCheckGlobal";
 import isSyncing from "./slices/isSyncing";
+import { permissionsSlice } from "./slices/permissionSlice";
 export const store = configureStore({
   reducer: {
     profile: profileSlice.reducer,
@@ -15,6 +16,7 @@ export const store = configureStore({
     networkCheckGlobal: networkCheckGlobal,
     syncDataCheckGlobal: syncDataCheckGlobal,
     isSyncing: isSyncing,
+    permissions: permissionsSlice.reducer,
   },
 });
 

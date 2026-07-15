@@ -1,18 +1,18 @@
 import { ActionSheetIOS, Platform, Alert } from "react-native";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import * as ImagePicker from "expo-image-picker";
-import { useNavigation } from "@react-navigation/native";
-import { Audio } from "expo-av";
+import { StackActions, useNavigation } from "@react-navigation/native";
 import * as DocumentPicker from "expo-document-picker";
-
+import { AudioModule, RecordingPresets, setAudioModeAsync } from "expo-audio";
+import { userNavigationRef } from "@/navigation/UserNavigation";
 export const useCameraScreen = ({
   setSelectedMedia,
   maxMediaLength = undefined,
 }) => {
   const { showActionSheetWithOptions } = useActionSheet();
   const navigation = useNavigation();
-
   const handleSelectMedia = async () => {
+    console.log("Hit hadnle select media");
     try {
       const options = [
         "Cancel",
@@ -44,8 +44,9 @@ export const useCameraScreen = ({
           handleSelection,
         );
       } else {
+        console.log("In android block");
         showActionSheetWithOptions(
-          { options, cancelButtonIndex, useModal: true },
+          { options, cancelButtonIndex, useModal: false },
           handleSelection,
         );
       }
@@ -116,49 +117,53 @@ export const useCameraScreen = ({
 
   const handleCaptureMedia = async (mode) => {
     // Navigate to CameraScreen
-    navigation.push("CameraScreen", {
-      onSave: (mediaArray) => {
-        setSelectedMedia((prev) => [...prev, ...mediaArray]);
-      },
-      mode: mode,
-      maxMediaLength: maxMediaLength,
-    });
+    userNavigationRef.dispatch(
+      StackActions.push("CameraScreen", {
+        onSave: (mediaArray) => {
+          console.log("Run on save from handle capture media");
+          setSelectedMedia((prev) => [...prev, ...mediaArray]);
+        },
+        mode,
+        maxMediaLength,
+      }),
+    );
   };
 
-  let recording = null;
   const handleRecordAudio = async () => {
+    const recorder = new AudioModule.AudioRecorder(
+      RecordingPresets.HIGH_QUALITY,
+    );
     try {
-      const permission = await Audio.requestPermissionsAsync();
-      if (!permission.granted) {
+      const status = await AudioModule.requestRecordingPermissionsAsync();
+
+      if (!status.granted) {
         Alert.alert("Permission Denied", "Microphone permission is required.");
         return;
       }
 
-      // ✅ Set the audio mode for iOS (allows recording, even in silent mode)
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: true,
-        playsInSilentModeIOS: true,
+      await setAudioModeAsync({
+        allowsRecording: true,
+        playsInSilentMode: true,
       });
 
-      const { recording: newRecording } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets.HIGH_QUALITY,
-      );
+      await recorder.prepareToRecordAsync();
 
-      recording = newRecording;
+      await recorder.record();
 
-      Alert.alert("Recording...", "Recording started. Press OK to stop.", [
+      Alert.alert("Recording...", "Recording started.", [
         {
           text: "Stop Recording",
           onPress: async () => {
-            await recording.stopAndUnloadAsync();
-            const uri = recording.getURI();
+            await recorder.stop();
+
+            const uri = recorder.uri;
+
             if (uri) {
-              const name = `AUDIO_${new Date().getTime()}.m4a`;
-              setSelectedMedia((prevMedia) => [
-                ...prevMedia,
+              setSelectedMedia((prev) => [
+                ...prev,
                 {
                   uri,
-                  name,
+                  name: `AUDIO_${Date.now()}.m4a`,
                   type: "audio/m4a",
                   size: null,
                 },
@@ -167,9 +172,9 @@ export const useCameraScreen = ({
           },
         },
       ]);
-    } catch (err) {
-      console.error("Audio recording error:", err.message);
-      Alert.alert("Error", "An error occurred while recording audio.");
+    } catch (e) {
+      console.error(e);
+      Alert.alert("Error", "Failed to record audio.");
     }
   };
 

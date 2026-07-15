@@ -10,6 +10,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { FloatingButtons } from "@/components/FloatingButtons";
 import { Provider } from "react-redux";
 import { store } from "@/store/store";
+import { ActionSheetProvider } from "@expo/react-native-action-sheet";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import VideoScreen from "@/components/VideoScreen";
 SplashScreen.preventAutoHideAsync();
 
 SplashScreen.setOptions({
@@ -44,15 +48,19 @@ export default Sentry.wrap(function App() {
     <SafeAreaProvider style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
         <Provider store={store}>
-          <QueryProvider>
-            <AuthProvider>
-              <ThemeProvider>
-                <Navigation />
-                {/* <FirstComponent /> */}
-                <FloatingButtons />
-              </ThemeProvider>
-            </AuthProvider>
-          </QueryProvider>
+          <ActionSheetProvider>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <QueryProvider>
+                <AuthProvider>
+                  <ThemeProvider>
+                    <Navigation />
+                    {/* <FirstComponent /> */}
+                    <FloatingButtons />
+                  </ThemeProvider>
+                </AuthProvider>
+              </QueryProvider>
+            </GestureHandlerRootView>
+          </ActionSheetProvider>
         </Provider>
       </SafeAreaView>
     </SafeAreaProvider>

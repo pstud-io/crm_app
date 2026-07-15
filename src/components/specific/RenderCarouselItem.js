@@ -1,7 +1,6 @@
 import { Image, StyleSheet, View } from "react-native";
 import Pdf from "react-native-pdf";
 import AudioPlayer from "./AudioPlayer";
-import { Video } from "expo-video";
 import { TouchableOpacity } from "react-native";
 import { useImagePinCoordinates } from "../../hooks/useImagePinCoordinates";
 import { useSelector } from "react-redux";
@@ -17,6 +16,7 @@ import { Colors, SH, SW } from "../../utils";
 import { PinCommentsOutline } from "../../svg";
 import PDFWithPins from "../UI/GeneralComponents/PDFWithPins";
 import ZoomableImageWithPins from "../UI/GeneralComponents/ZoomableImageWithPins";
+import VideoScreen from "../VideoScreen";
 const RenderCarouselItem = ({
   item,
   setShowActionButtonsNCS,
@@ -34,6 +34,7 @@ const RenderCarouselItem = ({
   const url =
     item.asset_details?.url || item?.url || item?.uri || item.asset_info?.url;
   const fileExtension = fileName.split(".").pop()?.toLowerCase();
+  console.log("Item is", item);
 
   function getFileType(mimeType) {
     if (!mimeType || typeof mimeType !== "string") return "unknown";
@@ -68,7 +69,7 @@ const RenderCarouselItem = ({
 
   const [activeChain, setActiveChain] = useState(null);
 
-  const project = useSelector((state) => state.project.selectedProject);
+  const project = useSelector((state) => state.project);
   const newPinCommentBottomSheetRef = useRef(null);
   const viewPinCommentBottomSheetRef = useRef(null);
   const urlRefForMedia = useRef(null);
@@ -131,12 +132,7 @@ const RenderCarouselItem = ({
     <>
       <View style={styles.mediaContainer}>
         {isVideo ? (
-          <Video
-            source={{ uri: url }}
-            style={styles.media}
-            useNativeControls
-            resizeMode="contain"
-          />
+          <VideoScreen uri={url} />
         ) : isPDF ? (
           !item.fk_asset && !item.id ? (
             <Pdf
