@@ -152,15 +152,3 @@ export const PasswordForm = () => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  logo: { height: 45, width: 200, marginBottom: 20 },
-  textInput: {
-    fontFamily: "Inter-Medium",
-    fontSize: 15,
-    includeFontPadding: false,
-    color: "#000fff",
-    paddingLeft: 4,
-    backgroundColor: "#fff000",
-  },
-});

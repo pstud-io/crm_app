@@ -396,14 +396,7 @@ export const OTPForm = () => {
 
 const styles = StyleSheet.create({
   logo: { height: 45, width: 200, marginBottom: 20 },
-  textInput: {
-    fontFamily: "Inter-Medium",
-    fontSize: 15,
-    includeFontPadding: false,
-    color: "#000fff",
-    paddingLeft: 4,
-    backgroundColor: "#fff000",
-  },
+
   otpRow: {
     flexDirection: "row",
     justifyContent: "flex-start",

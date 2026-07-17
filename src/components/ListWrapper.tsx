@@ -8,12 +8,10 @@ export const ListWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <View
       style={[
-        ystack,
-        fullWidth,
-        fullHeight,
         {
           backgroundColor: theme.background,
           paddingTop: spacing.lg,
+          flex: 1,
         },
       ]}
     >

@@ -28,7 +28,7 @@ export const useModulesData: (
     ),
     onPress: async () => {
       console.log("Pressed navigation");
-      navigation.push("Tasks");
+      navigation.push("Leads");
     },
   };
 

@@ -34,12 +34,11 @@ import Toast from "react-native-toast-message";
 
 const CameraScreen = ({ route }) => {
   const [cameraPermission, requestCameraPermission] = useCameraPermissions();
-  const [active, setActive] = useState(true);
   const initialMode = route?.params?.mode || "picture";
   const maxMediaLength = route?.params?.maxMediaLength;
   const navigation = useNavigation();
   const { onSave } = route.params;
-
+  // const onSave = () => {};
   const close = () => {
     navigation.pop();
   };
@@ -111,8 +110,7 @@ const CameraScreen = ({ route }) => {
 
     if (cameraRef.current) {
       console.log("In if block");
-      const photo = await cameraRef.current.takePictureAsync({ quality: 0.7 });
-      setActive(false);
+      const photo = await cameraRef.current.takePictureAsync();
       console.log("Photo:", photo);
       const fileInfo = await FileSystem.getInfoAsync(photo.uri);
       console.log("Photo", photo, fileInfo);
@@ -176,20 +174,15 @@ const CameraScreen = ({ route }) => {
   return (
     <>
       <View style={{ flex: 1, backgroundColor: "black" }}>
-        {active && (
-          <CameraView
-            style={StyleSheet.absoluteFill}
-            facing={cameraType}
-            ref={cameraRef}
-            flash={flash}
-            mute={false}
-            mode={mode}
-            videoQuality="720p"
-            onLayout={(e) => {
-              console.log("Camera layout:", e.nativeEvent.layout);
-            }}
-          />
-        )}
+        <CameraView
+          style={StyleSheet.absoluteFill}
+          facing={cameraType}
+          ref={cameraRef}
+          flash={flash}
+          mute={false}
+          mode={mode}
+          videoQuality="480p"
+        />
         <View
           style={{
             display: "flex",
@@ -425,7 +418,7 @@ const CameraScreen = ({ route }) => {
 
               {mode === "picture" ? (
                 <TouchableOpacity
-                  onPress={takePicture}
+                  onPress={async () => await takePicture()}
                   style={{
                     display: "flex",
                     flexDirection: "row",

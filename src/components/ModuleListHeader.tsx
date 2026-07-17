@@ -46,7 +46,7 @@ export default function SectionHeader({ title, count }: SectionHeaderProps) {
         </Text>
         <Badge
           color={badgeColors.gray}
-          text={`${count.toString()}`}
+          text={`${count?.toString() ?? 0}`}
           size="lg"
         />
       </View>

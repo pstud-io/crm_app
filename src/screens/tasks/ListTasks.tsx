@@ -438,7 +438,6 @@ export const ListTasks = ({ route }: { route: any }) => {
               initialSortState={initialOnHoldSortState}
             />
           )}
-
           {activeSubButton === "completed" && (
             <FilterSortPopover
               id={"completed-tasks"}

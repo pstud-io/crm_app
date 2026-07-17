@@ -55,6 +55,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
           }),
         ),
       ]);
+      console.log("After await in theme provider");
       setIsReady(true);
     };
     load();

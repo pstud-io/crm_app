@@ -19,6 +19,7 @@ import { TasksStack } from "./TasksNavigation";
 import { CameraScreen } from "@/screens/CameraScreen";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { NotesStack } from "./NotesNavigation";
+import { LeadsStack } from "./LeadsNavigation";
 
 const UserStack = createNativeStackNavigator({
   initialRouteName: "Dashboard",
@@ -36,6 +37,16 @@ const UserStack = createNativeStackNavigator({
           <DashboardHeader {...props} />
         ),
         animation: "fade",
+      },
+    },
+    Leads: {
+      layout: ({ children }) => (
+        <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
+      ),
+      linking: "leads",
+      screen: LeadsStack,
+      options: {
+        headerShown: false,
       },
     },
     Tasks: {
@@ -99,12 +110,12 @@ export const UserNavigation = () => {
   };
 
   return (
-    <NavigationIndependentTree>
-      <StaticUserNavigation
-        linking={linking}
-        theme={navigationTheme}
-        ref={userNavigationRef}
-      />
-    </NavigationIndependentTree>
+    // <NavigationIndependentTree>
+    <StaticUserNavigation
+      linking={linking}
+      theme={navigationTheme}
+      ref={userNavigationRef}
+    />
+    // </NavigationIndependentTree>
   );
 };

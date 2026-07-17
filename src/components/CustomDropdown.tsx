@@ -21,7 +21,6 @@ export const CustomDropdown = forwardRef<IDropdownRef, CustomDropdownProps>(
         style={{
           width: 0,
           height: 0,
-          backgroundColor: "#fff000",
           position: "absolute",
           overflow: "hidden",
         }}

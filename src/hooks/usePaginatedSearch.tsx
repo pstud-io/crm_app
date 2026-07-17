@@ -19,6 +19,7 @@ export interface PaginatedSearch<T, K extends object = {}> {
   loading: boolean;
   pageSize: number;
   extraParams: K;
+  initialPage?: number;
 }
 
 export function usePaginatedSearch<T, K extends object = {}>({
@@ -28,8 +29,10 @@ export function usePaginatedSearch<T, K extends object = {}>({
   loading,
   pageSize,
   extraParams,
+  initialPage = 1,
 }: PaginatedSearch<T, K>) {
-  const [page, setPage] = useState<number>(1);
+  console.log("Initial page is", initialPage);
+  const [page, setPage] = useState<number>(initialPage);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -110,13 +113,13 @@ export function usePaginatedSearch<T, K extends object = {}>({
   ]);
 
   const onFocus = useCallback(async () => {
-    console.log("From on animate");
-    resetStates();
+    console.log("From on focus");
+    // resetStates();
     const controller = await createController();
     const res = await getData({
       data,
       setData,
-      page: 1,
+      page: initialPage,
       hasMore: true,
       searchTerm: "",
       abortSignal: controller.signal,
