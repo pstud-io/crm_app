@@ -16,15 +16,25 @@ import { useTheme } from "@/hooks/useTheme";
 import { Role } from "@/types/AuthTypes";
 import { StatusBar } from "expo-status-bar";
 import { View, Text, Button, ScrollView, FlatList } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import {
   UserNavigationProp,
   UserStackParamsList,
 } from "@/navigation/UserNavigation";
+import { useCallback } from "react";
+import { useDispatch } from "react-redux";
+import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
 export const Dashboard = () => {
   const { isDark, theme } = useTheme();
   const navigation = useNavigation<UserNavigationProp>();
   const { pipelineData, actionsData } = useModulesData(navigation);
+  const dispatch = useDispatch();
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(setActiveSubButtonGlobal("dashboard"));
+    }, []),
+  );
+
   return (
     <ScrollView
       style={[

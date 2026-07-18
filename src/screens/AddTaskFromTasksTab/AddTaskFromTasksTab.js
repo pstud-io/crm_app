@@ -70,6 +70,15 @@ const AddTaskFromTasksTab = ({ route }) => {
   const { showActionSheetWithOptions } = useActionSheet();
   const selectedProject = useSelector((state) => state.project);
   const organization_id = useSelector((state) => state.profile.organization_id);
+  const organization_contact_id = useSelector(
+    (state) => state.profile.organization_contact_id,
+  );
+  const initialAssignee =
+    task_type === "followup" ? organization_contact_id : null;
+  const initialPriority =
+    task_type === "followup"
+      ? { id: "low", name: "Low" }
+      : { id: "medium", name: "Medium" };
   const { handleAddTask } = useAddTaskEndpoints();
   const [selectedMedia, setSelectedMedia] = useState([]);
   const {
@@ -82,7 +91,7 @@ const AddTaskFromTasksTab = ({ route }) => {
   } = useCheckNetworkPerformance();
   const [note, setNote] = useState(null);
   const [noteTitle, setNoteTitle] = useState(null);
-  const [priority, setPriority] = useState({ id: "medium", name: "Medium" });
+  const [priority, setPriority] = useState(initialPriority);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(new Date());
@@ -90,7 +99,7 @@ const AddTaskFromTasksTab = ({ route }) => {
   const [ccData, setCCData] = useState([]);
   const [cc, setCC] = useState([]);
   const [assigneesData, setAssigneesData] = useState([]);
-  const [assignee, setAssignee] = useState(null);
+  const [assignee, setAssignee] = useState(initialAssignee);
   const [taskType, setTaskType] = useState(
     task_type
       ? task_type === "followup"
@@ -256,7 +265,7 @@ const AddTaskFromTasksTab = ({ route }) => {
       Toast.show({
         type: "error",
         text1: "Validation Error",
-        text2: "Please select a Project.",
+        text2: "Please select a Lead.",
       });
       return;
     }
@@ -438,16 +447,20 @@ const AddTaskFromTasksTab = ({ route }) => {
             />
           </>
         )}
-        <Spacing space={SH(16)} />
-        <Text style={formElementsStyles.titleStyle}>Type:</Text>
-        <Spacing space={SH(6)} />
-        <TouchableOpacity
-          onPress={() => handleSelectTaksType()}
-          style={formElementsStyles.triggerStyle}
-        >
-          <Text style={formElementsStyles.valueStyle}>{taskType.name}</Text>
-          <DownArrowOutlineIcon width={16} height={16} />
-        </TouchableOpacity>
+        {task_type !== "followup" && (
+          <>
+            <Spacing space={SH(16)} />
+            <Text style={formElementsStyles.titleStyle}>Type:</Text>
+            <Spacing space={SH(6)} />
+            <TouchableOpacity
+              onPress={() => handleSelectTaksType()}
+              style={formElementsStyles.triggerStyle}
+            >
+              <Text style={formElementsStyles.valueStyle}>{taskType.name}</Text>
+              <DownArrowOutlineIcon width={16} height={16} />
+            </TouchableOpacity>
+          </>
+        )}
         <Spacing space={SH(16)} />
         <Text style={formElementsStyles.titleStyle}>Title *</Text>
         <Spacing space={SH(6)} />
@@ -463,11 +476,11 @@ const AddTaskFromTasksTab = ({ route }) => {
 
         <Spacing space={SH(16)} />
 
-        {/* Select Project  */}
+        {/* Select Lead  */}
 
         {selectedProject.id === "all_projects" && (
           <>
-            <Text style={formElementsStyles.titleStyle}>Select Project *</Text>
+            <Text style={formElementsStyles.titleStyle}>Select Lead *</Text>
             <Spacing space={SH(6)} />
             <Dropdown
               mode="modal"
@@ -488,13 +501,11 @@ const AddTaskFromTasksTab = ({ route }) => {
               data={allProjects}
               valueField="id"
               placeholder={
-                loading.fetchingProjects
-                  ? "Fetching Projects..."
-                  : "Select Project"
+                loading.fetchingProjects ? "Fetching Leads..." : "Select Lead"
               }
               value={projectTitle}
               search
-              searchPlaceholder="Find Project"
+              searchPlaceholder="Find Lead"
               renderItem={(item, isSelected) => (
                 <RenderDataForDropdown
                   isSelected={isSelected}
@@ -531,60 +542,64 @@ const AddTaskFromTasksTab = ({ route }) => {
           <Text style={formElementsStyles.valueStyle}>{priority.name}</Text>
           <DownArrowOutlineIcon width={16} height={16} />
         </TouchableOpacity>
-        <Spacing space={SH(16)} />
-        <Text
-          style={{
-            ...body.sm.medium,
-            color: primaryColors.gray[700],
-          }}
-        >
-          Select Assignee *
-        </Text>
-        <Spacing space={SH(6)} />
-        <Dropdown
-          mode="modal"
-          iconStyle={{ display: "none" }}
-          style={formElementsStyles.triggerStyle}
-          placeholderStyle={formElementsStyles.placeholderStyle} // Placeholder font
-          itemContainerStyle={
-            formElementsStyles.dropdownOptionsItemContainerStyle
-          }
-          selectedTextStyle={formElementsStyles.valueStyle}
-          searchPlaceholderTextColor={formElementsStyles.placeholderColor}
-          containerStyle={formElementsStyles.dropdownOptionsContainerStyle}
-          showsVerticalScrollIndicator={false}
-          autoScroll={false}
-          activeColor="transparent"
-          inputSearchStyle={formElementsStyles.dropdownOptionsSearchStyle}
-          labelField={!loading.getCCForDropdown && "name"}
-          valueField="id"
-          searchField="name"
-          placeholder={
-            loading.getCCForDropdown
-              ? "Fetching Assignees..."
-              : "Select Assignee"
-          }
-          value={loading.getCCForDropdown ? "" : assignee}
-          search
-          searchPlaceholder="Search Assignee"
-          data={assigneesData}
-          renderItem={(item, isSelected) => (
-            <RenderDataForDropdown
-              itemName={item.name}
-              isSelected={isSelected}
+        {task_type !== "followup" && (
+          <>
+            <Spacing space={SH(16)} />
+            <Text
+              style={{
+                ...body.sm.medium,
+                color: primaryColors.gray[700],
+              }}
+            >
+              Select Assignee *
+            </Text>
+            <Spacing space={SH(6)} />
+            <Dropdown
+              mode="modal"
+              iconStyle={{ display: "none" }}
+              style={formElementsStyles.triggerStyle}
+              placeholderStyle={formElementsStyles.placeholderStyle} // Placeholder font
+              itemContainerStyle={
+                formElementsStyles.dropdownOptionsItemContainerStyle
+              }
+              selectedTextStyle={formElementsStyles.valueStyle}
+              searchPlaceholderTextColor={formElementsStyles.placeholderColor}
+              containerStyle={formElementsStyles.dropdownOptionsContainerStyle}
+              showsVerticalScrollIndicator={false}
+              autoScroll={false}
+              activeColor="transparent"
+              inputSearchStyle={formElementsStyles.dropdownOptionsSearchStyle}
+              labelField={!loading.getCCForDropdown && "name"}
+              valueField="id"
+              searchField="name"
+              placeholder={
+                loading.getCCForDropdown
+                  ? "Fetching Assignees..."
+                  : "Select Assignee"
+              }
+              value={loading.getCCForDropdown ? "" : assignee}
+              search
+              searchPlaceholder="Search Assignee"
+              data={assigneesData}
+              renderItem={(item, isSelected) => (
+                <RenderDataForDropdown
+                  itemName={item.name}
+                  isSelected={isSelected}
+                />
+              )}
+              onChange={(item) => {
+                setAssignee(item.id);
+              }}
+              renderRightIcon={() =>
+                loading.getCCForDropdown ? (
+                  <ActivityIndicator size={12} color={Colors.gray_text_color} />
+                ) : (
+                  <DownArrowOutlineIcon width={SH(16)} height={SH(16)} />
+                )
+              }
             />
-          )}
-          onChange={(item) => {
-            setAssignee(item.id);
-          }}
-          renderRightIcon={() =>
-            loading.getCCForDropdown ? (
-              <ActivityIndicator size={12} color={Colors.gray_text_color} />
-            ) : (
-              <DownArrowOutlineIcon width={SH(16)} height={SH(16)} />
-            )
-          }
-        />
+          </>
+        )}
         <Spacing space={SH(8)} />
         <MultiSelect
           iconStyle={{ display: "none" }}

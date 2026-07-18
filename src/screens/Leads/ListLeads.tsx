@@ -21,7 +21,9 @@ import { RenderKanbanItem } from "./components/RenderKanbanItem";
 export const ListLeads = () => {
   const { kanbanLoading, getKanban } = useLeadsEndpoints();
   const [kanbanData, setKanbanData] = useState<any>([]);
-  const [initialLoad, setInitialLoad] = useState<boolean>(false);
+  const [initialLoad, setInitialLoad] = useState<boolean | undefined>(
+    undefined,
+  );
   console.log("Kanban Data", kanbanData);
   const dispatch = useDispatch();
   const kanbanSearch = usePaginatedSearch<any, KanbanExtraParams>({
@@ -41,6 +43,10 @@ export const ListLeads = () => {
         setInitialLoad(false);
       };
       fetchKanban();
+
+      return () => {
+        setInitialLoad(undefined);
+      };
     }, []),
   );
 
@@ -53,7 +59,7 @@ export const ListLeads = () => {
   return (
     <>
       <ListWrapper>
-        <SectionHeader title={"Leads"} count={kanbanData.length} />
+        {/* <SectionHeader title={"Leads"} count={kanbanData.length} /> */}
         {kanbanLoading.getKanban && kanbanSearch.page === 1 ? (
           <ActivityIndicatorWrapper>
             <ActivityIndicator />
@@ -69,7 +75,13 @@ export const ListLeads = () => {
             loading={kanbanLoading.getKanban}
             refreshing={kanbanSearch.refreshing}
             onRefresh={kanbanSearch.onRefresh}
-            onEndReached={initialLoad ? null : kanbanSearch.onEndReached}
+            onEndReached={
+              initialLoad === undefined
+                ? null
+                : initialLoad === true
+                  ? null
+                  : kanbanSearch.onEndReached
+            }
           />
         )}
       </ListWrapper>

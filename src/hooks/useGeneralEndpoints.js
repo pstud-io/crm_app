@@ -33,7 +33,7 @@ export const useGeneralEndpoints = () => {
       );
 
       if (response.status >= 200 && response.status < 300) {
-        console.log("Projects fetched successfully:", response.data);
+        console.log("Leads fetched successfully:", response.data);
         const titles = response.data.result.map((project) => ({
           project_name: project.project_name,
           id: project.id,
@@ -283,7 +283,7 @@ export const useGeneralEndpoints = () => {
       );
 
       if (response.status >= 200 && response.status < 300) {
-        // console.log("Project Stages details", response.data.result);
+        // console.log("Lead Stages details", response.data.result);
         setAllProjectStages([...response.data.result]);
       }
     } catch (error) {
@@ -307,13 +307,15 @@ export const useGeneralEndpoints = () => {
     setLoading,
     setClientDetails,
     setProjectStage,
+    project,
   ) => {
     setLoading((prev) => ({ ...prev, getClientDetails: true }));
-    // console.log("Token in dropdown", token);
+    console.log("project in get client details", project);
     if (!selectedProject?.id) return;
+    const projectToFetchFor = project ?? selectedProject;
     try {
       const response = await axios.get(
-        `${apiEndpoint}/customers/project/?project_id=${selectedProject?.id}`,
+        `${apiEndpoint}/customers/project/?project_id=${projectToFetchFor?.id}`,
         {
           headers: {
             Authorization: `token ${token}`,
@@ -361,7 +363,7 @@ export const useGeneralEndpoints = () => {
         Toast.show({
           type: "success",
           text1: "Success",
-          text2: `Updated Project Stage to ${item.name}`,
+          text2: `Updated Lead Stage to ${item.name}`,
           visibilityTime: 1500,
           autoHide: true,
           position: "top",

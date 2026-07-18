@@ -177,7 +177,7 @@ const AddProject = forwardRef((props, ref) => {
       );
 
       if (response.status >= 200 && response.status < 300) {
-        // console.log("Project Stages details", response.data.result);
+        // console.log("Lead Stages details", response.data.result);
         setAllProjectStages([...response.data.result]);
         setProjectStage(response.data.result[0]?.id);
       }
@@ -520,13 +520,13 @@ const AddProject = forwardRef((props, ref) => {
         Toast.show({
           type: "error",
           text1: "Error Occured",
-          text2: `No Project Stage found, create one and try again`,
+          text2: `No Lead Stage found, create one and try again`,
           visibilityTime: 3000,
           autoHide: true,
         });
       }
       console.error(
-        "Error adding New Project:",
+        "Error adding New Lead:",
         error.response?.data || error.message,
       );
       setLoading((prev) => ({ ...prev, addingProject: false }));
@@ -540,7 +540,7 @@ const AddProject = forwardRef((props, ref) => {
       Toast.show({
         type: "error",
         text1: "Error",
-        text2: !client ? "No Client Selected" : "Project Name is required",
+        text2: !client ? "No Client Selected" : "Lead Name is required",
       });
       return;
     } else {
@@ -595,7 +595,7 @@ const AddProject = forwardRef((props, ref) => {
             justifyContent: "space-between",
           }}
         >
-          <Text style={formElementsStyles.titleStyle}>New Project Details</Text>
+          <Text style={formElementsStyles.titleStyle}>New Lead Details</Text>
           <TouchableOpacity onPress={() => closeAddProjectBottomSheet()}>
             <CloseOutlineIcon
               fill={Colors.black_text_color}
@@ -765,10 +765,10 @@ const AddProject = forwardRef((props, ref) => {
                     }}
                   >
                     <Text style={formElementsStyles.titleStyle}>
-                      Project Name *
+                      Lead Name *
                     </Text>
                     <TextInput
-                      placeholder="Enter Project Name"
+                      placeholder="Enter Lead Name"
                       onChangeText={setProjectName}
                       defaultValue={projectName}
                       style={[
@@ -829,7 +829,7 @@ const AddProject = forwardRef((props, ref) => {
                       }}
                     >
                       <Text style={formElementsStyles.titleStyle}>
-                        Project Stage
+                        Lead Stage
                       </Text>
                       <Dropdown
                         iconStyle={{ display: "none" }}
@@ -1252,7 +1252,7 @@ const AddProject = forwardRef((props, ref) => {
             />
           )}
           <BottomButton
-            title={activeForm === "Details" ? "Next" : "Add Project"}
+            title={activeForm === "Details" ? "Next" : "Add Lead"}
             onPress={() => {
               activeForm === "Details"
                 ? handleSetActiveForm()

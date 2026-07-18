@@ -4,45 +4,38 @@ import {
 } from "@react-navigation/native-stack";
 import { TasksHeader } from "@/screens/tasks/components/TasksHeader";
 import { ListLeads } from "@/screens/Leads/ListLeads";
+import { LeadDetailsTabs } from "./LeadsTopTabNavigation";
+import { CommonHeader } from "@/components/CommonHeader";
 
 export const LeadsStack = createNativeStackNavigator({
-  initialRouteName: "ListTasks",
+  initialRouteName: "ListLeads",
   screenOptions: {
     headerShown: false,
     headerTitle: undefined,
   },
   screens: {
-    ListTasks: {
+    ListLeads: {
       linking: "list-leads",
       screen: ListLeads,
       options: {
         headerShown: true,
-        header: (props: NativeStackHeaderProps) => <TasksHeader {...props} />,
+        header: (props: NativeStackHeaderProps) => (
+          <CommonHeader {...props} title="Leads" />
+        ),
       },
     },
-    // AddTask: {
-    //   linking: "add-task",
-    //   screen: AddTaskFromTasksTab,
-    //   options: {
-    //     headerShown: true,
-    //     header: (props: NativeStackHeaderProps) => <TasksHeader {...props} />,
-    //   },
-    // },
-    // EditTask: {
-    //   linking: "edit-task",
-    //   screen: EditTask,
-    //   options: {
-    //     headerShown: true,
-    //     header: (props: NativeStackHeaderProps) => <TasksHeader {...props} />,
-    //   },
-    // },
-    // TaskDetails: {
-    //   linking: "task-details",
-    //   screen: TaskDetails,
-    //   options: {
-    //     headerShown: true,
-    //     header: (props: NativeStackHeaderProps) => <TasksHeader {...props} />,
-    //   },
-    // },
+    LeadDetails: {
+      linking: "lead-details",
+      screen: LeadDetailsTabs,
+      initialParams: {
+        project: "",
+      } as const,
+      options: {
+        headerShown: true,
+        header: (props: NativeStackHeaderProps) => (
+          <CommonHeader {...props} title="Lead Details" />
+        ),
+      },
+    },
   },
 });

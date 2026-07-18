@@ -11,7 +11,6 @@ import { handleNavigation } from "@/utils/handleNavigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 export const FloatingButtons = () => {
-  const insets = useSafeAreaInsets();
   const activeSubButtonGlobal = useSelector(
     (state: RootState) => state.activeSubButtonGlobal.activeSubButtonGlobal,
   );
@@ -27,6 +26,11 @@ export const FloatingButtons = () => {
     "note-details",
     "add-note",
   ];
+
+  const disableOn = ["dashboard", "leads", "lead-info", "lead-stage"];
+
+  const disable =
+    activeSubButtonGlobal && disableOn.includes(activeSubButtonGlobal);
 
   if (activeSubButtonGlobal && hideOn.includes(activeSubButtonGlobal)) {
     return;
@@ -78,12 +82,15 @@ export const FloatingButtons = () => {
             height: 52,
             borderRadius: borderRadius.full,
             position: "absolute",
-            backgroundColor: theme.backgroundInverse,
+            backgroundColor: disable
+              ? theme.backgroundDisabled
+              : theme.backgroundInverse,
             bottom: 16,
             right: 16,
             boxShadow: theme.shadow.lg,
           },
         ]}
+        disabled={disable}
         onPress={() => handleNavigation(activeSubButtonGlobal, project)}
       >
         <PlusIcon

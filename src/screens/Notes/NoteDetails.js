@@ -8,7 +8,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import { Colors, SH, SW, SF } from "../../utils";
@@ -24,12 +24,13 @@ import apiEndpoint from "../../config/apiConfig";
 import { useGetComment } from "../../hooks/useGetComment";
 import RenderMediaList from "../../components/UI/GeneralComponents/RenderMediaList";
 import NoteCard from "./components/NoteCard";
+import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
 
 const NoteDetails = ({ navigation, route }) => {
   const { note } = route.params;
   const token = useSelector((state) => state.auth.token);
   const organization_id = useSelector((state) => state.profile.organization_id);
-
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState("comments");
   const [commentsData, setCommentsData] = useState([]);
   const [ccData, setCCData] = useState([]);
@@ -46,6 +47,12 @@ const NoteDetails = ({ navigation, route }) => {
     useCallback(() => {
       getComments();
       getCCForDropdown();
+    }, []),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(setActiveSubButtonGlobal("note-details"));
     }, []),
   );
 

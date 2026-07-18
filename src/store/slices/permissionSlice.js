@@ -81,7 +81,7 @@ export const loadPermissions = async (dispatch) => {
   }
 };
 
-export const savePermissions = (permissions) => async (dispatch) => {
+export const savePermissions = async (permissions, dispatch) => {
   try {
     // console.log('Saving Permissions to storage:', permissions);
     await AsyncStorage.setItem("permissions", JSON.stringify(permissions)); // Save permissions as a JSON string

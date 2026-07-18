@@ -139,7 +139,7 @@ export const RenderPendingApproval = ({
               color: primaryColors.gray[700],
             }}
           >
-            Project
+            Lead
           </Text>
           <Text
             style={{

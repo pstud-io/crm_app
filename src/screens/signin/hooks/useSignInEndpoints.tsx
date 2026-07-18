@@ -57,11 +57,11 @@ export const useSignInEndpoints = () => {
       setRole(Role.USER);
       saveToken(token, dispatch);
       saveProfile(profile, dispatch);
-      dispatch(savePermissions(permissions));
+      savePermissions(permissions, dispatch);
       dispatch(
         setSelectedProject({
           id: "all_projects",
-          project_name: "All Projects",
+          project_name: "All Leads",
         }),
       );
     } catch (error) {

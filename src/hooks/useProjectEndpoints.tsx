@@ -114,7 +114,7 @@ export const useProjectEndpoints = () => {
       return { hasMore: false };
     }
     setGeneralLoading((prev) => ({ ...prev, getProjects: true }));
-    const initialProject = { id: "all_projects", project_name: "All Projects" };
+    const initialProject = { id: "all_projects", project_name: "All Leads" };
 
     try {
       const response = await fetchProjects(

@@ -2,6 +2,14 @@ import { borderWidth } from "@/design/borders";
 import { height, width } from "@/design/distance";
 import { useTheme } from "@/hooks/useTheme";
 import { UserNavigationProp } from "@/navigation/UserNavigation";
+import {
+  ActivitiesFilledIcon,
+  ChecklistOutline,
+  MenuDotOutline,
+  MenuOutline,
+} from "@/svg";
+import ClipboardIcon from "@/svg/clipboard-icon";
+import PhoneIcon from "@/svg/phone";
 import { ModuleData, ModulesDataType } from "@/types/modulesDataType";
 import FileIcon from "assets/icons/FileIcon";
 
@@ -18,13 +26,7 @@ export const useModulesData: (
     permission: "leads.view_leads",
     show: "leads_show",
     icon: (isActive) => (
-      <FileIcon
-        width={width[20]}
-        height={height[20]}
-        strokeWidth={borderWidth.md}
-        stroke={theme.textInverse}
-        fill={"none"}
-      />
+      <ChecklistOutline width={20} height={20} fill={theme.textInverse} />
     ),
     onPress: async () => {
       console.log("Pressed navigation");
@@ -43,7 +45,7 @@ export const useModulesData: (
       <FileIcon
         width={width[20]}
         height={height[20]}
-        strokeWidth={borderWidth.md}
+        strokeWidth={borderWidth.lg}
         stroke={theme.textInverse}
         fill={"none"}
       />
@@ -51,7 +53,7 @@ export const useModulesData: (
     onPress: async () => {
       navigation.push("Tasks", {
         screen: "ListTasks",
-        params: { task_type: "" },
+        params: { task_type: "" } as any,
       });
     },
   };
@@ -64,12 +66,12 @@ export const useModulesData: (
     permission: "notes.view_notes",
     show: "notes_show",
     icon: (isActive) => (
-      <FileIcon
-        width={width[20]}
-        height={height[20]}
-        strokeWidth={borderWidth.md}
+      <ClipboardIcon
+        width={20}
+        height={20}
         stroke={theme.textInverse}
-        fill={"none"}
+        strokeWidth={borderWidth.lg}
+        style={{}}
       />
     ),
     onPress: async () => {
@@ -85,18 +87,19 @@ export const useModulesData: (
     permission: "followUps.view_followUps",
     show: "followUps_show",
     icon: (isActive) => (
-      <FileIcon
-        width={width[20]}
-        height={height[20]}
-        strokeWidth={borderWidth.md}
+      <PhoneIcon
         stroke={theme.textInverse}
-        fill={"none"}
+        strokeWidth={borderWidth.lg}
+        fill={"transparent"}
+        width={20}
+        height={20}
+        style={{}}
       />
     ),
     onPress: async () => {
       navigation.push("Tasks", {
-        screen: "ListTasks",
-        params: { task_type: "followup" },
+        screen: "ListFollowUps",
+        params: { task_type: "followup" } as any,
       });
     },
   };

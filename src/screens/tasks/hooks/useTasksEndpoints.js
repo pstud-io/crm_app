@@ -120,7 +120,7 @@ export const useTaskEndpoints = () => {
     }
 
     const project_id = project.id;
-    console.log("Project ID:", project_id);
+    console.log("Lead ID:", project_id);
 
     const apiUrl =
       project_id === "all_projects"

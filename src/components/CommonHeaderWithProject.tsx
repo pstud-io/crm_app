@@ -25,12 +25,18 @@ import { Pressable, Text, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { useSelector } from "react-redux";
 import { IDropdownRef } from "react-native-element-dropdown";
-export const TasksHeader = ({
+
+export interface CommonHeaderWithProjectsProps {
+  title: string;
+}
+
+export const CommonHeaderWithProject = ({
   navigation,
   route,
   options,
   back,
-}: NativeStackHeaderProps) => {
+  title,
+}: NativeStackHeaderProps & CommonHeaderWithProjectsProps) => {
   const selectedProject = useSelector((state: RootState) => state.project);
   console.log("Selected Lead in tasks header", selectedProject);
   const dropdownRef = useRef<IDropdownRef>(null);
@@ -69,7 +75,7 @@ export const TasksHeader = ({
             },
           ]}
         >
-          <Text style={[body.xl.semiBold, { color: theme.text }]}>Tasks</Text>
+          <Text style={[body.xl.semiBold, { color: theme.text }]}>{title}</Text>
         </View>
       </Pressable>
       <View

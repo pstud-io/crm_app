@@ -12,8 +12,8 @@ import { Colors, SH, SW, SF } from "../../utils";
 import { Button, Spacing } from "../../components/common";
 import apiEndpoint from "../../config/apiConfig";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { useFocusEffect } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import { StyleSheet } from "react-native";
 import { primaryColors } from "../../components/UI/DesignSystem/colorPalette";
@@ -33,9 +33,10 @@ import { useTaskUpdateOptions } from "../tasks/hooks/useTaskUpdateOptions";
 import { useTaskEndpoints } from "../tasks/hooks/useTasksEndpoints";
 import { RenderTaskItem } from "../tasks/components/RenderTaskItem";
 import { TaskHistoryBottomSheet } from "../tasks/components/TaskHistoryBottomSheet";
-
-const TaskDetails = ({ navigation, route }) => {
-  const { autoOpenComments } = route.params || {};
+import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
+const TaskDetails = ({ route }) => {
+  const navigation = useNavigation();
+  const { autoOpenComments, fromLeads } = route.params || {};
   const { showActionSheetWithOptions } = useActionSheet();
   const [task, setTask] = useState({ ...route.params.task });
   console.log("This is the task", task);
@@ -65,6 +66,13 @@ const TaskDetails = ({ navigation, route }) => {
     });
     return media;
   };
+
+  const dispatch = useDispatch();
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(setActiveSubButtonGlobal("task-details"));
+    }, []),
+  );
 
   useEffect(() => {
     if (autoOpenComments === true) {
@@ -229,7 +237,7 @@ const TaskDetails = ({ navigation, route }) => {
           task={task}
           navigation={navigation}
           onRefresh={onRefresh}
-          fromOverview={false}
+          fromLeads={fromLeads}
         />
 
         <View

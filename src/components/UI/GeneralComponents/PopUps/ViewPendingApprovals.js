@@ -126,7 +126,7 @@ export const ViewPendingApprovals = ({ type }) => {
         <SearchInput
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
-          label={"Search by Project"}
+          label={"Search by Lead"}
         />
         {loading.getPendingApprovals && (
           <View

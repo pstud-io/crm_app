@@ -60,7 +60,7 @@ export const SendForApprovalPopover = ({
           loading,
           setLoading,
         );
-        console.log("Project users", projectDetails.organization_contacts);
+        console.log("Lead users", projectDetails.organization_contacts);
         const hierachary = await getApprovalHierarchy(
           loading,
           setLoading,

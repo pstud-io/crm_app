@@ -16,6 +16,8 @@ import { TasksHeader } from "@/screens/tasks/components/TasksHeader";
 import { AddTaskFromTasksTab } from "@/screens/AddTaskFromTasksTab";
 import EditTask from "@/screens/AddTaskFromTasksTab/EditTask";
 import { TaskDetails } from "@/screens/TaskDetails";
+import { CommonHeader } from "@/components/CommonHeader";
+import { CommonHeaderWithProject } from "@/components/CommonHeaderWithProject";
 
 export const TasksStack = createNativeStackNavigator({
   initialRouteName: "ListTasks",
@@ -32,7 +34,22 @@ export const TasksStack = createNativeStackNavigator({
       },
       options: {
         headerShown: true,
-        header: (props: NativeStackHeaderProps) => <TasksHeader {...props} />,
+        header: (props: NativeStackHeaderProps) => (
+          <CommonHeaderWithProject {...props} title="Tasks" />
+        ),
+      },
+    },
+    ListFollowUps: {
+      linking: "list-tasks",
+      screen: ListTasks,
+      initialParams: {
+        task_type: "" as string,
+      },
+      options: {
+        headerShown: true,
+        header: (props: NativeStackHeaderProps) => (
+          <CommonHeaderWithProject {...props} title="Follow Ups" />
+        ),
       },
     },
     AddTask: {
@@ -40,7 +57,9 @@ export const TasksStack = createNativeStackNavigator({
       screen: AddTaskFromTasksTab,
       options: {
         headerShown: true,
-        header: (props: NativeStackHeaderProps) => <TasksHeader {...props} />,
+        header: (props: NativeStackHeaderProps) => (
+          <CommonHeader {...props} title="Add Task" />
+        ),
       },
     },
     EditTask: {
@@ -48,7 +67,9 @@ export const TasksStack = createNativeStackNavigator({
       screen: EditTask,
       options: {
         headerShown: true,
-        header: (props: NativeStackHeaderProps) => <TasksHeader {...props} />,
+        header: (props: NativeStackHeaderProps) => (
+          <CommonHeader {...props} title="Edit Task" />
+        ),
       },
     },
     TaskDetails: {
@@ -56,7 +77,9 @@ export const TasksStack = createNativeStackNavigator({
       screen: TaskDetails,
       options: {
         headerShown: true,
-        header: (props: NativeStackHeaderProps) => <TasksHeader {...props} />,
+        header: (props: NativeStackHeaderProps) => (
+          <CommonHeader {...props} title="Task Details" />
+        ),
       },
     },
   },

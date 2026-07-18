@@ -13,7 +13,7 @@ import {
   getUpdatedStatus,
 } from "../utils/taskFunctions";
 import { primaryColors } from "@/components/UI/DesignSystem/colorPalette";
-
+import { userNavigationRef } from "@/navigation/UserNavigation";
 import { Colors, SH, SW, SF, formatAdjustedDate, formatDate } from "@/utils";
 import { useSelector } from "react-redux";
 import { body } from "@/design/typography";
@@ -27,13 +27,13 @@ import { openTaskHistoryBottomSheet } from "../utils/taskHistoryBottomSheetServi
 import { UserCustomFieldsModal } from "@/components/UI/GeneralComponents/PopUps/UserCustomFieldsPopUp";
 import Toast from "react-native-toast-message";
 import { useTaskEndpoints } from "../hooks/useTasksEndpoints";
-
+import { StackActions } from "@react-navigation/native";
 export const RenderTaskItem = ({
   task,
   navigation,
   onRefresh,
   hasActionButtons = false,
-  fromOverview = true,
+  fromLeads = false,
 }) => {
   const {
     id,
@@ -134,10 +134,17 @@ export const RenderTaskItem = ({
       key={id}
       disabled={!hasActionButtons}
       onPress={() => {
-        if (fromOverview) {
-          navigation.push("TaskDetails", { task });
+        if (fromLeads) {
+          userNavigationRef.dispatch(
+            StackActions.push("Tasks", {
+              screen: "TaskDetails",
+              params: {
+                task,
+              },
+            }),
+          );
         }
-        if (!fromOverview) {
+        if (!fromLeads) {
           navigation.push("TaskDetails", { task });
         }
       }}
@@ -206,10 +213,18 @@ export const RenderTaskItem = ({
             {!hasActionButtons && (
               <TouchableOpacity
                 onPress={() => {
-                  if (fromOverview) {
-                    navigation.push("EditTask", { task, onRefresh });
+                  if (fromLeads) {
+                    userNavigationRef.dispatch(
+                      StackActions.push("Tasks", {
+                        screen: "EditTask",
+                        params: {
+                          task,
+                          onRefresh,
+                        },
+                      }),
+                    );
                   }
-                  if (!fromOverview) {
+                  if (!fromLeads) {
                     navigation.push("EditTask", { task, onRefresh });
                   }
                 }}
@@ -567,10 +582,18 @@ export const RenderTaskItem = ({
                 }}
                 activeOpacity={0.9}
                 onPress={() => {
-                  if (fromOverview) {
-                    navigation.push("EditTask", { task, onRefresh });
+                  if (fromLeads) {
+                    userNavigationRef.dispatch(
+                      StackActions.push("Tasks", {
+                        screen: "EditTask",
+                        params: {
+                          task,
+                          onRefresh,
+                        },
+                      }),
+                    );
                   }
-                  if (!fromOverview) {
+                  if (!fromLeads) {
                     navigation.push("EditTask", { task, onRefresh });
                   }
                 }}

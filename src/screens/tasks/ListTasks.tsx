@@ -72,7 +72,7 @@ import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
 import { TaskHistoryBottomSheet } from "./components/TaskHistoryBottomSheet";
 
 export const ListTasks = ({ route }: { route: any }) => {
-  const { task_type } = route.params;
+  const { task_type, project, fromLeads } = route.params;
   console.log("Task type in list taks", task_type);
   const dispatch = useDispatch();
   const navigation = useNavigation<UserNavigationProp>();
@@ -80,8 +80,8 @@ export const ListTasks = ({ route }: { route: any }) => {
   const { getTasks, tasksLoading } = useNewTaskEndpoints();
   const [activeSubButton, setActiveSubButton] =
     useState<SubButtonId>("created");
-
-  const selectedProject = useSelector((state: RootState) => state.project);
+  const savedProject = useSelector((state: RootState) => state.project);
+  const selectedProject = project ?? savedProject;
   const profile = useSelector((state: RootState) => state.profile);
   const organization_contact_id = profile.organization_contact_id;
 
@@ -580,6 +580,7 @@ export const ListTasks = ({ route }: { route: any }) => {
                 navigation={navigation}
                 onRefresh={tasksSearch.onRefresh}
                 hasActionButtons
+                fromLeads={fromLeads}
               />
             )}
             loading={tasksLoading.getTasks}

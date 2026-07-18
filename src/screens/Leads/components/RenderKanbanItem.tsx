@@ -30,17 +30,16 @@ export const RenderKanbanItem = ({ item }: { item: any }) => {
     loading: leadsLoading.getLeads,
     pageSize: 6,
     extraParams: { ...leadsExtraParams, substage_id: item.substage_id },
-    initialPage: 2,
   });
 
-  useEffect(() => {
-    const fetchKanban = async () => {
-      setInitialLoad(true);
-      await leadsSearch.onFocus();
-      setInitialLoad(false);
-    };
-    fetchKanban();
-  }, []);
+  // useEffect(() => {
+  //   const fetchKanban = async () => {
+  //     setInitialLoad(true);
+  //     await leadsSearch.onFocus();
+  //     setInitialLoad(false);
+  //   };
+  //   fetchKanban();
+  // }, []);
 
   return (
     <View
@@ -75,7 +74,7 @@ export const RenderKanbanItem = ({ item }: { item: any }) => {
           loading={leadsLoading.getLeads}
           refreshing={leadsSearch.refreshing}
           onRefresh={leadsSearch.onRefresh}
-          onEndReached={initialLoad ? null : leadsSearch.onEndReached}
+          onEndReached={leadsSearch.onEndReached}
         />
       )}
     </View>

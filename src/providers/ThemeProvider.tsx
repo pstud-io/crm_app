@@ -51,7 +51,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
         dispatch(
           setSelectedProject({
             id: "all_projects",
-            project_name: "All Projects",
+            project_name: "All Leads",
           }),
         ),
       ]);

@@ -7,10 +7,9 @@ import { center, fullWidth, grow, xstack, ystack } from "@/design/layout";
 import { spacing } from "@/design/spacing";
 import { body } from "@/design/typography";
 import { useTheme } from "@/hooks/useTheme";
-import { LocationOutline, MapOutline, PhoneOutline } from "@/svg";
-import { Colors, SH, SW } from "@/utils";
-import { StyleSheet, Text, View } from "react-native";
-
+import { UserNavigationProp } from "@/navigation/UserNavigation";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 export const RenderLeadItem = ({
   item,
   index,
@@ -19,8 +18,9 @@ export const RenderLeadItem = ({
   index: number;
 }) => {
   const { theme } = useTheme();
+  const navigation = useNavigation<UserNavigationProp>();
   return (
-    <View
+    <Pressable
       style={[
         ystack,
         fullWidth,
@@ -34,6 +34,17 @@ export const RenderLeadItem = ({
         },
       ]}
       key={index}
+      onPress={() =>
+        navigation.push("Leads", {
+          screen: "LeadDetails",
+          params: {
+            screen: "Info",
+            params: {
+              project: { id: item.id, project_name: item.project_name },
+            } as any,
+          },
+        })
+      }
     >
       <View
         style={[
@@ -116,6 +127,6 @@ export const RenderLeadItem = ({
           </Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };

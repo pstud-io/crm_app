@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from "react";
 import { View, FlatList, RefreshControl, Text } from "react-native";
 import {
+  StackActions,
   useFocusEffect,
-  useIsFocused,
   useNavigation,
 } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,14 +24,20 @@ import {
   LoadingIndicatorFooter,
 } from "../../components/UI/GeneralComponents";
 import { setActiveSubButtonGlobal } from "../../store/slices/activeSubButtonGlobal";
+import { useTheme } from "@/hooks/useTheme";
+import { userNavigationRef } from "@/navigation/UserNavigation";
 
-const ListNotes = () => {
-  const isFocused = useIsFocused();
+const ListNotes = ({ route }) => {
+  console.log("Route in notes is", route);
+  const { selectedProject, fromLeads } = route.params;
+
+  const { theme } = useTheme();
   const navigation = useNavigation();
   const activeTabButtonID = useSelector(
     (state) => state.activeSubButtonGlobal.activeSubButtonGlobal,
   );
-  const project = useSelector((state) => state.project);
+  const savedProject = useSelector((state) => state.project);
+  const project = selectedProject ?? savedProject;
   const [notesData, setNotesData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [initialLoading, setInitialLoading] = useState(false);
@@ -59,9 +65,7 @@ const ListNotes = () => {
 
   useFocusEffect(
     useCallback(() => {
-      if (isFocused) {
-        dispatch(setActiveSubButtonGlobal("notes"));
-      }
+      dispatch(setActiveSubButtonGlobal("notes"));
     }, []),
   );
 
@@ -84,7 +88,7 @@ const ListNotes = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: primaryColors.gray[50],
+        backgroundColor: theme.background,
         paddingHorizontal: 4,
       }}
     >
@@ -232,12 +236,24 @@ const ListNotes = () => {
           renderItem={({ item }) => (
             <NoteCard
               note={item}
-              onPress={() =>
-                navigation.push("NoteDetails", {
-                  note: item,
-                  project,
-                })
-              }
+              onPress={() => {
+                if (fromLeads) {
+                  userNavigationRef.dispatch(
+                    StackActions.push("Notes", {
+                      screen: "NoteDetails",
+                      params: {
+                        note: item,
+                        project,
+                      },
+                    }),
+                  );
+                } else {
+                  navigation.push("NoteDetails", {
+                    note: item,
+                    project,
+                  });
+                }
+              }}
             />
           )}
           ListHeaderComponent={<Spacing space={SH(10)} />}
