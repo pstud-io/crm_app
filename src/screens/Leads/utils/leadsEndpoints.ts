@@ -47,3 +47,13 @@ export const fetchLeads = async (
 
   return await api.post(url, finalPayload, { signal: abortSignal });
 };
+
+export const fetchAllData = async (
+  page: number,
+  searchQuery: string = "",
+  pageSize: number = 10,
+  abortSignal: AbortSignal | undefined,
+) => {
+  const url = `/customers/universal-search/?page=${page}&page_size=${pageSize}&search=${searchQuery}`;
+  return await api.get(url, { signal: abortSignal });
+};

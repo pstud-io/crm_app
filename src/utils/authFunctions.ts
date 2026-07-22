@@ -36,3 +36,17 @@ export async function loadAuth(
     setLoading(false);
   }
 }
+
+export async function logOut(
+  setRole: Dispatch<SetStateAction<Role>>,
+  setLoading: Dispatch<SetStateAction<boolean>>,
+): Promise<void> {
+  try {
+    setLoading(true);
+    setRole(Role.GUEST);
+  } catch (error) {
+    console.log("ERR_Auth", error);
+  } finally {
+    setLoading(false);
+  }
+}

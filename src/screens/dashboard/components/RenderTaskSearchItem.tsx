@@ -11,20 +11,13 @@ import { UserNavigationProp } from "@/navigation/UserNavigation";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CallWhatsappPopover from "@/components/specific/CallWhatsappPopover";
-export const RenderLeadItem = ({
-  item,
-  index,
-}: {
-  item: any;
-  index: number;
-}) => {
+export const RenderTaskSearchItem = ({ item }: { item: any }) => {
   const { theme } = useTheme();
   const navigation = useNavigation<UserNavigationProp>();
   return (
     <Pressable
       style={[
         ystack,
-        fullWidth,
         {
           padding: spacing.md,
           borderRadius: borderRadius.lg,
@@ -32,17 +25,16 @@ export const RenderLeadItem = ({
           borderColor: theme.border,
           boxShadow: theme.shadow.sm,
           marginBottom: spacing.sm,
+          maxWidth: 240,
         },
       ]}
-      key={index}
+      key={item.id}
       onPress={() =>
-        navigation.push("Leads", {
-          screen: "LeadDetails",
+        navigation.push("Tasks", {
+          screen: "TaskDetails",
+          // @ts-ignore
           params: {
-            screen: "Info",
-            params: {
-              project: { id: item.id, project_name: item.project_name },
-            } as any,
+            task: item,
           },
         })
       }
@@ -62,9 +54,9 @@ export const RenderLeadItem = ({
           numberOfLines={1}
           ellipsizeMode="middle"
         >
-          {item.project_name}
+          {item.title}
         </Text>
-        <Badge color={badgeColors.gray} text={item.project_code} size="sm" />
+        <Badge color={badgeColors.gray} text={item.project_name} size="sm" />
       </View>
       <ItemSeparator
         direction="horizontal"
@@ -97,7 +89,7 @@ export const RenderLeadItem = ({
             numberOfLines={1}
             ellipsizeMode="middle"
           >
-            {item?.client_details?.name}
+            {item?.client_name}
           </Text>
         </View>
 
@@ -120,7 +112,7 @@ export const RenderLeadItem = ({
             Contact
           </Text>
           <CallWhatsappPopover
-            value={item?.client_details?.phone}
+            value={item?.client_phone}
             code={""}
             fromInfo={false}
           />

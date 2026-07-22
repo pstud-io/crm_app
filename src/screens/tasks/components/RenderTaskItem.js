@@ -47,9 +47,6 @@ export const RenderTaskItem = ({
     completion_date,
     project_details,
     description,
-    organization_contact_details: {
-      owner_details: { name },
-    },
   } = task;
   const shouldNavigate = true;
   useEffect(() => {
@@ -63,8 +60,10 @@ export const RenderTaskItem = ({
 
   const profile = useSelector((state) => state.profile);
   const canEdit =
-    profile.is_admin || profile.name === task.creator_contact_details.name;
-  const canUpdateTask = !completedStages.includes(stage.toLowerCase());
+    profile.is_admin || profile.name === task?.creator_contact_details?.name;
+  const canUpdateTask = stage
+    ? !completedStages.includes(stage?.toLowerCase())
+    : false;
 
   const [userFieldsModal, setUserFieldsModal] = useState({
     visible: false,
@@ -89,11 +88,10 @@ export const RenderTaskItem = ({
   });
 
   const updatedStatus = getUpdatedStatus(status, due_date, task_type, stage);
-  const taskTypeColor = getTaskTypeColor(task_type);
 
-  const priorityText = task.priority === "high" ? "🔥" : "";
+  const priorityText = task?.priority === "high" ? "🔥" : "";
   const timestamptext =
-    task.stage === "in_progress" ? "⏹️" : task.stage === "hold" ? "▶️" : "";
+    task?.stage === "in_progress" ? "⏹️" : task?.stage === "hold" ? "▶️" : "";
 
   const handleUserFieldsSubmit = async (values) => {
     setIsSubmitting(true);
@@ -505,7 +503,7 @@ export const RenderTaskItem = ({
                 color: primaryColors.brand[1000],
               }}
             >
-              {task.total_hours_in_progress
+              {task?.total_hours_in_progress
                 ? task?.total_hours_in_progress
                 : "---"}
             </Text>
@@ -544,7 +542,7 @@ export const RenderTaskItem = ({
             color: primaryColors.brand[1000],
           }}
         >
-          {formatDate(task.created_on)}
+          {formatDate(task?.created_on)}
         </Text>
       </View>
       {hasActionButtons && (
@@ -604,7 +602,7 @@ export const RenderTaskItem = ({
                     color: primaryColors.brand[1000],
                   }}
                 >
-                  Edit Task
+                  Edit
                 </Text>
               </TouchableOpacity>
             )}
@@ -612,7 +610,7 @@ export const RenderTaskItem = ({
               <>
                 <PopoverMenu
                   options={taskUpdateOptions}
-                  id={task.id}
+                  id={task?.id}
                   key={id}
                   popoverMenuRef={popoverMenuRef}
                   from={
@@ -636,7 +634,7 @@ export const RenderTaskItem = ({
                           color: primaryColors.gray[25],
                         }}
                       >
-                        Update Task
+                        Update
                       </Text>
                     </TouchableOpacity>
                   }

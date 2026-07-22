@@ -25,16 +25,20 @@ import { useGetComment } from "../../hooks/useGetComment";
 import RenderMediaList from "../../components/UI/GeneralComponents/RenderMediaList";
 import NoteCard from "./components/NoteCard";
 import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
+import { useNoteEndpoints } from "./hooks/useNoteEndPoints";
 
 const NoteDetails = ({ navigation, route }) => {
-  const { note } = route.params;
+  const [note, setNote] = useState({ ...route.params.note });
   const token = useSelector((state) => state.auth.token);
   const organization_id = useSelector((state) => state.profile.organization_id);
+  const [loading, setLoading] = useState({
+    getSingleNote: false,
+  });
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState("comments");
   const [commentsData, setCommentsData] = useState([]);
   const [ccData, setCCData] = useState([]);
-
+  const { getSingleNote } = useNoteEndpoints();
   const commentGetURL = `${apiEndpoint}/core/comments/?context_id=${note.id}&context_type=note`;
   const commentPostURL = `${apiEndpoint}/core/comments/?context_id=${note.id}&context_type=note`;
 
@@ -47,6 +51,7 @@ const NoteDetails = ({ navigation, route }) => {
     useCallback(() => {
       getComments();
       getCCForDropdown();
+      getSingleNote(note?.id, setLoading, setNote);
     }, []),
   );
 
@@ -97,7 +102,7 @@ const NoteDetails = ({ navigation, route }) => {
     console.log("assets in converter", assets);
     const media = assets.map((asset) => {
       return {
-        created_on: note.created_on,
+        created_on: note?.created_on,
         id: asset.asset_details.id,
         type: asset.asset_details.type,
         url: asset.asset_details.url,
@@ -143,7 +148,7 @@ const NoteDetails = ({ navigation, route }) => {
 
         {activeTab === "files" && (
           <RenderMediaList
-            moduleAssets={note.notes_assets_details}
+            moduleAssets={note?.notes_assets_details}
             assetsConverter={getMediaForMediaTab}
           />
         )}
@@ -168,7 +173,7 @@ const NoteDetails = ({ navigation, route }) => {
       )}
 
       <NewCommentSheet
-        fk_project={note.fk_project}
+        fk_project={note?.fk_project}
         commentPostURL={commentPostURL}
         onPost={getComments}
       />

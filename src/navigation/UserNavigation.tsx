@@ -20,6 +20,8 @@ import { CameraScreen } from "@/screens/CameraScreen";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { NotesStack } from "./NotesNavigation";
 import { LeadsStack } from "./LeadsNavigation";
+import { ProfileStack } from "./ProfileNavigation";
+import { NotificationsStack } from "./NotificationNavigation";
 
 const UserStack = createNativeStackNavigator({
   initialRouteName: "Dashboard",
@@ -30,6 +32,9 @@ const UserStack = createNativeStackNavigator({
   screens: {
     Dashboard: {
       linking: "dashboard",
+      layout: ({ children }) => (
+        <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
+      ),
       screen: Dashboard,
       options: {
         headerShown: true,
@@ -72,6 +77,20 @@ const UserStack = createNativeStackNavigator({
     CameraScreen: {
       linking: "camera",
       screen: CameraScreen,
+      options: {
+        headerShown: false,
+      },
+    },
+    Profile: {
+      linking: "profile",
+      screen: ProfileStack,
+      options: {
+        headerShown: false,
+      },
+    },
+    Notifications: {
+      linking: "notifications",
+      screen: NotificationsStack,
       options: {
         headerShown: false,
       },

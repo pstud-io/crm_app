@@ -7,8 +7,10 @@ import { body } from "../UI/DesignSystem/typography";
 import { ProjectInfoCardItem } from "../common/ProjectInfoCardItem";
 import PhoneIcon from "../../svg/phone";
 import WhatsappIcon from "../../svg/whatsapp";
+import { useTheme } from "@/hooks/useTheme";
 
-const CallWhatsappPopover = ({ value, code }) => {
+const CallWhatsappPopover = ({ value, code, fromInfo }) => {
+  const { theme } = useTheme();
   const CallWhatsappPopoverRef = useRef(null);
   const handleCall = (phone) => {
     if (!phone || phone === "NA") return;
@@ -65,11 +67,21 @@ const CallWhatsappPopover = ({ value, code }) => {
       offset={0}
       from={
         <TouchableOpacity>
-          <ProjectInfoCardItem
-            label={"Phone"}
-            value={value}
-            onPress={() => {}}
-          />
+          {fromInfo ? (
+            <ProjectInfoCardItem
+              label={"Phone"}
+              value={value}
+              onPress={() => {}}
+            />
+          ) : (
+            <Text
+              style={[body.sm.semiBold, { color: theme.text, flexShrink: 1 }]}
+              numberOfLines={1}
+              ellipsizeMode="middle"
+            >
+              {value}
+            </Text>
+          )}
         </TouchableOpacity>
       }
     >

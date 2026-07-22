@@ -25,9 +25,11 @@ export const FloatingButtons = () => {
     "signin",
     "note-details",
     "add-note",
+    "profile",
+    "notifications",
   ];
 
-  const disableOn = ["dashboard", "leads", "lead-info", "lead-stage"];
+  const disableOn = ["lead-info", "lead-stage"];
 
   const disable =
     activeSubButtonGlobal && disableOn.includes(activeSubButtonGlobal);

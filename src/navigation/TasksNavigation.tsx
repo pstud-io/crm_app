@@ -84,10 +84,3 @@ export const TasksStack = createNativeStackNavigator({
     },
   },
 });
-
-// export type TasksStackParamsList = StaticParamList<typeof TasksStack>;
-// declare global {
-//   namespace ReactNavigation {
-//     interface TasksParamsList extends TasksStackParamsList {}
-//   }
-// }

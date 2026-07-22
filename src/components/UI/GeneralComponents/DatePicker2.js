@@ -61,7 +61,7 @@ export const DatePicker2 = ({
           display={"default"}
           minimumDate={minDate}
           maximumDate={maxDate}
-          onChange={onChange}
+          onValueChange={onChange}
         />
       )}
       {Platform.OS === "ios" && (
@@ -70,18 +70,6 @@ export const DatePicker2 = ({
           setSelectedDate={(date) => onChange(date)}
           type={"date"}
         />
-        // <DateTimePicker
-        //   value={dateValue}
-        //   mode="date"
-        //   style={{
-        //     alignSelf: "flex-start",
-        //     transform: [{ translateX: -SW(8) }],
-        //   }}
-        //   display={"default"}
-        //   minimumDate={minDate}
-        //   maximumDate={maxDate}
-        //   onChange={onChange}
-        // />
       )}
     </>
   );

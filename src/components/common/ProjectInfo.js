@@ -13,7 +13,7 @@ import BottomSheet, {
   BottomSheetBackdrop,
 } from "@gorhom/bottom-sheet";
 import { forwardRef, useState, useRef, useEffect, useCallback } from "react";
-import { Colors, SF, SW, SH } from "../../utils";
+import { Colors, SF, SW, SH, capitalizeEachWord } from "../../utils";
 import { InputTextStyles } from "../../styles/InputTextStyles";
 import { CloseOutlineIcon } from "../../svg";
 import { useSelector } from "react-redux";
@@ -29,7 +29,9 @@ import { body } from "../UI/DesignSystem/typography";
 import CallWhatsappPopover from "../specific/CallWhatsappPopover";
 import { LoadingIndicatorFooter } from "../UI/GeneralComponents";
 import { useFocusEffect } from "@react-navigation/native";
-const ProjectInfo = ({ route }) => {
+import AddProject from "./AddProject/AddProject";
+import { LeadAdditionalFields } from "@/screens/Leads/components/LeadAdditionalFields";
+const ProjectInfo = ({ route, editProjectFunctions }) => {
   const { project } = route.params;
   console.log("Add instance of project info", project);
   const [initialLoading, setInitialLoading] = useState(false);
@@ -41,6 +43,7 @@ const ProjectInfo = ({ route }) => {
   const [allProjectStages, setAllProjectStages] = useState([]);
   const [projectStage, setProjectStage] = useState("");
   const [clientDetails, setClientDetails] = useState(null);
+  console.log("Client details are", clientDetails);
   const stageDropdownRef = useRef(null);
 
   const organization_id = useSelector((state) => state.profile.organization_id);
@@ -108,279 +111,295 @@ const ProjectInfo = ({ route }) => {
   );
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      style={styles.sheetContent}
-      contentContainerStyle={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        justifyContent: "flex-start",
-        gap: SH(16),
-        paddingVertical: 16,
-      }}
-    >
-      {initialLoading || !clientDetails ? (
-        <View
-          style={{
-            width: "100%",
-            alignItems: "center",
-            justifyContent: "center",
-            display: "flex",
-            flexDirection: "row",
-            borderWidth: 0,
-            flex: 1,
-          }}
-        >
-          <LoadingIndicatorFooter />
-        </View>
-      ) : (
-        <>
-          {/* <Text style={[body.sm.semiBold, { color: primaryColors.gray[900] }]}>
-            Lead Details
-          </Text> */}
+    <>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.sheetContent}
+        contentContainerStyle={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          justifyContent: "flex-start",
+          gap: SH(16),
+          paddingVertical: 32,
+        }}
+      >
+        {initialLoading || !clientDetails ? (
           <View
             style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              alignItems: "flex-start",
-              borderRadius: SW(16),
-              borderWidth: 1,
-              borderColor: primaryColors.gray[200],
-              padding: 16,
-              gap: SH(14),
               width: "100%",
-              backgroundColor: "white",
+              alignItems: "center",
+              justifyContent: "center",
+              display: "flex",
+              flexDirection: "row",
+              borderWidth: 0,
+              flex: 1,
             }}
           >
-            <ProjectInfoCardItem
-              label={"Lead Name"}
-              value={clientDetails.project_name}
-              color={primaryColors.brand[1000]}
-              size={SF(16)}
-            />
-            {/* <View
-              style={{
-                borderTopWidth: SW(1),
-                borderTopColor: primaryColors.gray[200],
-                width: "100%",
-              }}
-            />
+            <LoadingIndicatorFooter />
+          </View>
+        ) : (
+          <>
+            {/* <Text style={[body.sm.semiBold, { color: primaryColors.gray[900] }]}>
+            Lead Details
+          </Text> */}
             <View
               style={{
                 display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                alignItems: "flex-start",
+                borderRadius: SW(16),
+                borderWidth: 1,
+                borderColor: primaryColors.gray[200],
+                padding: 16,
+                gap: SH(14),
                 width: "100%",
+                backgroundColor: "white",
               }}
             >
-              <Text style={formElementsStyles.titleStyle}>Lead Stage</Text>
-              <Dropdown
-                disable={!canChange}
-                ref={stageDropdownRef}
-                mode="modal"
-                style={[formElementsStyles.triggerStyle, { maxWidth: SW(180) }]}
-                placeholderStyle={formElementsStyles.placeholderStyle} // Placeholder font
-                itemContainerStyle={
-                  formElementsStyles.dropdownOptionsItemContainerStyle
-                }
-                selectedTextStyle={formElementsStyles.valueStyle}
-                searchPlaceholderTextColor={formElementsStyles.placeholderColor}
-                containerStyle={
-                  formElementsStyles.dropdownOptionsContainerStyle
-                }
-                showsVerticalScrollIndicator={false}
-                autoScroll={false}
-                activeColor="transparent"
-                inputSearchStyle={formElementsStyles.dropdownOptionsSearchStyle}
-                data={allProjectStages}
-                labelField={!loading.getStagesForDropdown && "name"}
-                valueField={"id"}
-                searchField="name"
-                placeholder={
-                  loading.getStagesForDropdown
-                    ? "Fetching States..."
-                    : loading.updatingStage
-                      ? "Updating Stage"
-                      : "Update Stage"
-                }
-                value={
-                  loading.getStagesForDropdown || loading.updatingStage
-                    ? ""
-                    : projectStage
-                }
-                search
-                iconStyle={{ display: "none" }}
-                searchPlaceholder="Search Stage"
-                renderItem={(item, isSelected) => (
-                  <RenderDataForDropdown
-                    itemName={item.name}
-                    isSelected={isSelected}
-                  />
-                )}
-                onChange={async (item) => {
-                  await updateStage(setLoading, item);
-                  setProjectStage(item.id);
-                }}
-                confirmSelectItem={
-                  organization_id === "13148b25-307b-4e2b-a6f4-767498e45756"
-                }
-                onConfirmSelectItem={(item) => {
-                  Alert.alert("Confirm", `Changing Stage to ${item.name}`, [
-                    {
-                      text: "Cancel",
-                      onPress: () => stageDropdownRef.current.close(),
-                    },
-                    {
-                      text: "Confirm",
-                      onPress: async () => {
-                        console.log("Clicked confirm");
-                        await stageDropdownRef.current.close();
-                        await updateStage(setLoading, item);
-                        setProjectStage(item.id);
-                      },
-                    },
-                  ]);
-                }}
-                renderRightIcon={() => {
-                  return (
-                    canChange &&
-                    (loading.getStagesForDropdown || loading.updatingStage ? (
-                      <ActivityIndicator
-                        size={12}
-                        color={Colors.gray_text_color}
-                      />
-                    ) : (
-                      <DownArrowOutlineIcon width={SH(17)} height={SH(17)} />
-                    ))
-                  );
+              <ProjectInfoCardItem
+                label={"Lead Name"}
+                value={clientDetails.project_name}
+                color={primaryColors.brand[1000]}
+                size={SF(16)}
+              />
+              <View
+                style={{
+                  borderTopWidth: SW(1),
+                  borderTopColor: primaryColors.gray[200],
+                  width: "100%",
                 }}
               />
-            </View> */}
-          </View>
-          <Text style={[body.sm.semiBold, { color: primaryColors.gray[900] }]}>
-            Client Details
-          </Text>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              alignItems: "flex-start",
-              borderRadius: SW(16),
-              borderWidth: 1,
-              borderColor: primaryColors.gray[200],
-              padding: 16,
-              gap: SH(14),
-              width: "100%",
-              backgroundColor: "white",
-            }}
-          >
-            <ProjectInfoCardItem
-              label={"Client Name"}
-              value={
-                clientDetails?.client_details?.contact_details?.name || "NA"
-              }
-            />
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                <Text style={formElementsStyles.titleStyle}>Lead Stage</Text>
+                <Dropdown
+                  disable={!canChange}
+                  ref={stageDropdownRef}
+                  mode="modal"
+                  style={[
+                    formElementsStyles.triggerStyle,
+                    { maxWidth: SW(180) },
+                  ]}
+                  placeholderStyle={formElementsStyles.placeholderStyle} // Placeholder font
+                  itemContainerStyle={
+                    formElementsStyles.dropdownOptionsItemContainerStyle
+                  }
+                  selectedTextStyle={formElementsStyles.valueStyle}
+                  searchPlaceholderTextColor={
+                    formElementsStyles.placeholderColor
+                  }
+                  containerStyle={
+                    formElementsStyles.dropdownOptionsContainerStyle
+                  }
+                  showsVerticalScrollIndicator={false}
+                  autoScroll={false}
+                  activeColor="transparent"
+                  inputSearchStyle={
+                    formElementsStyles.dropdownOptionsSearchStyle
+                  }
+                  data={allProjectStages}
+                  labelField={!loading.getStagesForDropdown && "name"}
+                  valueField={"id"}
+                  searchField="name"
+                  placeholder={
+                    loading.getStagesForDropdown
+                      ? "Fetching States..."
+                      : loading.updatingStage
+                        ? "Updating Stage"
+                        : "Update Stage"
+                  }
+                  value={
+                    loading.getStagesForDropdown || loading.updatingStage
+                      ? ""
+                      : projectStage
+                  }
+                  search
+                  iconStyle={{ display: "none" }}
+                  searchPlaceholder="Search Stage"
+                  renderItem={(item, isSelected) => (
+                    <RenderDataForDropdown
+                      itemName={item.name}
+                      isSelected={isSelected}
+                    />
+                  )}
+                  onChange={async (item) => {
+                    await updateStage(setLoading, item);
+                    setProjectStage(item.id);
+                  }}
+                  confirmSelectItem={
+                    organization_id === "13148b25-307b-4e2b-a6f4-767498e45756"
+                  }
+                  onConfirmSelectItem={(item) => {
+                    Alert.alert("Confirm", `Changing Stage to ${item.name}`, [
+                      {
+                        text: "Cancel",
+                        onPress: () => stageDropdownRef.current.close(),
+                      },
+                      {
+                        text: "Confirm",
+                        onPress: async () => {
+                          console.log("Clicked confirm");
+                          await stageDropdownRef.current.close();
+                          await updateStage(setLoading, item);
+                          setProjectStage(item.id);
+                        },
+                      },
+                    ]);
+                  }}
+                  renderRightIcon={() => {
+                    return (
+                      canChange &&
+                      (loading.getStagesForDropdown || loading.updatingStage ? (
+                        <ActivityIndicator
+                          size={12}
+                          color={Colors.gray_text_color}
+                        />
+                      ) : (
+                        <DownArrowOutlineIcon width={SH(17)} height={SH(17)} />
+                      ))
+                    );
+                  }}
+                />
+              </View>
+            </View>
+            <Text
+              style={[body.sm.semiBold, { color: primaryColors.gray[900] }]}
+            >
+              Client Details
+            </Text>
             <View
               style={{
-                borderTopWidth: SW(1),
-                borderTopColor: primaryColors.gray[200],
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                alignItems: "flex-start",
+                borderRadius: SW(16),
+                borderWidth: 1,
+                borderColor: primaryColors.gray[200],
+                padding: 16,
+                gap: SH(14),
                 width: "100%",
+                backgroundColor: "white",
               }}
+            >
+              <ProjectInfoCardItem
+                label={"Client Name"}
+                value={
+                  clientDetails?.client_details?.contact_details?.name || "NA"
+                }
+              />
+              <View
+                style={{
+                  borderTopWidth: SW(1),
+                  borderTopColor: primaryColors.gray[200],
+                  width: "100%",
+                }}
+              />
+              <CallWhatsappPopover
+                value={
+                  clientDetails?.client_details?.contact_details?.phone || "NA"
+                }
+                code={
+                  clientDetails?.client_details?.contact_details
+                    ?.country_code || "NA"
+                }
+                fromInfo={true}
+              />
+              <View
+                style={{
+                  borderTopWidth: SW(1),
+                  borderTopColor: primaryColors.gray[200],
+                  width: "100%",
+                }}
+              />
+              <ProjectInfoCardItem
+                label={"Email"}
+                value={
+                  clientDetails?.client_details?.contact_details?.email || "NA"
+                }
+              />
+              <View
+                style={{
+                  borderTopWidth: SW(1),
+                  borderTopColor: primaryColors.gray[200],
+                  width: "100%",
+                }}
+              />
+              <ProjectInfoCardItem
+                label={"Address"}
+                value={
+                  clientDetails?.address_details?.address_line_1 +
+                    " " +
+                    clientDetails?.address_details?.address_line_2 || "NA"
+                }
+              />
+              <View
+                style={{
+                  borderTopWidth: SW(1),
+                  borderTopColor: primaryColors.gray[200],
+                  width: "100%",
+                }}
+              />
+              <ProjectInfoCardItem
+                label={"City"}
+                value={clientDetails?.address_details?.city || "NA"}
+              />
+              <View
+                style={{
+                  borderTopWidth: SW(1),
+                  borderTopColor: primaryColors.gray[200],
+                  width: "100%",
+                }}
+              />
+              <ProjectInfoCardItem
+                label={"State"}
+                value={clientDetails?.address_details?.state || "NA"}
+              />
+              <View
+                style={{
+                  borderTopWidth: SW(1),
+                  borderTopColor: primaryColors.gray[200],
+                  width: "100%",
+                }}
+              />
+              <ProjectInfoCardItem
+                label={"PIN Code"}
+                value={clientDetails?.address_details?.pincode || "NA"}
+              />
+              <View
+                style={{
+                  borderTopWidth: SW(1),
+                  borderTopColor: primaryColors.gray[200],
+                  width: "100%",
+                }}
+              />
+              <ProjectInfoCardItem
+                label={"Location"}
+                value={clientDetails?.address_details?.location || "NA"}
+                location={true}
+              />
+            </View>
+            <LeadAdditionalFields
+              additionalFields={clientDetails.additional_field_items}
+              editProjectFunctions={editProjectFunctions}
             />
-            <CallWhatsappPopover
-              value={
-                clientDetails?.client_details?.contact_details?.phone || "NA"
-              }
-              code={
-                clientDetails?.client_details?.contact_details?.country_code ||
-                "NA"
-              }
+            <ItemSeparatorComponent
+              direction={"horizontal"}
+              style={{ opacity: 0 }}
             />
-            <View
-              style={{
-                borderTopWidth: SW(1),
-                borderTopColor: primaryColors.gray[200],
-                width: "100%",
-              }}
-            />
-            <ProjectInfoCardItem
-              label={"Email"}
-              value={
-                clientDetails?.client_details?.contact_details?.email || "NA"
-              }
-            />
-            <View
-              style={{
-                borderTopWidth: SW(1),
-                borderTopColor: primaryColors.gray[200],
-                width: "100%",
-              }}
-            />
-            <ProjectInfoCardItem
-              label={"Address"}
-              value={
-                clientDetails?.address_details?.address_line_1 +
-                  " " +
-                  clientDetails?.address_details?.address_line_2 || "NA"
-              }
-            />
-            <View
-              style={{
-                borderTopWidth: SW(1),
-                borderTopColor: primaryColors.gray[200],
-                width: "100%",
-              }}
-            />
-            <ProjectInfoCardItem
-              label={"City"}
-              value={clientDetails?.address_details?.city || "NA"}
-            />
-            <View
-              style={{
-                borderTopWidth: SW(1),
-                borderTopColor: primaryColors.gray[200],
-                width: "100%",
-              }}
-            />
-            <ProjectInfoCardItem
-              label={"State"}
-              value={clientDetails?.address_details?.state || "NA"}
-            />
-            <View
-              style={{
-                borderTopWidth: SW(1),
-                borderTopColor: primaryColors.gray[200],
-                width: "100%",
-              }}
-            />
-            <ProjectInfoCardItem
-              label={"PIN Code"}
-              value={clientDetails?.address_details?.pincode || "NA"}
-            />
-            <View
-              style={{
-                borderTopWidth: SW(1),
-                borderTopColor: primaryColors.gray[200],
-                width: "100%",
-              }}
-            />
-            <ProjectInfoCardItem
-              label={"Location"}
-              value={clientDetails?.address_details?.location || "NA"}
-              location={true}
-            />
-          </View>
-          <ItemSeparatorComponent
-            direction={"horizontal"}
-            style={{ opacity: 0 }}
-          />
-        </>
-      )}
-    </ScrollView>
+          </>
+        )}
+      </ScrollView>
+    </>
   );
 };
 export default ProjectInfo;

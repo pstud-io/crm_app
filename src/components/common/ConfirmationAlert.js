@@ -49,21 +49,15 @@ const ConfirmationAlert = ({
             style={[
               styles.buttonsView,
               requestPickupModal && styles.requestbuttonsView,
+              { gap: 16 },
             ]}
           >
             {renderCancelButton && (
-              <Button
-                title="Cancel"
-                onPress={onCancelPress}
-                buttonStyle={styles.cancelButton}
-                containerStyle={{ marginRight: SW(10) }}
-                titleStyle={{ color: Colors.black_text_color }}
-              />
+              <Button label="Cancel" onPress={onCancelPress} themeInverse />
             )}
             <Button
-              title={requestPickupModal ? "Confirm" : "Okay"}
+              label={requestPickupModal ? "Confirm" : "Log Out"}
               onPress={onOkayPress}
-              buttonStyle={styles.okayButton}
               loading={loading}
             />
           </View>

@@ -103,7 +103,7 @@ const DateTimePickerPopover = ({
             display={"inline"}
             minimumDate={minDate}
             maximumDate={maxDate}
-            onChange={(event, date) => {
+            onValueChange={(event, date) => {
               if (date) {
                 setDate(date);
               }
@@ -119,7 +119,7 @@ const DateTimePickerPopover = ({
               transform: [{ translateX: -SW(8) }],
             }}
             display={"spinner"}
-            onChange={
+            onValueChange={
               onChange
                 ? onChange
                 : (event, time) => {

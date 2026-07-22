@@ -8,17 +8,16 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
 import BottomSheet, {
   BottomSheetScrollView,
   BottomSheetBackdrop,
+  BottomSheetModal,
 } from "@gorhom/bottom-sheet";
-import { forwardRef, useEffect, useRef, useState } from "react";
-// import { addProjectBottomSheetRef } from "./AddProjectBottomSheetService";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { Colors, SF, SW, SH } from "../../../utils";
-import PhoneInput, {
-  getAllCountries,
-} from "react-native-international-phone-number";
+import PhoneInput, { getAllCountries } from "rn-international-phone-number";
 import { Dropdown } from "react-native-element-dropdown";
 import {
   AddOutlineIcon,
@@ -29,12 +28,9 @@ import {
 } from "../../../svg";
 import { useSelector } from "react-redux";
 import apiEndpoint from "../../../config/apiConfig";
-import { closeAddProjectBottomSheet } from "./AddProjectBottomSheetService";
 import axios from "axios";
 import * as Location from "expo-location";
-import { ActivityIndicator } from "react-native-paper";
 import { useDispatch } from "react-redux";
-import { setSelectedProject } from "../../../store/slices/projectSlice";
 import { useNavigation } from "@react-navigation/native";
 import { useAddProjectEndpoints } from "./hooks/useAddProjectEndpoints";
 import { RenderDataForDropdown } from "../../UI/GeneralComponents/RenderDataForDropdown";
@@ -47,10 +43,17 @@ import Toast from "react-native-toast-message";
 import { useKeyboard } from "@react-native-community/hooks";
 import useKeyboardStatus from "../../../hooks/useKeyboardStatus";
 import { useGeneralEndpoints } from "../../../hooks/useGeneralEndpoints";
+import { setSelectedProject } from "@/store/slices/projectSlice/projectSlice";
+import {
+  addProjectBottomSheetRef,
+  closeAddProjectBottomSheet,
+} from "@/screens/dashboard/utils/addProjectBottomSheetService";
 
-const AddProject = forwardRef((props, ref) => {
-  const addProjectBottomSheetRef = props.addProjectBottomSheetRef;
-  const closeAddProjectBottomSheet = props.closeAddProjectBottomSheet;
+function AddProject() {
+  console.log("AddProject mounted", addProjectBottomSheetRef);
+  useEffect(() => {
+    console.log("BottomSheet ref:", addProjectBottomSheetRef.current);
+  }, []);
   const allCountries = getAllCountries();
   const defaultCountry = allCountries.find((country) => country.cioc === "IND");
   const { triggerAutomation } = useGeneralEndpoints();
@@ -102,12 +105,6 @@ const AddProject = forwardRef((props, ref) => {
   const navigation = useNavigation();
 
   const { getClientsForDropdown } = useAddProjectEndpoints();
-
-  // useEffect(() => {
-  //   getClientsForDropdown(loading, setLoading, setClientDetails);
-  //   getStatesForDropdown();
-  //   getStagesForDropdown();
-  // }, []);
 
   const getStatesForDropdown = async () => {
     setLoading({ ...loading, getStatesForDropdown: true });
@@ -278,7 +275,7 @@ const AddProject = forwardRef((props, ref) => {
   };
 
   const openAddClientBottomSheet = () => {
-    addClientBottomSheetRef.current?.expand();
+    addClientBottomSheetRef.current?.present();
   };
 
   function handlePhoneInputValue(phoneNumber) {
@@ -432,7 +429,7 @@ const AddProject = forwardRef((props, ref) => {
 
       if (response.status >= 200 && response.status < 300) {
         const newClient = response.data.result;
-        addClientBottomSheetRef.current?.close();
+        addClientBottomSheetRef.current?.dismiss();
         await getClientsForDropdown(loading, setLoading, setClientDetails);
         setClient(newClient.id);
       }
@@ -550,9 +547,9 @@ const AddProject = forwardRef((props, ref) => {
 
   return (
     <>
-      <BottomSheet
+      <BottomSheetModal
         ref={addProjectBottomSheetRef}
-        index={-1} // hidden by default
+        // index={-1} // hidden by default
         snapPoints={isKeyboardVisible ? ["100%"] : ["75%"]}
         enableOverDrag={false}
         enableContentPanningGesture={false}
@@ -560,6 +557,7 @@ const AddProject = forwardRef((props, ref) => {
         enableBlurKeyboardOnGesture={false}
         enableHandlePanningGesture={true}
         enablePanDownToClose={true}
+        stackBehavior="push"
         onChange={async (index) => {
           if (index < 0) {
             Keyboard.dismiss();
@@ -634,204 +632,34 @@ const AddProject = forwardRef((props, ref) => {
             onPress={Keyboard.dismiss}
             accessible={false}
           >
-            {activeForm === "Details" ? (
-              <>
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    flex: 1,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: SW(8),
-                  }}
-                >
+            <View style={{ width: "100%", gap: 16 }}>
+              {activeForm === "Details" ? (
+                <>
                   <View
                     style={{
                       display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "flex-start",
-                      alignItems: "flex-start",
+                      flexDirection: "row",
                       flex: 1,
-                      gap: SH(6),
-                    }}
-                  >
-                    <Text style={formElementsStyles.titleStyle}>Client *</Text>
-                    <Dropdown
-                      mode="modal"
-                      iconStyle={{ display: "none" }}
-                      activeColor="transparent"
-                      style={formElementsStyles.triggerStyle}
-                      placeholderStyle={formElementsStyles.placeholderStyle} // Placeholder font
-                      itemContainerStyle={
-                        formElementsStyles.dropdownOptionsItemContainerStyle
-                      }
-                      selectedTextStyle={formElementsStyles.valueStyle}
-                      containerStyle={
-                        formElementsStyles.dropdownOptionsContainerStyle
-                      }
-                      showsVerticalScrollIndicator={false}
-                      data={clientDetails}
-                      labelField={
-                        !loading.getClientsForDropdown && "contact_details.name"
-                      }
-                      valueField="id"
-                      searchField="contact_details.name"
-                      placeholder={
-                        loading.getClientsForDropdown
-                          ? "Fetching Clients..."
-                          : "Select Client"
-                      }
-                      value={loading.getClientsForDropdown ? "" : client}
-                      search
-                      searchPlaceholder="Search Client"
-                      inputSearchStyle={
-                        formElementsStyles.dropdownOptionsSearchStyle
-                      }
-                      searchPlaceholderTextColor={
-                        formElementsStyles.placeholderColor
-                      }
-                      renderItem={(item, isSelected) => (
-                        <RenderDataForDropdown
-                          itemName={item.contact_details.name}
-                          isSelected={isSelected}
-                        />
-                      )}
-                      autoScroll={false}
-                      onChange={(item) => {
-                        setClient(item.id);
-                      }}
-                      renderRightIcon={() =>
-                        loading.getClientsForDropdown ? (
-                          <ActivityIndicator
-                            size={12}
-                            color={Colors.gray_text_color}
-                          />
-                        ) : (
-                          <DownArrowOutlineIcon
-                            width={SH(17)}
-                            height={SH(17)}
-                          />
-                        )
-                      }
-                    />
-                  </View>
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
+                      alignItems: "center",
                       justifyContent: "center",
-                      alignItems: "flex-start",
-                      gap: SH(6),
-                      // backgroundColor: "#000",
-                      height: "100%",
+                      gap: SW(8),
                     }}
                   >
-                    <Text
-                      style={{
-                        fontFamily: "Inter-SemiBold",
-                        fontSize: SF(11),
-                        color: Colors.black_text_color,
-                      }}
-                    ></Text>
-                    <TouchableOpacity
-                      onPress={() => openAddClientBottomSheet()}
-                    >
-                      <Badge
-                        size={"lg"}
-                        color={badgeColors.blueGray}
-                        border={true}
-                        text={"Client"}
-                        iconLeft={
-                          <AddOutlineIcon
-                            fill={badgeColors.blueGray.text}
-                            width={SW(16)}
-                            height={SH(16)}
-                          />
-                        }
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View style={{ width: "100%" }}>
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "flex-start",
-                      alignItems: "flex-start",
-                      flex: 1,
-                      gap: SH(6),
-                    }}
-                  >
-                    <Text style={formElementsStyles.titleStyle}>
-                      Lead Name *
-                    </Text>
-                    <TextInput
-                      placeholder="Enter Lead Name"
-                      onChangeText={setProjectName}
-                      defaultValue={projectName}
-                      style={[
-                        formElementsStyles.triggerStyle,
-                        formElementsStyles.valueStyle,
-                        formElementsStyles.inputContainerStyle,
-                        formElementsStyles.placeholderColor,
-                        formElementsStyles.bottomSheetInput,
-                      ]}
-                    />
-                  </View>
-                </View>
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    flex: 1,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: SW(8),
-                  }}
-                >
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "flex-start",
-                      alignItems: "flex-start",
-                      flex: 1,
-                      gap: SH(6),
-                    }}
-                  >
-                    <Text style={formElementsStyles.titleStyle}>Budget</Text>
-                    <TextInput
-                      placeholder="Enter Budget"
-                      keyboardType="numeric"
-                      onChangeText={setBudget}
-                      maxLength={10}
-                      defaultValue={budget}
-                      style={[
-                        formElementsStyles.triggerStyle,
-                        formElementsStyles.valueStyle,
-                        formElementsStyles.inputContainerStyle,
-                        formElementsStyles.placeholderColor,
-                        formElementsStyles.bottomSheetInput,
-                      ]}
-                    />
-                  </View>
-                  {false && (
                     <View
                       style={{
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "flex-start",
                         alignItems: "flex-start",
-                        gap: 5,
                         flex: 1,
+                        gap: SH(6),
                       }}
                     >
                       <Text style={formElementsStyles.titleStyle}>
-                        Lead Stage
+                        Client *
                       </Text>
                       <Dropdown
+                        mode="modal"
                         iconStyle={{ display: "none" }}
                         activeColor="transparent"
                         style={formElementsStyles.triggerStyle}
@@ -843,18 +671,22 @@ const AddProject = forwardRef((props, ref) => {
                         containerStyle={
                           formElementsStyles.dropdownOptionsContainerStyle
                         }
-                        data={allProjectStages}
-                        labelField={!loading.getStagesForDropdown && "name"}
-                        valueField="id"
-                        searchField="name"
-                        placeholder={
-                          loading.getStagesForDropdown
-                            ? "Fetching Stages..."
-                            : "Select Stage"
+                        showsVerticalScrollIndicator={false}
+                        data={clientDetails}
+                        labelField={
+                          !loading.getClientsForDropdown &&
+                          "contact_details.name"
                         }
-                        value={projectStage}
+                        valueField="id"
+                        searchField="contact_details.name"
+                        placeholder={
+                          loading.getClientsForDropdown
+                            ? "Fetching Clients..."
+                            : "Select Client"
+                        }
+                        value={loading.getClientsForDropdown ? "" : client}
                         search
-                        searchPlaceholder="Search Stage"
+                        searchPlaceholder="Search Client"
                         inputSearchStyle={
                           formElementsStyles.dropdownOptionsSearchStyle
                         }
@@ -863,15 +695,16 @@ const AddProject = forwardRef((props, ref) => {
                         }
                         renderItem={(item, isSelected) => (
                           <RenderDataForDropdown
+                            itemName={item.contact_details.name}
                             isSelected={isSelected}
-                            itemName={item.name}
                           />
                         )}
-                        onChange={async (item) => {
-                          setProjectStage(item.id);
+                        autoScroll={false}
+                        onChange={(item) => {
+                          setClient(item.id);
                         }}
                         renderRightIcon={() =>
-                          loading.getStagesForDropdown ? (
+                          loading.getClientsForDropdown ? (
                             <ActivityIndicator
                               size={12}
                               color={Colors.gray_text_color}
@@ -885,348 +718,536 @@ const AddProject = forwardRef((props, ref) => {
                         }
                       />
                     </View>
-                  )}
-                </View>
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "flex-start",
-                    alignItems: "flex-start",
-                    flex: 1,
-                    gap: SH(6),
-                    width: "100%",
-                  }}
-                >
-                  <Text style={formElementsStyles.titleStyle}>Description</Text>
-                  <TextInput
-                    defaultValue={note}
-                    onChangeText={setNote}
-                    placeholder="Enter Description"
-                    multiline
-                    numberOfLines={4}
-                    style={[
-                      formElementsStyles.triggerStyle,
-                      formElementsStyles.valueStyle,
-                      formElementsStyles.inputContainerStyle,
-                      formElementsStyles.placeholderColor,
-                      formElementsStyles.bottomSheetDescription,
-                    ]}
-                  />
-                </View>
-              </>
-            ) : (
-              <>
-                <View style={{ width: "100%" }}>
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "flex-start",
-                      alignItems: "flex-start",
-                      flex: 1,
-                      gap: SH(6),
-                    }}
-                  >
-                    <Text style={formElementsStyles.titleStyle}>
-                      Address Line 1
-                    </Text>
-                    <TextInput
-                      placeholder="Enter Address"
-                      onChangeText={setAddressLine1}
-                      defaultValue={addressLine1}
-                      style={[
-                        formElementsStyles.triggerStyle,
-                        formElementsStyles.valueStyle,
-                        formElementsStyles.inputContainerStyle,
-                        formElementsStyles.placeholderColor,
-                        formElementsStyles.bottomSheetInput,
-                      ]}
-                    />
-                  </View>
-                </View>
-                <View style={{ width: "100%" }}>
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "flex-start",
-                      alignItems: "flex-start",
-                      flex: 1,
-                      gap: SH(6),
-                    }}
-                  >
-                    <Text style={formElementsStyles.titleStyle}>
-                      Address Line 2
-                    </Text>
-                    <TextInput
-                      placeholder="Enter Address"
-                      onChangeText={setAddressLine2}
-                      defaultValue={addressLine2}
-                      style={[
-                        formElementsStyles.triggerStyle,
-                        formElementsStyles.valueStyle,
-                        formElementsStyles.inputContainerStyle,
-                        formElementsStyles.placeholderColor,
-                        formElementsStyles.bottomSheetInput,
-                      ]}
-                    />
-                  </View>
-                </View>
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    flex: 1,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: SH(12),
-                  }}
-                >
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "flex-start",
-                      alignItems: "flex-start",
-                      flex: 1,
-                      width: "100%",
-                      gap: SH(6),
-                    }}
-                  >
-                    <Text style={formElementsStyles.titleStyle}>State *</Text>
-                    <Dropdown
-                      iconStyle={{ display: "none" }}
-                      mode="modal"
-                      activeColor="transparent"
-                      style={formElementsStyles.triggerStyle}
-                      placeholderStyle={formElementsStyles.placeholderStyle} // Placeholder font
-                      itemContainerStyle={
-                        formElementsStyles.dropdownOptionsItemContainerStyle
-                      }
-                      selectedTextStyle={formElementsStyles.valueStyle}
-                      containerStyle={
-                        formElementsStyles.dropdownOptionsContainerStyle
-                      }
-                      data={allStates}
-                      labelField={!loading.getStatesForDropdown && "name"}
-                      valueField={"id"}
-                      searchField="name"
-                      placeholder={
-                        loading.getStatesForDropdown
-                          ? "Fetching States..."
-                          : "Select State"
-                      }
-                      value={loading.getStatesForDropdown ? "" : selectedState}
-                      search
-                      searchPlaceholder="Search State"
-                      inputSearchStyle={
-                        formElementsStyles.dropdownOptionsSearchStyle
-                      }
-                      searchPlaceholderTextColor={
-                        formElementsStyles.placeholderColor
-                      }
-                      renderItem={(item, isSelected) => (
-                        <RenderDataForDropdown
-                          itemName={item.name}
-                          isSelected={isSelected}
-                        />
-                      )}
-                      autoScroll={false}
-                      showsVerticalScrollIndicator={false}
-                      onChange={async (item) => {
-                        setSelectedState(item.id);
-                        await getCitiesForDropdown(item.id);
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "flex-start",
+                        gap: SH(6),
+                        // backgroundColor: "#000",
+                        height: "100%",
                       }}
-                      renderRightIcon={() =>
-                        loading.getStatesForDropdown ? (
-                          <ActivityIndicator
-                            size={12}
-                            color={Colors.gray_text_color}
-                          />
-                        ) : (
-                          <DownArrowOutlineIcon
-                            width={SH(17)}
-                            height={SH(17)}
-                          />
-                        )
-                      }
-                    />
-                  </View>
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "flex-start",
-                      alignItems: "flex-start",
-                      gap: SH(6),
-                      flex: 1,
-                    }}
-                  >
-                    <Text style={formElementsStyles.titleStyle}>City</Text>
-                    <Dropdown
-                      iconStyle={{ display: "none" }}
-                      mode="modal"
-                      activeColor="transparent"
-                      style={formElementsStyles.triggerStyle}
-                      placeholderStyle={formElementsStyles.placeholderStyle} // Placeholder font
-                      itemContainerStyle={
-                        formElementsStyles.dropdownOptionsItemContainerStyle
-                      }
-                      selectedTextStyle={formElementsStyles.valueStyle}
-                      containerStyle={
-                        formElementsStyles.dropdownOptionsContainerStyle
-                      }
-                      data={allCities}
-                      labelField={!loading.getCitiesForDropdown && "name"}
-                      valueField="id"
-                      searchField="name"
-                      placeholder={
-                        loading.getCitiesForDropdown
-                          ? "Fetching Cities..."
-                          : "Select City"
-                      }
-                      value={loading.getCitiesForDropdown ? "" : selectedCity}
-                      search
-                      showsVerticalScrollIndicator={false}
-                      searchPlaceholder="Search City"
-                      inputSearchStyle={
-                        formElementsStyles.dropdownOptionsSearchStyle
-                      }
-                      searchPlaceholderTextColor={
-                        formElementsStyles.placeholderColor
-                      }
-                      renderItem={(item, isSelected) => (
-                        <RenderDataForDropdown
-                          itemName={item.name}
-                          isSelected={isSelected}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: "Inter-SemiBold",
+                          fontSize: SF(11),
+                          color: Colors.black_text_color,
+                        }}
+                      ></Text>
+                      <TouchableOpacity
+                        onPress={() => openAddClientBottomSheet()}
+                      >
+                        <Badge
+                          size={"lg"}
+                          color={badgeColors.blueGray}
+                          border={true}
+                          text={"Client"}
+                          iconLeft={
+                            <AddOutlineIcon
+                              fill={badgeColors.blueGray.text}
+                              width={SW(16)}
+                              height={SH(16)}
+                            />
+                          }
                         />
-                      )}
-                      autoScroll={false}
-                      onChange={async (item) => {
-                        setSelectedCity(item.id);
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                  <View style={{ width: "100%" }}>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "flex-start",
+                        alignItems: "flex-start",
+                        flex: 1,
+                        gap: SH(6),
                       }}
-                      renderRightIcon={() =>
-                        loading.getCitiesForDropdown ? (
-                          <ActivityIndicator
-                            size={12}
-                            color={Colors.gray_text_color}
-                          />
-                        ) : (
-                          <DownArrowOutlineIcon
-                            width={SH(17)}
-                            height={SH(17)}
-                          />
-                        )
-                      }
-                    />
+                    >
+                      <Text style={formElementsStyles.titleStyle}>
+                        Lead Name *
+                      </Text>
+                      <TextInput
+                        placeholder="Enter Lead Name"
+                        onChangeText={setProjectName}
+                        defaultValue={projectName}
+                        style={[
+                          formElementsStyles.triggerStyle,
+                          formElementsStyles.valueStyle,
+                          formElementsStyles.inputContainerStyle,
+                          formElementsStyles.bottomSheetInput,
+                        ]}
+                        placeholderTextColor={
+                          formElementsStyles.placeholderColor
+                        }
+                      />
+                    </View>
                   </View>
-                </View>
-                <View style={{ width: "100%" }}>
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "flex-start",
-                      alignItems: "flex-start",
-                      flex: 1,
-                      gap: SH(6),
-                    }}
-                  >
-                    <Text style={formElementsStyles.titleStyle}>PIN Code</Text>
-                    <TextInput
-                      placeholder="Enter PIN Code"
-                      keyboardType="numeric"
-                      onChangeText={setPinCode}
-                      maxLength={6}
-                      defaultValue={pinCode}
-                      style={[
-                        formElementsStyles.triggerStyle,
-                        formElementsStyles.valueStyle,
-                        formElementsStyles.inputContainerStyle,
-                        formElementsStyles.placeholderColor,
-                        formElementsStyles.bottomSheetInput,
-                      ]}
-                    />
-                  </View>
-                </View>
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "flex-start",
-                    alignItems: "flex-start",
-                    flex: 1,
-                    gap: SH(6),
-                    marginBottom: SH(16),
-                  }}
-                >
-                  <Text style={formElementsStyles.titleStyle}>Location</Text>
                   <View
                     style={{
                       display: "flex",
                       flexDirection: "row",
+                      flex: 1,
                       alignItems: "center",
                       justifyContent: "center",
-                      gap: 4,
+                      gap: SW(8),
+                    }}
+                  >
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "flex-start",
+                        alignItems: "flex-start",
+                        flex: 1,
+                        gap: SH(6),
+                      }}
+                    >
+                      <Text style={formElementsStyles.titleStyle}>Budget</Text>
+                      <TextInput
+                        placeholder="Enter Budget"
+                        keyboardType="numeric"
+                        onChangeText={setBudget}
+                        maxLength={10}
+                        defaultValue={budget}
+                        style={[
+                          formElementsStyles.triggerStyle,
+                          formElementsStyles.valueStyle,
+                          formElementsStyles.inputContainerStyle,
+                          formElementsStyles.bottomSheetInput,
+                        ]}
+                        placeholderTextColor={
+                          formElementsStyles.placeholderColor
+                        }
+                      />
+                    </View>
+                    {false && (
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "flex-start",
+                          alignItems: "flex-start",
+                          gap: 5,
+                          flex: 1,
+                        }}
+                      >
+                        <Text style={formElementsStyles.titleStyle}>
+                          Lead Stage
+                        </Text>
+                        <Dropdown
+                          iconStyle={{ display: "none" }}
+                          activeColor="transparent"
+                          style={formElementsStyles.triggerStyle}
+                          placeholderStyle={formElementsStyles.placeholderStyle} // Placeholder font
+                          itemContainerStyle={
+                            formElementsStyles.dropdownOptionsItemContainerStyle
+                          }
+                          selectedTextStyle={formElementsStyles.valueStyle}
+                          containerStyle={
+                            formElementsStyles.dropdownOptionsContainerStyle
+                          }
+                          data={allProjectStages}
+                          labelField={!loading.getStagesForDropdown && "name"}
+                          valueField="id"
+                          searchField="name"
+                          placeholder={
+                            loading.getStagesForDropdown
+                              ? "Fetching Stages..."
+                              : "Select Stage"
+                          }
+                          value={projectStage}
+                          search
+                          searchPlaceholder="Search Stage"
+                          inputSearchStyle={
+                            formElementsStyles.dropdownOptionsSearchStyle
+                          }
+                          searchPlaceholderTextColor={
+                            formElementsStyles.placeholderColor
+                          }
+                          renderItem={(item, isSelected) => (
+                            <RenderDataForDropdown
+                              isSelected={isSelected}
+                              itemName={item.name}
+                            />
+                          )}
+                          onChange={async (item) => {
+                            setProjectStage(item.id);
+                          }}
+                          renderRightIcon={() =>
+                            loading.getStagesForDropdown ? (
+                              <ActivityIndicator
+                                size={12}
+                                color={Colors.gray_text_color}
+                              />
+                            ) : (
+                              <DownArrowOutlineIcon
+                                width={SH(17)}
+                                height={SH(17)}
+                              />
+                            )
+                          }
+                        />
+                      </View>
+                    )}
+                  </View>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "flex-start",
+                      alignItems: "flex-start",
+                      flex: 1,
+                      gap: SH(6),
                       width: "100%",
                     }}
                   >
+                    <Text style={formElementsStyles.titleStyle}>
+                      Description
+                    </Text>
                     <TextInput
-                      placeholder={
-                        loading.getLocation
-                          ? "Fetching Current Location..."
-                          : "Enter Location"
-                      }
-                      onChangeText={(newText) => {
-                        if (!loading.getLocation) {
-                          setLocation(newText);
-                        }
-                      }}
-                      defaultValue={location}
+                      defaultValue={note}
+                      onChangeText={setNote}
+                      placeholder="Enter Description"
+                      multiline
+                      numberOfLines={4}
                       style={[
                         formElementsStyles.triggerStyle,
                         formElementsStyles.valueStyle,
                         formElementsStyles.inputContainerStyle,
-                        formElementsStyles.placeholderColor,
-                        formElementsStyles.bottomSheetInput,
+                        formElementsStyles.bottomSheetDescription,
                       ]}
+                      placeholderTextColor={formElementsStyles.placeholderColor}
                     />
-                    <TouchableOpacity
-                      activeOpacity={0.9}
+                  </View>
+                </>
+              ) : (
+                <>
+                  <View style={{ width: "100%" }}>
+                    <View
                       style={{
                         display: "flex",
-                        justifyContent: "center",
-                        position: "absolute",
-                        right: 14,
-                        backgroundColor: "white",
-                        height: SH(42),
-                        paddidngRight: SW(40),
-                        paddingLeft: SW(8),
-                        alignItems: "center",
-                      }}
-                      onPress={() => {
-                        !loading.getLocation && fetchLocation();
+                        flexDirection: "column",
+                        justifyContent: "flex-start",
+                        alignItems: "flex-start",
+                        flex: 1,
+                        gap: SH(6),
                       }}
                     >
-                      {loading.getLocation ? (
-                        <ActivityIndicator
-                          size={12}
-                          color={Colors.gray_text_color}
-                        />
-                      ) : (
-                        <LocationOutline
-                          width={16}
-                          height={16}
-                          stroke={Colors.gray_text_color}
-                          strokeWidth={1.5}
-                        />
-                      )}
-                    </TouchableOpacity>
+                      <Text style={formElementsStyles.titleStyle}>
+                        Address Line 1
+                      </Text>
+                      <TextInput
+                        placeholder="Enter Address"
+                        onChangeText={setAddressLine1}
+                        defaultValue={addressLine1}
+                        style={[
+                          formElementsStyles.triggerStyle,
+                          formElementsStyles.valueStyle,
+                          formElementsStyles.inputContainerStyle,
+                          formElementsStyles.bottomSheetInput,
+                        ]}
+                        placeholderTextColor={
+                          formElementsStyles.placeholderColor
+                        }
+                      />
+                    </View>
                   </View>
-                </View>
-              </>
-            )}
+                  <View style={{ width: "100%" }}>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "flex-start",
+                        alignItems: "flex-start",
+                        flex: 1,
+                        gap: SH(6),
+                      }}
+                    >
+                      <Text style={formElementsStyles.titleStyle}>
+                        Address Line 2
+                      </Text>
+                      <TextInput
+                        placeholder="Enter Address"
+                        onChangeText={setAddressLine2}
+                        defaultValue={addressLine2}
+                        style={[
+                          formElementsStyles.triggerStyle,
+                          formElementsStyles.valueStyle,
+                          formElementsStyles.inputContainerStyle,
+                          formElementsStyles.bottomSheetInput,
+                        ]}
+                        placeholderTextColor={
+                          formElementsStyles.placeholderColor
+                        }
+                      />
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      flex: 1,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: SH(12),
+                    }}
+                  >
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "flex-start",
+                        alignItems: "flex-start",
+                        flex: 1,
+                        width: "100%",
+                        gap: SH(6),
+                      }}
+                    >
+                      <Text style={formElementsStyles.titleStyle}>State *</Text>
+                      <Dropdown
+                        iconStyle={{ display: "none" }}
+                        mode="modal"
+                        activeColor="transparent"
+                        style={formElementsStyles.triggerStyle}
+                        placeholderStyle={formElementsStyles.placeholderStyle} // Placeholder font
+                        itemContainerStyle={
+                          formElementsStyles.dropdownOptionsItemContainerStyle
+                        }
+                        selectedTextStyle={formElementsStyles.valueStyle}
+                        containerStyle={
+                          formElementsStyles.dropdownOptionsContainerStyle
+                        }
+                        data={allStates}
+                        labelField={!loading.getStatesForDropdown && "name"}
+                        valueField={"id"}
+                        searchField="name"
+                        placeholder={
+                          loading.getStatesForDropdown
+                            ? "Fetching States..."
+                            : "Select State"
+                        }
+                        value={
+                          loading.getStatesForDropdown ? "" : selectedState
+                        }
+                        search
+                        searchPlaceholder="Search State"
+                        inputSearchStyle={
+                          formElementsStyles.dropdownOptionsSearchStyle
+                        }
+                        searchPlaceholderTextColor={
+                          formElementsStyles.placeholderColor
+                        }
+                        renderItem={(item, isSelected) => (
+                          <RenderDataForDropdown
+                            itemName={item.name}
+                            isSelected={isSelected}
+                          />
+                        )}
+                        autoScroll={false}
+                        showsVerticalScrollIndicator={false}
+                        onChange={async (item) => {
+                          setSelectedState(item.id);
+                          await getCitiesForDropdown(item.id);
+                        }}
+                        renderRightIcon={() =>
+                          loading.getStatesForDropdown ? (
+                            <ActivityIndicator
+                              size={12}
+                              color={Colors.gray_text_color}
+                            />
+                          ) : (
+                            <DownArrowOutlineIcon
+                              width={SH(17)}
+                              height={SH(17)}
+                            />
+                          )
+                        }
+                      />
+                    </View>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "flex-start",
+                        alignItems: "flex-start",
+                        gap: SH(6),
+                        flex: 1,
+                      }}
+                    >
+                      <Text style={formElementsStyles.titleStyle}>City</Text>
+                      <Dropdown
+                        iconStyle={{ display: "none" }}
+                        mode="modal"
+                        activeColor="transparent"
+                        style={formElementsStyles.triggerStyle}
+                        placeholderStyle={formElementsStyles.placeholderStyle} // Placeholder font
+                        itemContainerStyle={
+                          formElementsStyles.dropdownOptionsItemContainerStyle
+                        }
+                        selectedTextStyle={formElementsStyles.valueStyle}
+                        containerStyle={
+                          formElementsStyles.dropdownOptionsContainerStyle
+                        }
+                        data={allCities}
+                        labelField={!loading.getCitiesForDropdown && "name"}
+                        valueField="id"
+                        searchField="name"
+                        placeholder={
+                          loading.getCitiesForDropdown
+                            ? "Fetching Cities..."
+                            : "Select City"
+                        }
+                        value={loading.getCitiesForDropdown ? "" : selectedCity}
+                        search
+                        showsVerticalScrollIndicator={false}
+                        searchPlaceholder="Search City"
+                        inputSearchStyle={
+                          formElementsStyles.dropdownOptionsSearchStyle
+                        }
+                        searchPlaceholderTextColor={
+                          formElementsStyles.placeholderColor
+                        }
+                        renderItem={(item, isSelected) => (
+                          <RenderDataForDropdown
+                            itemName={item.name}
+                            isSelected={isSelected}
+                          />
+                        )}
+                        autoScroll={false}
+                        onChange={async (item) => {
+                          setSelectedCity(item.id);
+                        }}
+                        renderRightIcon={() =>
+                          loading.getCitiesForDropdown ? (
+                            <ActivityIndicator
+                              size={12}
+                              color={Colors.gray_text_color}
+                            />
+                          ) : (
+                            <DownArrowOutlineIcon
+                              width={SH(17)}
+                              height={SH(17)}
+                            />
+                          )
+                        }
+                      />
+                    </View>
+                  </View>
+                  <View style={{ width: "100%" }}>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "flex-start",
+                        alignItems: "flex-start",
+                        flex: 1,
+                        gap: SH(6),
+                      }}
+                    >
+                      <Text style={formElementsStyles.titleStyle}>
+                        PIN Code
+                      </Text>
+                      <TextInput
+                        placeholder="Enter PIN Code"
+                        keyboardType="numeric"
+                        onChangeText={setPinCode}
+                        maxLength={6}
+                        defaultValue={pinCode}
+                        style={[
+                          formElementsStyles.triggerStyle,
+                          formElementsStyles.valueStyle,
+                          formElementsStyles.inputContainerStyle,
+                          formElementsStyles.bottomSheetInput,
+                        ]}
+                        placeholderTextColor={
+                          formElementsStyles.placeholderColor
+                        }
+                      />
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "flex-start",
+                      alignItems: "flex-start",
+                      flex: 1,
+                      gap: SH(6),
+                      marginBottom: SH(16),
+                    }}
+                  >
+                    <Text style={formElementsStyles.titleStyle}>Location</Text>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 4,
+                        width: "100%",
+                      }}
+                    >
+                      <TextInput
+                        placeholder={
+                          loading.getLocation
+                            ? "Fetching Current Location..."
+                            : "Enter Location"
+                        }
+                        onChangeText={(newText) => {
+                          if (!loading.getLocation) {
+                            setLocation(newText);
+                          }
+                        }}
+                        defaultValue={location}
+                        style={[
+                          formElementsStyles.triggerStyle,
+                          formElementsStyles.valueStyle,
+                          formElementsStyles.inputContainerStyle,
+                          formElementsStyles.bottomSheetInput,
+                        ]}
+                        placeholderTextColor={
+                          formElementsStyles.placeholderColor
+                        }
+                      />
+                      <TouchableOpacity
+                        activeOpacity={0.9}
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          position: "absolute",
+                          right: 14,
+                          backgroundColor: "white",
+                          height: SH(42),
+                          paddidngRight: SW(40),
+                          paddingLeft: SW(8),
+                          alignItems: "center",
+                        }}
+                        onPress={() => {
+                          !loading.getLocation && fetchLocation();
+                        }}
+                      >
+                        {loading.getLocation ? (
+                          <ActivityIndicator
+                            size={12}
+                            color={Colors.gray_text_color}
+                          />
+                        ) : (
+                          <LocationOutline
+                            width={16}
+                            height={16}
+                            stroke={Colors.gray_text_color}
+                            strokeWidth={1.5}
+                          />
+                        )}
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </>
+              )}
+            </View>
           </TouchableWithoutFeedback>
         </BottomSheetScrollView>
         <View
@@ -1267,10 +1288,10 @@ const AddProject = forwardRef((props, ref) => {
             }
           />
         </View>
-      </BottomSheet>
-      <BottomSheet
+      </BottomSheetModal>
+      <BottomSheetModal
         ref={addClientBottomSheetRef}
-        index={-1} // hidden by default
+        // index={-1} // hidden by default
         snapPoints={isKeyboardVisible ? ["100%"] : ["60%"]}
         enableOverDrag={false}
         enableContentPanningGesture={false}
@@ -1278,6 +1299,7 @@ const AddProject = forwardRef((props, ref) => {
         enableHandlePanningGesture={true}
         enablePanDownToClose={true}
         onClose={resetClientBottomSheet}
+        stackBehavior="push"
         onChange={(index) => {
           if (index < 0) {
             Keyboard.dismiss();
@@ -1307,7 +1329,7 @@ const AddProject = forwardRef((props, ref) => {
         >
           <Text style={formElementsStyles.titleStyle}>Client Details</Text>
           <TouchableOpacity
-            onPress={() => addClientBottomSheetRef.current?.close()}
+            onPress={() => addClientBottomSheetRef.current?.dismiss()}
           >
             <CloseOutlineIcon
               fill={Colors.black_text_color}
@@ -1346,7 +1368,7 @@ const AddProject = forwardRef((props, ref) => {
             onPress={Keyboard.dismiss}
             accessible={false}
           >
-            <>
+            <View style={{ gap: 16, width: "100%" }}>
               <View style={{ width: "100%" }}>
                 <View
                   style={{
@@ -1367,9 +1389,9 @@ const AddProject = forwardRef((props, ref) => {
                       formElementsStyles.triggerStyle,
                       formElementsStyles.valueStyle,
                       formElementsStyles.inputContainerStyle,
-                      formElementsStyles.placeholderColor,
                       formElementsStyles.bottomSheetInput,
                     ]}
+                    placeholderTextColor={formElementsStyles.placeholderColor}
                   />
                 </View>
               </View>
@@ -1393,9 +1415,9 @@ const AddProject = forwardRef((props, ref) => {
                       formElementsStyles.triggerStyle,
                       formElementsStyles.valueStyle,
                       formElementsStyles.inputContainerStyle,
-                      formElementsStyles.placeholderColor,
                       formElementsStyles.bottomSheetInput,
                     ]}
+                    placeholderTextColor={formElementsStyles.placeholderColor}
                   />
                 </View>
               </View>
@@ -1491,7 +1513,7 @@ const AddProject = forwardRef((props, ref) => {
                   />
                 </View>
               </View>
-            </>
+            </View>
           </TouchableWithoutFeedback>
         </BottomSheetScrollView>
         <View style={formElementsStyles.bottomButtonContainer}>
@@ -1513,8 +1535,8 @@ const AddProject = forwardRef((props, ref) => {
             }
           />
         </View>
-      </BottomSheet>
+      </BottomSheetModal>
     </>
   );
-});
-export default AddProject;
+}
+export default React.memo(AddProject);

@@ -1,51 +1,37 @@
 import { CommonHeader } from "@/components/CommonHeader";
 import { CommonHeaderWithProject } from "@/components/CommonHeaderWithProject";
 import { AddNote, ListNotes, NoteDetails } from "@/screens/Notes";
+import { ResetPassword } from "@/screens/Profile";
+import ProfileTab from "@/screens/Profile/Tab/ProfileTab";
 import {
   createNativeStackNavigator,
   NativeStackHeaderProps,
 } from "@react-navigation/native-stack";
 
-export const NotesStack = createNativeStackNavigator({
-  initialRouteName: "ListNotes",
+export const ProfileStack = createNativeStackNavigator({
+  initialRouteName: "ListProfile",
   screenOptions: {
     headerShown: false,
     headerTitle: undefined,
   },
   screens: {
-    ListNotes: {
-      linking: "list-notes",
-      screen: ListNotes,
-      initialParams: {
-        project: {
-          id: "",
-          project_name: "",
-        } as const,
-      },
+    ListProfile: {
+      linking: "",
+      screen: ProfileTab,
       options: {
         headerShown: true,
         header: (props: NativeStackHeaderProps) => (
-          <CommonHeaderWithProject {...props} title="Notes" />
+          <CommonHeader {...props} title="Profile" />
         ),
       },
     },
-    AddNote: {
-      linking: "add-note",
-      screen: AddNote,
+    ResetPassword: {
+      linking: "reset-password",
+      screen: ResetPassword,
       options: {
         headerShown: true,
         header: (props: NativeStackHeaderProps) => (
           <CommonHeader {...props} title="Add Note" />
-        ),
-      },
-    },
-    NoteDetails: {
-      linking: "note-details",
-      screen: NoteDetails,
-      options: {
-        headerShown: true,
-        header: (props: NativeStackHeaderProps) => (
-          <CommonHeader {...props} title="Note Details" />
         ),
       },
     },

@@ -133,8 +133,8 @@ export const useTaskUpdateOptions = ({
     },
   };
 
-  const stage = task.stage.toLowerCase();
-  const type = task.task_type.toLowerCase();
+  const stage = task?.stage?.toLowerCase();
+  const type = task?.task_type?.toLowerCase();
 
   if (stage === "created") {
     if (type === "request") {

@@ -9,6 +9,7 @@ import { generateTimestampString } from "../utils/noteUtils";
 import { useGeneralEndpoints } from "../../../hooks/useGeneralEndpoints";
 import { nanoid } from "@reduxjs/toolkit";
 import { useNavigation } from "@react-navigation/native";
+import { api } from "@/api/client";
 
 export const useNoteEndpoints = () => {
   const token = useSelector((state) => state.auth.token);
@@ -130,5 +131,21 @@ export const useNoteEndpoints = () => {
     }
   };
 
-  return { handleAddNote, getNotes };
+  const getSingleNote = async (note_id, setLoading, setNote) => {
+    setLoading((prev) => ({ ...prev, getSingleNote: true }));
+    try {
+      const response = await api.get(
+        `${apiEndpoint}/crm/notes/solo/?note_id=${note_id}`,
+      );
+      if (response.status >= 200 && response.status < 300) {
+        setNote(response.data.result);
+      }
+    } catch (error) {
+      console.error("Fetch Notes Error:", error);
+    } finally {
+      setLoading((prev) => ({ ...prev, getSingleNote: false }));
+    }
+  };
+
+  return { handleAddNote, getNotes, getSingleNote };
 };

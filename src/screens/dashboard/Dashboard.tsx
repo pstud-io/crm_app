@@ -15,20 +15,46 @@ import { useModulesData } from "@/hooks/useModulesData";
 import { useTheme } from "@/hooks/useTheme";
 import { Role } from "@/types/AuthTypes";
 import { StatusBar } from "expo-status-bar";
-import { View, Text, Button, ScrollView, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+  Keyboard,
+} from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import {
   UserNavigationProp,
   UserStackParamsList,
 } from "@/navigation/UserNavigation";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
+import AddProject from "@/components/common/AddProject/AddProject";
+import { ModuleSearchInput } from "@/components/ModuleSearchInput";
+import { Spacing } from "@/components";
+import { ListModules } from "./components/ListModules";
+import { SearchModules } from "./components/SearchModules";
+import { useDashboardEndpoints } from "./hooks/useDashboardEndpoints";
+import { usePaginatedSearch } from "@/hooks/usePaginatedSearch";
+import { CloseOutlineIcon } from "@/svg";
 export const Dashboard = () => {
-  const { isDark, theme } = useTheme();
-  const navigation = useNavigation<UserNavigationProp>();
-  const { pipelineData, actionsData } = useModulesData(navigation);
+  const { theme } = useTheme();
+  const { dashboardLoading, getAllData } = useDashboardEndpoints();
+  const [searchData, setSearchData] = useState<any>([]);
+  const [searching, setSearching] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const dashboardSearch = usePaginatedSearch<any>({
+    data: searchData,
+    setData: setSearchData,
+    getData: getAllData,
+    loading: dashboardLoading.getAllData,
+    pageSize: 10,
+    extraParams: {},
+  });
+
   useFocusEffect(
     useCallback(() => {
       dispatch(setActiveSubButtonGlobal("dashboard"));
@@ -36,103 +62,65 @@ export const Dashboard = () => {
   );
 
   return (
-    <ScrollView
-      style={[
-        ystack,
-        fullWidth,
-        fullHeight,
-        {
-          gap: spacing.lg,
-        },
-      ]}
-      contentContainerStyle={[
-        topCenter,
-        {
-          gap: spacing.lg,
-          paddingTop: spacing.max,
-          paddingBottom: spacing.extreme,
-        },
-      ]}
-    >
-      <View style={[ystack, topCenter, fullWidth]}>
-        <Text
-          style={[
-            fullWidth,
-            body.md.semiBold,
-            {
-              color: theme.text,
-              paddingHorizontal: spacing.lg,
-              gap: spacing.lg,
-            },
-          ]}
-        >
-          Pipeline
-        </Text>
-        <FlatList
-          keyExtractor={(item) => item.id}
-          data={pipelineData}
-          scrollEnabled={false}
-          style={[fullWidth, { paddingHorizontal: spacing.lg }]}
-          contentContainerStyle={{ paddingVertical: spacing.lg }}
-          renderItem={({ item }) => {
-            return (
-              <MenuItem
-                label={item.label}
-                leftIcon={item.icon}
-                hasRightIcon={true}
-                onPress={item.onPress}
-                leftIconTheme={{ background: "#000000", text: "#ffffff" }}
-                labelColor={theme.text}
-                rightIcon={null}
-              />
-            );
+    <>
+      <View
+        style={[
+          xstack,
+          fullWidth,
+          {
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: spacing.lg,
+            paddingTop: spacing.huge,
+            paddingHorizontal: spacing.lg,
+          },
+        ]}
+      >
+        <ModuleSearchInput
+          value={dashboardSearch.searchTerm}
+          onChangeText={async (text: string) => {
+            if (text === "") {
+              dashboardSearch.setSearchTerm(text);
+              setSearchData([]);
+              return;
+            }
+            dashboardSearch.onSearch(text);
           }}
-          showsVerticalScrollIndicator={false}
-          ItemSeparatorComponent={
-            <ItemSeparator direction="horizontal" opacity={0} />
-          }
-        />
-      </View>
-      <View style={[ystack, topCenter, fullWidth]}>
-        <Text
-          style={[
-            fullWidth,
-            body.md.semiBold,
-            {
-              color: theme.text,
-              paddingHorizontal: spacing.lg,
-              gap: spacing.lg,
-            },
-          ]}
-        >
-          Actions
-        </Text>
-        <FlatList
-          keyExtractor={(item) => item.id}
-          data={actionsData}
-          scrollEnabled={false}
-          style={[fullWidth, { paddingHorizontal: spacing.lg }]}
-          contentContainerStyle={{ paddingVertical: spacing.lg }}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => {
-            return (
-              <MenuItem
-                label={item.label}
-                leftIcon={item.icon}
-                hasRightIcon={true}
-                onPress={item.onPress}
-                leftIconTheme={{ background: "#000000", text: "#ffffff" }}
-                labelColor={theme.text}
-                rightIcon={null}
-              />
-            );
+          onFocus={() => {
+            setSearching(true);
           }}
-          ItemSeparatorComponent={
-            <ItemSeparator direction="horizontal" opacity={0} />
-          }
+          onBlur={() => {
+            setSearching(false);
+            dashboardSearch.setSearchTerm("");
+            setSearchData([]);
+          }}
+          placeholder={"Search leads, tasks, notes..."}
         />
+        {searching && (
+          <TouchableOpacity
+            onPress={() => {
+              dashboardSearch.setSearchTerm("");
+              setSearching(false);
+              setSearchData([]);
+              Keyboard.dismiss();
+            }}
+          >
+            <CloseOutlineIcon fill={theme.text} width={12} height={12} />
+          </TouchableOpacity>
+        )}
       </View>
-      <StatusBar style={isDark ? "light" : "dark"} />
-    </ScrollView>
+      {searching && (
+        <SearchModules
+          search={dashboardSearch.searchTerm}
+          searchData={searchData}
+          loading={dashboardLoading.getAllData}
+          onEndReached={dashboardSearch.onEndReached}
+          onRefresh={dashboardSearch.onRefresh}
+          refreshing={dashboardSearch.refreshing}
+        />
+      )}
+      {!searching && <ListModules />}
+      <AddProject />
+    </>
   );
 };

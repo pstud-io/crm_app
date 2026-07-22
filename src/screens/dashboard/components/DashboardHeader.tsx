@@ -12,10 +12,13 @@ import {
 import { spacing } from "@/design/spacing";
 import { body } from "@/design/typography";
 import { useTheme } from "@/hooks/useTheme";
+import { userNavigationRef } from "@/navigation/UserNavigation";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import UserOutline from "assets/icons/UserIcon";
-import { Text, View } from "react-native";
-
+import { Pressable, Text, View } from "react-native";
+import { StackActions } from "@react-navigation/native";
+import { NotificationBell } from "@/components";
+import { useIsFocused } from "@react-navigation/native";
 export const DashboardHeader = ({
   navigation,
   route,
@@ -23,6 +26,7 @@ export const DashboardHeader = ({
   back,
 }: NativeStackHeaderProps) => {
   const { theme } = useTheme();
+  const isFocused = useIsFocused();
   return (
     <View
       style={[
@@ -37,7 +41,7 @@ export const DashboardHeader = ({
       ]}
     >
       <View style={[xstack, grow, centerLeft, { gap: spacing.sm }]}>
-        <View
+        <Pressable
           style={[
             xstack,
             center,
@@ -48,6 +52,9 @@ export const DashboardHeader = ({
               borderRadius: borderRadius.md,
             },
           ]}
+          onPress={() => {
+            userNavigationRef.dispatch(StackActions.push("Profile"));
+          }}
         >
           <UserOutline
             width={width[16]}
@@ -56,7 +63,7 @@ export const DashboardHeader = ({
             stroke={theme.textInverse}
             fill={"none"}
           />
-        </View>
+        </Pressable>
         <View
           style={[
             ystack,
@@ -73,9 +80,18 @@ export const DashboardHeader = ({
           </Text>
         </View>
       </View>
-      {/* <View style={[xstack, grow, center]}>
-        <Text>hello</Text>
-      </View> */}
+      <Pressable
+        onPress={() =>
+          userNavigationRef.dispatch(StackActions.push("Notifications"))
+        }
+        style={{
+          position: "relative",
+          marginRight: 6,
+        }}
+      >
+        {/* @ts-ignore */}
+        <NotificationBell isFocused={isFocused} />
+      </Pressable>
     </View>
   );
 };

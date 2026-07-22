@@ -588,7 +588,7 @@ const EditTask = ({ navigation, route }) => {
 
       <View style={formElementsStyles.bottomButtonContainer}>
         <BottomButton
-          title={loading.updatingTask ? "Updating..." : "Update Task"}
+          title={loading.updatingTask ? "Updating..." : "Update"}
           onPress={handleUpdateTask}
           disabled={loading.updatingTask}
           icon={

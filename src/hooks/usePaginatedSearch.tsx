@@ -60,7 +60,7 @@ export function usePaginatedSearch<T, K extends object = {}>({
 
       debounceRef.current = setTimeout(async () => {
         setPage(1);
-        setHasMore(true);
+        // setHasMore(true);
         const controller = await createController();
         const res = await getData({
           data,

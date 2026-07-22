@@ -13,7 +13,7 @@ import { primaryColors } from "../UI/DesignSystem/colorPalette";
 import { SH, SW, SF } from "../../utils";
 import NotificationIcon from "../../svg/notification-bell";
 
-const NotificationBell = React.memo(() => {
+const NotificationBell = React.memo(({ isFocused }) => {
   const [unreadCount, setUnreadCount] = useState(0);
   const navigation = useNavigation();
 
@@ -49,12 +49,14 @@ const NotificationBell = React.memo(() => {
   };
 
   useEffect(() => {
-    fetchUnreadCount();
+    if (isFocused) {
+      fetchUnreadCount();
+    }
 
     // Optional: auto refresh every 1 min
     // const interval = setInterval(fetchUnreadCount, 300000);
     // return () => clearInterval(interval);
-  }, []);
+  }, [isFocused]);
 
   return (
     <>
@@ -83,6 +85,41 @@ const NotificationBell = React.memo(() => {
             }}
           >
             {unreadCount}
+          </Text>
+        </View>
+      )}
+      {unreadCount === 0 && (
+        <View
+          style={{
+            display: "flex",
+            minWidth: SH(24),
+            height: SH(12),
+            paddingHorizontal: SW(2),
+            backgroundColor: primaryColors.brand[1000],
+            borderRadius: SH(999),
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            top: SH(8),
+            right: -SW(10),
+            zIndex: 100,
+            opacity: 0,
+          }}
+        >
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: SF(8),
+              fontWeight: "700",
+              textAlign: "center",
+              includeFontPadding: false,
+              textAlignVertical: "center",
+              fontFamily: "Inter-Regular",
+              flexShrink: 0,
+            }}
+            numberOfLines={1}
+          >
+            {"222"}
           </Text>
         </View>
       )}

@@ -93,7 +93,7 @@ export const savePermissions = async (permissions, dispatch) => {
 };
 
 // Action to remove permissions from AsyncStorage and Redux store
-export const removePermissionsFromStorage = () => async (dispatch) => {
+export const removePermissionsFromStorage = async (dispatch) => {
   try {
     console.log("Removing Permissions from storage...");
     await AsyncStorage.removeItem("permissions"); // Remove permissions from AsyncStorage

@@ -39,13 +39,15 @@ const TaskDetails = ({ route }) => {
   const { autoOpenComments, fromLeads } = route.params || {};
   const { showActionSheetWithOptions } = useActionSheet();
   const [task, setTask] = useState({ ...route.params.task });
-  console.log("This is the task", task);
-  const taskId = task.id;
+  console.log("This is the task", route.params);
+  const taskId = task?.id;
   const completedStages = ["completed", "approved", "rejected", "discarded"];
   const profile = useSelector((state) => state.profile);
   const canEdit =
-    profile.is_admin || profile.name === task.creator_contact_details.name;
-  const canUpdateTask = !completedStages.includes(task.stage);
+    profile.is_admin || profile.name === task?.creator_contact_details.name;
+  const canUpdateTask = task?.stage
+    ? !completedStages.includes(task?.stage)
+    : false;
   const [userFieldsModal, setUserFieldsModal] = useState({
     visible: false,
     fields: [],
@@ -102,6 +104,7 @@ const TaskDetails = ({ route }) => {
     updatingTask: false,
     getComments: false,
     postComment: false,
+    getSingleTask: false,
   });
 
   const commentPostURL = `${apiEndpoint}/core/comments/?context_id=${taskId}&context_type=task`;
@@ -116,7 +119,9 @@ const TaskDetails = ({ route }) => {
 
   useFocusEffect(
     useCallback(() => {
+      console.log("Run task focus effect");
       getComments();
+      getSingleTask(loading, setLoading, taskId, setTask);
     }, []),
   );
 
@@ -207,6 +212,12 @@ const TaskDetails = ({ route }) => {
     }
   };
 
+  console.log("This is task stage", task.stage);
+
+  if (!task?.stage && loading.getSingleTask) {
+    return <ActivityIndicator />;
+  }
+
   return (
     <View
       style={{
@@ -291,15 +302,16 @@ const TaskDetails = ({ route }) => {
               }}
             />
           ))}
-        {activeSubButton === "media" && task.task_assets_details.length > 0 && (
-          <RenderMediaList
-            moduleAssets={task.task_assets_details}
-            assetsConverter={getMediaForMediaTab}
-          />
-        )}
+        {activeSubButton === "media" &&
+          task?.task_assets_details.length > 0 && (
+            <RenderMediaList
+              moduleAssets={task?.task_assets_details}
+              assetsConverter={getMediaForMediaTab}
+            />
+          )}
         {activeSubButton === "custom" && (
           <CustomFieldDetailView
-            customFieldItemDetails={task.custom_field_item_details}
+            customFieldItemDetails={task?.custom_field_item_details}
           />
         )}
       </ScrollView>
@@ -311,7 +323,7 @@ const TaskDetails = ({ route }) => {
         />
         {canUpdateTask && (
           <BottomButton
-            title={"Update Task"}
+            title={"Update"}
             onPress={async () => await handleUpdateTask()}
             type={"default"}
             disabled={loading.updatingTask}
@@ -324,7 +336,7 @@ const TaskDetails = ({ route }) => {
         )}
       </View>
       <NewCommentSheet
-        fk_project={task.fk_project}
+        fk_project={task?.fk_project}
         commentPostURL={commentPostURL}
         onPost={onRefresh}
       />
