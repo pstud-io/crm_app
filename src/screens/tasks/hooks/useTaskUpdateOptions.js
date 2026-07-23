@@ -16,6 +16,7 @@ export const useTaskUpdateOptions = ({
   onShowUserFields,
   onRefresh,
   popoverMenuRef,
+  onShowFolloupComplete,
 }) => {
   const profile = useSelector((state) => state.profile);
   const is_admin = profile.is_admin;
@@ -43,7 +44,15 @@ export const useTaskUpdateOptions = ({
         await onShowUserFields(emptyUserFields, originalOnPress);
       }, 250);
     } else {
-      await originalOnPress();
+      if (task.task_type === "followup") {
+        console.log("In followup if");
+        await popoverMenuRef.current.requestClose();
+        setTimeout(async () => {
+          await onShowFolloupComplete(task, originalOnPress);
+        }, 250);
+      } else {
+        await originalOnPress();
+      }
     }
   };
 

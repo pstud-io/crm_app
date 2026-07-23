@@ -2,22 +2,25 @@ import { FlatList } from "react-native";
 import { spacing } from "@/design/spacing";
 import { SubTabChip } from "@/components/SubTabChip";
 import { height } from "@/design/distance";
-import { SubButton, SubButtonId } from "@/screens/tasks/types/taskTypes";
 import { ItemSeparator } from "./ItemSeperator";
+import {
+  SubButtonId,
+  SubButtonTitle,
+} from "@/screens/search/types/searchTypes";
 
-interface SubTabBarProps {
-  data: readonly SubButton[];
-  activeTab: SubButtonId;
-  onTabPress: (id: SubButtonId) => void;
-  extraTitle: (title: string) => string | void;
+interface SubTabBarProps<T extends readonly { id: string; title: string }[]> {
+  data: T;
+  activeTab: SubButtonId<T>;
+  onTabPress: (id: SubButtonId<T>) => void;
+  extraTitle?: (title: SubButtonTitle<T>) => string | void;
 }
 
-export const SubTabBar = ({
+export function SubTabBar<T extends readonly { id: string; title: string }[]>({
   data,
   activeTab,
   onTabPress,
   extraTitle = () => {},
-}: SubTabBarProps) => {
+}: SubTabBarProps<T>) {
   return (
     <FlatList
       horizontal
@@ -45,4 +48,4 @@ export const SubTabBar = ({
       )}
     />
   );
-};
+}

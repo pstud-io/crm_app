@@ -1,5 +1,5 @@
 import { borderRadius } from "@/design/borders";
-import { center, xstack } from "@/design/layout";
+import { center, xstack, ystack } from "@/design/layout";
 import { heading } from "@/design/typography";
 import { useTheme } from "@/hooks/useTheme";
 import { Pressable, Text, View } from "react-native";
@@ -10,6 +10,8 @@ import { userNavigationRef } from "@/navigation/UserNavigation";
 import { handleNavigation } from "@/utils/handleNavigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { SearchOutline } from "@/svg";
+import { StackActions } from "@react-navigation/native";
 export const FloatingButtons = () => {
   const activeSubButtonGlobal = useSelector(
     (state: RootState) => state.activeSubButtonGlobal.activeSubButtonGlobal,
@@ -27,6 +29,7 @@ export const FloatingButtons = () => {
     "add-note",
     "profile",
     "notifications",
+    "search",
   ];
 
   const disableOn = ["lead-info", "lead-stage"];
@@ -75,34 +78,75 @@ export const FloatingButtons = () => {
         />
       </Pressable>
 
-      <Pressable
+      <View
         style={[
-          xstack,
-          center,
+          ystack,
           {
-            width: 52,
-            height: 52,
-            borderRadius: borderRadius.full,
             position: "absolute",
-            backgroundColor: disable
-              ? theme.backgroundDisabled
-              : theme.backgroundInverse,
+            gap: 8,
             bottom: 16,
             right: 16,
-            boxShadow: theme.shadow.lg,
+            justifyContent: "center",
+            alignItems: "center",
           },
         ]}
-        disabled={disable}
-        onPress={() => handleNavigation(activeSubButtonGlobal, project)}
       >
-        <PlusIcon
-          width={24}
-          height={24}
-          fill={theme.textInverse}
-          stroke={theme.textInverse}
-          strokeWidth={2}
-        />
-      </Pressable>
+        <Pressable
+          style={[
+            xstack,
+            center,
+            {
+              width: 44,
+              height: 44,
+              borderRadius: borderRadius.full,
+              backgroundColor: disable
+                ? theme.backgroundDisabled
+                : theme.backgroundInverse,
+
+              boxShadow: theme.shadow.lg,
+            },
+          ]}
+          disabled={disable}
+          onPress={() => handleNavigation(activeSubButtonGlobal, project)}
+        >
+          <PlusIcon
+            width={24}
+            height={24}
+            fill={theme.textInverse}
+            stroke={theme.textInverse}
+            strokeWidth={2}
+          />
+        </Pressable>
+        <Pressable
+          style={[
+            xstack,
+            center,
+            {
+              width: 52,
+              height: 52,
+              borderRadius: borderRadius.full,
+              backgroundColor: disable
+                ? theme.backgroundDisabled
+                : theme.backgroundInverse,
+
+              boxShadow: theme.shadow.lg,
+            },
+          ]}
+          disabled={disable}
+          onPress={() =>
+            userNavigationRef.dispatch(StackActions.push("Search"))
+          }
+        >
+          <SearchOutline
+            width={24}
+            height={24}
+            strokeWidth={2}
+            stroke={theme.textInverse}
+            fill="transparent"
+            style={{}}
+          />
+        </Pressable>
+      </View>
     </>
   );
 };

@@ -1,5 +1,5 @@
 import { borderRadius, borderWidth } from "@/design/borders";
-import { ystack } from "@/design/layout";
+import { fullWidth, ystack } from "@/design/layout";
 import { useTheme } from "@/hooks/useTheme";
 import { RenderLeadItem } from "@/screens/Leads/components/RenderLeadItem";
 import { Text, View } from "react-native";
@@ -28,6 +28,7 @@ export const RenderSearchItem = ({
     <View
       style={[
         ystack,
+        fullWidth,
         {
           boxShadow: theme.shadow.sm,
           padding: 16,

@@ -43,7 +43,7 @@ export const SubTabChip = ({
       textColor: theme.buttonInverse,
     },
     outlined: {
-      backgroundColor: theme.background,
+      backgroundColor: theme.header,
       borderColor: theme.border,
       textColor: theme.text,
     },

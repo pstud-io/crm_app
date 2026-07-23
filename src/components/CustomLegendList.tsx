@@ -16,7 +16,7 @@ import { body } from "@/design/typography";
 export type CustomLegendListProps<T> = LegendListProps<T> & {
   loading: boolean;
   refreshing: boolean;
-  onRefresh: () => Promise<void>;
+  onRefresh: () => Promise<void> | void;
 };
 
 export function CustomLegendListComponent<T>(
@@ -57,6 +57,7 @@ export function CustomLegendListComponent<T>(
           tintColor={theme.backgroundInverse}
           colors={[theme.backgroundInverse]}
           progressBackgroundColor={theme.header}
+          size="large"
         />
       }
       ListEmptyComponent={

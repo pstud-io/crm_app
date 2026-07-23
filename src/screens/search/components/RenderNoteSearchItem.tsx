@@ -11,13 +11,14 @@ import { UserNavigationProp } from "@/navigation/UserNavigation";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CallWhatsappPopover from "@/components/specific/CallWhatsappPopover";
-export const RenderTaskSearchItem = ({ item }: { item: any }) => {
+export const RenderNoteSearchItem = ({ item }: { item: any }) => {
   const { theme } = useTheme();
   const navigation = useNavigation<UserNavigationProp>();
   return (
     <Pressable
       style={[
         ystack,
+        fullWidth,
         {
           padding: spacing.md,
           borderRadius: borderRadius.lg,
@@ -25,16 +26,16 @@ export const RenderTaskSearchItem = ({ item }: { item: any }) => {
           borderColor: theme.border,
           boxShadow: theme.shadow.sm,
           marginBottom: spacing.sm,
-          maxWidth: 240,
+          // maxWidth: 240,
         },
       ]}
       key={item.id}
       onPress={() =>
-        navigation.push("Tasks", {
-          screen: "TaskDetails",
+        navigation.push("Notes", {
+          screen: "NoteDetails",
           // @ts-ignore
           params: {
-            task: item,
+            note: item,
           },
         })
       }
@@ -54,9 +55,9 @@ export const RenderTaskSearchItem = ({ item }: { item: any }) => {
           numberOfLines={1}
           ellipsizeMode="middle"
         >
-          {item.title}
+          {item.project_name}
         </Text>
-        <Badge color={badgeColors.gray} text={item.project_name} size="sm" />
+        <Badge color={badgeColors.gray} text={item.project_code} size="sm" />
       </View>
       <ItemSeparator
         direction="horizontal"

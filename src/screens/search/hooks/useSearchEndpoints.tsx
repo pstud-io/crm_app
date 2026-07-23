@@ -3,8 +3,8 @@ import Toast from "react-native-toast-message";
 import { GetDataProps } from "@/hooks/usePaginatedSearch";
 import { fetchAllData } from "@/screens/Leads/utils/leadsEndpoints";
 
-export const useDashboardEndpoints = () => {
-  const [dashboardLoading, setDashboardLoading] = useState({
+export const useSearchEndpoints = () => {
+  const [searchLoading, setSearchLoading] = useState({
     getAllData: false,
   });
 
@@ -19,7 +19,7 @@ export const useDashboardEndpoints = () => {
   }: GetDataProps<any>) => {
     if (!hasMore && page !== 1) return;
     console.log("before set loading");
-    setDashboardLoading((prev: any) => ({ ...prev, getAllData: true }));
+    setSearchLoading((prev: any) => ({ ...prev, getAllData: true }));
     console.log("After set loading of kanban");
     try {
       const response = await fetchAllData(
@@ -50,11 +50,11 @@ export const useDashboardEndpoints = () => {
         });
       }
     } finally {
-      setDashboardLoading((prev: any) => ({ ...prev, getAllData: false }));
+      setSearchLoading((prev: any) => ({ ...prev, getAllData: false }));
     }
   };
   return {
-    dashboardLoading,
+    searchLoading,
     getAllData,
   };
 };

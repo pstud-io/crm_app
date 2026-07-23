@@ -18,6 +18,7 @@ export const RenderLeadSearchItem = ({ item }: { item: any }) => {
     <Pressable
       style={[
         ystack,
+        fullWidth,
         {
           padding: spacing.md,
           borderRadius: borderRadius.lg,
@@ -25,7 +26,7 @@ export const RenderLeadSearchItem = ({ item }: { item: any }) => {
           borderColor: theme.border,
           boxShadow: theme.shadow.sm,
           marginBottom: spacing.sm,
-          maxWidth: 240,
+          // maxWidth: 240,
         },
       ]}
       key={item.id}

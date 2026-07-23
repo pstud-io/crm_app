@@ -18,27 +18,37 @@ import {
 } from "react-native";
 import { SearchModuleItem } from "./SearchModuleItem";
 import { spacing } from "@/design/spacing";
+import { SubTabBar } from "@/components/SubTabBar";
+import { searchSubButtons, SubButtonId } from "../types/searchTypes";
+import { SearchModulesList } from "./SearchModulesList";
 
 export const SearchModules = ({
   search,
   searchData,
   loading,
   refreshing,
-  onRefresh,
+  // onRefresh,
   onEndReached,
+  activeSubButton,
+  setActiveSubButton,
 }: {
   search: string;
   searchData: any[];
   loading: boolean;
   refreshing: boolean;
-  onRefresh: () => Promise<void>;
+  // onRefresh: () => Promise<void>;
   onEndReached: () => Promise<void>;
+  activeSubButton: SubButtonId<typeof searchSubButtons>;
+  setActiveSubButton: Dispatch<
+    SetStateAction<SubButtonId<typeof searchSubButtons>>
+  >;
 }) => {
   const { theme } = useTheme();
   const [leads, setLeads] = useState<any>([]);
   const [tasks, setTasks] = useState<any>([]);
   const [notes, setNotes] = useState<any>([]);
   const [followups, setFollowups] = useState<any>([]);
+
   console.log("Search data is", searchData);
   console.log("leads data is", leads);
   console.log("tasks data is", tasks);
@@ -75,30 +85,6 @@ export const SearchModules = ({
     setFollowups(tempFollowups);
   }, [searchData]);
 
-  if (search === "") {
-    return (
-      <View style={[ystack, fullWidth, grow, { gap: 16, paddingTop: 16 }]}>
-        <Text
-          style={[
-            fullWidth,
-            body.xs.regular,
-            { textAlign: "center", color: theme.textSecondary },
-          ]}
-        >
-          Type to start searching
-        </Text>
-      </View>
-    );
-  }
-
-  if (loading && searchData?.length === 0) {
-    return (
-      <View style={[xstack, center, fullWidth, { padding: 16 }]}>
-        <ActivityIndicator size={12} />
-      </View>
-    );
-  }
-
   // if (searchData?.length === 0) {
   //   return (
   //     <Text
@@ -113,59 +99,76 @@ export const SearchModules = ({
   //   );
   // }
 
+  console.log("Search is", search);
+
+  if (search === "") {
+    return (
+      <View style={[ystack, fullWidth, grow, { gap: 16, paddingTop: 44 }]}>
+        <Text
+          style={[
+            fullWidth,
+            body.sm.regular,
+            { textAlign: "center", color: theme.textSecondary },
+          ]}
+        >
+          Type to start searching
+        </Text>
+      </View>
+    );
+  }
+
   return (
-    <View
-      style={[
-        ystack,
-        fullWidth,
-        grow,
-        { gap: 16, paddingVertical: spacing.huge },
-      ]}
-    >
-      {leads.length > 0 && (
+    <>
+      {activeSubButton === "all" && (
+        <SearchModulesList
+          leads={leads}
+          tasks={tasks}
+          notes={notes}
+          followups={followups}
+          setActiveSubButton={setActiveSubButton}
+          searchData={searchData}
+        />
+      )}
+      {activeSubButton === "leads" && (
         <SearchModuleItem
-          label="Leads"
           data={leads}
           onEndReached={onEndReached}
-          onRefresh={onRefresh}
+          // onRefresh={onRefresh}
           loading={loading}
           refreshing={refreshing}
           type="lead"
         />
       )}
-      {tasks.length > 0 && (
+      {activeSubButton === "tasks" && (
         <SearchModuleItem
-          label="Tasks"
           data={tasks}
           onEndReached={onEndReached}
-          onRefresh={onRefresh}
+          // onRefresh={onRefresh}
           loading={loading}
           refreshing={refreshing}
           type="task"
         />
       )}
-      {notes.length > 0 && (
+      {activeSubButton === "notes" && (
         <SearchModuleItem
-          label="Notes"
           data={notes}
           onEndReached={onEndReached}
-          onRefresh={onRefresh}
+          // onRefresh={onRefresh}
           loading={loading}
           refreshing={refreshing}
           type="note"
         />
       )}
-      {followups.length > 0 && (
+      {activeSubButton === "followups" && (
         <SearchModuleItem
-          label="Follow Ups"
           data={followups}
           onEndReached={onEndReached}
-          onRefresh={onRefresh}
+          // onRefresh={onRefresh}
           loading={loading}
           refreshing={refreshing}
           type="followup"
         />
       )}
-    </View>
+    </>
   );
 };

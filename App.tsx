@@ -14,6 +14,7 @@ import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import VideoScreen from "@/components/VideoScreen";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 SplashScreen.preventAutoHideAsync();
 
 SplashScreen.setOptions({
@@ -53,9 +54,11 @@ export default Sentry.wrap(function App() {
               <QueryProvider>
                 <AuthProvider>
                   <ThemeProvider>
+                    {/* <KeyboardProvider enabled> */}
                     <Navigation />
                     {/* <FirstComponent /> */}
                     <FloatingButtons />
+                    {/* </KeyboardProvider> */}
                   </ThemeProvider>
                 </AuthProvider>
               </QueryProvider>

@@ -126,22 +126,25 @@ export function usePaginatedSearch<T, K extends object = {}>({
     if (res) setHasMore(res?.hasMore);
   }, [data, setData, getData, pageSize, createController]);
 
-  const onRefresh = useCallback(async () => {
-    console.log("From on animate");
-    resetStates();
-    const controller = await createController();
-    const res = await getData({
-      data,
-      setData,
-      page: 1,
-      hasMore: true,
-      searchTerm: "",
-      abortSignal: controller.signal,
-      pageSize: pageSize,
-      ...extraParams,
-    });
-    if (res) setHasMore(res?.hasMore);
-  }, [data, setData, getData, pageSize, createController]);
+  const onRefresh = useCallback(
+    async (refreshText: string = "") => {
+      console.log("From on animate");
+      resetStates();
+      const controller = await createController();
+      const res = await getData({
+        data,
+        setData,
+        page: 1,
+        hasMore: true,
+        searchTerm: refreshText,
+        abortSignal: controller.signal,
+        pageSize: pageSize,
+        ...extraParams,
+      });
+      if (res) setHasMore(res?.hasMore);
+    },
+    [data, setData, getData, pageSize, createController],
+  );
 
   const onAbort = useCallback(async () => {
     abortControllerRef.current?.abort();

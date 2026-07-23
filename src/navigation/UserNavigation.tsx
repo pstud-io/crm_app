@@ -22,6 +22,8 @@ import { NotesStack } from "./NotesNavigation";
 import { LeadsStack } from "./LeadsNavigation";
 import { ProfileStack } from "./ProfileNavigation";
 import { NotificationsStack } from "./NotificationNavigation";
+import { Search } from "@/screens/search/Search";
+import { CommonHeader } from "@/components/CommonHeader";
 
 const UserStack = createNativeStackNavigator({
   initialRouteName: "Dashboard",
@@ -40,6 +42,20 @@ const UserStack = createNativeStackNavigator({
         headerShown: true,
         header: (props: NativeStackHeaderProps) => (
           <DashboardHeader {...props} />
+        ),
+        animation: "fade",
+      },
+    },
+    Search: {
+      linking: "search",
+      layout: ({ children }) => (
+        <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
+      ),
+      screen: Search,
+      options: {
+        headerShown: true,
+        header: (props: NativeStackHeaderProps) => (
+          <CommonHeader {...props} title="Search" />
         ),
         animation: "fade",
       },

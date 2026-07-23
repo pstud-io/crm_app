@@ -28,6 +28,11 @@ import { UserCustomFieldsModal } from "@/components/UI/GeneralComponents/PopUps/
 import Toast from "react-native-toast-message";
 import { useTaskEndpoints } from "../hooks/useTasksEndpoints";
 import { StackActions } from "@react-navigation/native";
+import { FollowUpCompletModal } from "@/components/UI/GeneralComponents/PopUps/FollowUpCompleteModal";
+import { usePostComment } from "@/hooks/usePostComment";
+import { apiEndpoint } from "@/api/client";
+import { fullWidth, xstack } from "@/design/layout";
+import CallWhatsappPopover from "@/components/specific/CallWhatsappPopover";
 export const RenderTaskItem = ({
   task,
   navigation,
@@ -56,8 +61,25 @@ export const RenderTaskItem = ({
   const popoverMenuRef = useRef(null);
   const project = useSelector((state) => state.project);
   const completedStages = ["completed", "approved", "rejected", "discarded"];
+  const commentPostURL = `${apiEndpoint}/core/comments/?context_id=${id}&context_type=task`;
+  const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState({
+    postComment: false,
+  });
   const [expanded, setExpanded] = useState(false);
 
+  const { postComment } = usePostComment({
+    loading,
+    setLoading,
+    commentPostURL,
+    comment,
+    selectedMedia: [],
+    fk_project: null,
+    mentions: null,
+    onPost: () => {},
+    project_asset_group_id: null,
+    project_asset_id: null,
+  });
   const profile = useSelector((state) => state.profile);
   const canEdit =
     profile.is_admin || profile.name === task?.creator_contact_details?.name;
@@ -70,6 +92,13 @@ export const RenderTaskItem = ({
     fields: [],
     pendingAction: null,
   });
+
+  const [followupCompleteModal, setFollowupCompleteModal] = useState({
+    visible: false,
+    pendingAction: null,
+    task: null,
+  });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { updateCustomFieldInPopup } = useTaskEndpoints();
 
@@ -80,6 +109,14 @@ export const RenderTaskItem = ({
       setUserFieldsModal({
         visible: true,
         fields,
+        pendingAction: action,
+      });
+    },
+    onShowFolloupComplete: (task, action) => {
+      console.log("Open modal");
+      setFollowupCompleteModal({
+        visible: true,
+        task,
         pendingAction: action,
       });
     },
@@ -119,6 +156,56 @@ export const RenderTaskItem = ({
         text1: "Success",
         text2: "Task status updated.",
       });
+    } catch (e) {
+      console.error(e);
+      Toast.show({ type: "error", text1: "Error", text2: "Update failed." });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSaveFollowUp = async (createNewFollowUp) => {
+    setIsSubmitting(true);
+    try {
+      await postComment();
+      if (followupCompleteModal.pendingAction) {
+        await followupCompleteModal.pendingAction();
+      }
+      console.log("Run close from handle user fields submit");
+      // 3. Clear UI
+      setFollowupCompleteModal({
+        visible: false,
+        task: [],
+        pendingAction: null,
+      });
+
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Follow Up status updated.",
+      });
+
+      if (createNewFollowUp) {
+        if (fromLeads) {
+          userNavigationRef.dispatch(
+            StackActions.push("Tasks", {
+              screen: "AddTask",
+              params: {
+                voiceInput: false,
+                onRefresh: () => {},
+                task_type: "followup",
+              },
+            }),
+          );
+        }
+        if (!fromLeads) {
+          navigation.push("AddTask", {
+            voiceInput: false,
+            onRefresh: () => {},
+            task_type: "followup",
+          });
+        }
+      }
     } catch (e) {
       console.error(e);
       Toast.show({ type: "error", text1: "Error", text2: "Update failed." });
@@ -333,6 +420,95 @@ export const RenderTaskItem = ({
         }}
       />
       {/* Upper Middle Section */}
+      {task.task_type === "followup" && (
+        <>
+          <View
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              gap: SW(20),
+            }}
+          >
+            {/* Assigned To */}
+            <View
+              style={{
+                display: "flex",
+                gap: SH(8),
+                flex: 1,
+                flexDirection: "column",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text
+                style={{
+                  ...body.sm.medium,
+                  color: primaryColors.gray[700],
+                }}
+              >
+                Client Name
+              </Text>
+              <View
+                style={{
+                  flexGrow: 1,
+                  width: "100%",
+                  justifyContent: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    ...body.sm.semiBold,
+                    color: primaryColors.brand[1000],
+                  }}
+                >
+                  {task.project_details.client_name}
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                gap: SH(8),
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text
+                style={{
+                  ...body.sm.medium,
+                  color: primaryColors.gray[700],
+                }}
+              >
+                Client Phone
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: SW(4),
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                }}
+              >
+                <CallWhatsappPopover
+                  value={task?.project_details.client_phone}
+                  code={""}
+                  fromInfo={false}
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              borderBottomWidth: 1,
+              borderBottomColor: "#F2F2F2",
+            }}
+          />
+        </>
+      )}
       <View
         style={{
           width: "100%",
@@ -695,6 +871,21 @@ export const RenderTaskItem = ({
         }}
         onConfirm={handleUserFieldsSubmit}
         loading={isSubmitting}
+      />
+      <FollowUpCompletModal
+        visible={followupCompleteModal.visible}
+        tasks={followupCompleteModal.task}
+        onClose={() => {
+          console.log("MODAL ON CLOSE");
+          setFollowupCompleteModal({
+            visible: false,
+            task: null,
+            pendingAction: null,
+          });
+        }}
+        onConfirm={handleSaveFollowUp}
+        loading={isSubmitting}
+        setComment={setComment}
       />
     </TouchableOpacity>
   );
