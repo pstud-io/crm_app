@@ -48,6 +48,7 @@ import {
   addProjectBottomSheetRef,
   closeAddProjectBottomSheet,
 } from "@/screens/dashboard/utils/addProjectBottomSheetService";
+import { setIsSheetOpen } from "@/store/slices/isSheetOpenSlice";
 
 function AddProject() {
   console.log("AddProject mounted", addProjectBottomSheetRef);
@@ -558,6 +559,16 @@ function AddProject() {
         enableHandlePanningGesture={true}
         enablePanDownToClose={true}
         stackBehavior="push"
+        onAnimate={async (fromIndex, toIndex) => {
+          if (fromIndex === -1 && toIndex === 0) {
+            dispatch(setIsSheetOpen(true));
+          }
+          if (fromIndex === 0 && toIndex === -1) {
+            setTimeout(() => {
+              dispatch(setIsSheetOpen(false));
+            }, [250]);
+          }
+        }}
         onChange={async (index) => {
           if (index < 0) {
             Keyboard.dismiss();
@@ -580,7 +591,9 @@ function AddProject() {
             />
           );
         }}
-        onClose={() => resetProjectBottomSheet()}
+        onDismiss={() => {
+          resetProjectBottomSheet();
+        }}
       >
         <View
           style={{

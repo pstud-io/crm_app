@@ -12,8 +12,11 @@ import { ItemSeparatorComponent } from "../../../components/UI/GeneralComponents
 import { ExpandableNoteDescription } from "./ExpandableNoteDescription";
 import CommentCircle from "../../../svg/comment-circle";
 import { Spacing } from "../../../components";
+import { useSelector } from "react-redux";
 
 const NoteCard = ({ note, onPress, showNoteText = true }) => {
+  const project = useSelector((state) => state.project);
+
   return (
     <TouchableOpacity
       style={styles.card}
@@ -60,6 +63,16 @@ const NoteCard = ({ note, onPress, showNoteText = true }) => {
           <Text style={styles.date} numberOfLines={1}>
             {formatDate(note?.created_on)}
           </Text>
+          {project.id === "all_projects" && note?.project_name && (
+            <Text
+              style={{
+                ...body.sm.regular,
+                color: primaryColors.brand[1000],
+              }}
+            >
+              {note?.project_name}
+            </Text>
+          )}
         </View>
         {showNoteText && (
           <TouchableOpacity onPress={onPress}>

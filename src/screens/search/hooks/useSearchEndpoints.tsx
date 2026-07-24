@@ -2,10 +2,34 @@ import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
 import { GetDataProps } from "@/hooks/usePaginatedSearch";
 import { fetchAllData } from "@/screens/Leads/utils/leadsEndpoints";
+import { SearchSectionState } from "../types/searchTypes";
 
 export const useSearchEndpoints = () => {
   const [searchLoading, setSearchLoading] = useState({
     getAllData: false,
+  });
+
+  const updateSection = (
+    prev: SearchSectionState,
+    response: {
+      results: any[];
+      count: number;
+      page: number;
+      page_size: number;
+      total_pages: number;
+      has_next: boolean;
+    },
+  ): SearchSectionState => ({
+    data:
+      response.page === 1
+        ? response.results
+        : [...prev.data, ...response.results],
+    count: response.count,
+    page: response.page,
+    pageSize: response.page_size,
+    totalPages: response.total_pages,
+    hasNext: response.has_next,
+    loading: false,
   });
 
   const getAllData = async ({
@@ -29,11 +53,37 @@ export const useSearchEndpoints = () => {
         abortSignal,
       );
       if (response && response.status >= 200 && response.status < 300) {
-        const allData = response.data.result.results;
+        const allData = response.data.result;
         console.log("All data is", allData);
-        const updatedData = page === 1 ? allData : [...data, ...allData];
+        const updatedData =
+          page === 1
+            ? Object.fromEntries(
+                Object.entries(allData).map(([key, value]: any) => [
+                  key,
+                  {
+                    ...value,
+                    data: value.results,
+                    hasNext: value.has_next,
+                  },
+                ]),
+              )
+            : Object.fromEntries(
+                Object.entries(allData).map(([key, value]: any) => [
+                  key,
+                  {
+                    ...data[key],
+                    data: [...data[key].data, ...value.results],
+                    hasNext: value.has_next,
+                  },
+                ]),
+              );
+
         setData(updatedData);
-        const hasMore = response.data.next !== null;
+
+        const hasMore = Object.values(allData).some(
+          (module: any) => module.has_next,
+        );
+        console.log("updated data is", updatedData);
         return { hasMore };
       }
     } catch (error: any) {

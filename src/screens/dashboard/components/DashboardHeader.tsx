@@ -19,6 +19,8 @@ import { Pressable, Text, View } from "react-native";
 import { StackActions } from "@react-navigation/native";
 import { NotificationBell } from "@/components";
 import { useIsFocused } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 export const DashboardHeader = ({
   navigation,
   route,
@@ -27,6 +29,8 @@ export const DashboardHeader = ({
 }: NativeStackHeaderProps) => {
   const { theme } = useTheme();
   const isFocused = useIsFocused();
+  const profile = useSelector((state: RootState) => state.profile);
+  console.log("Profile in dashboard header", profile);
   return (
     <View
       style={[
@@ -74,10 +78,12 @@ export const DashboardHeader = ({
             },
           ]}
         >
-          <Text style={[body.xl.semiBold, { color: theme.text }]}>Aditya</Text>
-          <Text style={[body.sm.regular, { color: theme.text }]}>
-            Sales Manager
+          <Text style={[body.xl.semiBold, { color: theme.text }]}>
+            {profile.name}
           </Text>
+          {/* <Text style={[body.sm.regular, { color: theme.text }]}>
+            Sales Manager
+          </Text> */}
         </View>
       </View>
       <Pressable

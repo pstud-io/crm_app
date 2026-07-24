@@ -16,6 +16,9 @@ export const FloatingButtons = () => {
   const activeSubButtonGlobal = useSelector(
     (state: RootState) => state.activeSubButtonGlobal.activeSubButtonGlobal,
   );
+  const isSheetOpen = useSelector(
+    (state: RootState) => state.isSheetOpen.isSheetOpen,
+  );
   const project = useSelector((state: RootState) => state.project);
 
   const { theme } = useTheme();
@@ -30,9 +33,10 @@ export const FloatingButtons = () => {
     "profile",
     "notifications",
     "search",
+    "auth",
   ];
 
-  const disableOn = ["lead-info", "lead-stage"];
+  const disableOn = ["lead-info", "lead-stage", "dashboard"];
 
   const disable =
     activeSubButtonGlobal && disableOn.includes(activeSubButtonGlobal);
@@ -41,10 +45,16 @@ export const FloatingButtons = () => {
     return;
   }
 
+  if (isSheetOpen) {
+    console.log("Is sheetopen is", isSheetOpen);
+    return;
+  }
+
   return (
     <>
       <Pressable
-        onPress={() =>
+        onPress={() => {
+          if (activeSubButtonGlobal === "dashboard") return;
           userNavigationRef.reset({
             index: 0,
             routes: [
@@ -52,8 +62,8 @@ export const FloatingButtons = () => {
                 name: "Dashboard",
               },
             ],
-          })
-        }
+          });
+        }}
         style={[
           xstack,
           center,
@@ -83,7 +93,7 @@ export const FloatingButtons = () => {
           ystack,
           {
             position: "absolute",
-            gap: 8,
+            gap: 12,
             bottom: 16,
             right: 16,
             justifyContent: "center",
@@ -91,32 +101,6 @@ export const FloatingButtons = () => {
           },
         ]}
       >
-        <Pressable
-          style={[
-            xstack,
-            center,
-            {
-              width: 44,
-              height: 44,
-              borderRadius: borderRadius.full,
-              backgroundColor: disable
-                ? theme.backgroundDisabled
-                : theme.backgroundInverse,
-
-              boxShadow: theme.shadow.lg,
-            },
-          ]}
-          disabled={disable}
-          onPress={() => handleNavigation(activeSubButtonGlobal, project)}
-        >
-          <PlusIcon
-            width={24}
-            height={24}
-            fill={theme.textInverse}
-            stroke={theme.textInverse}
-            strokeWidth={2}
-          />
-        </Pressable>
         <Pressable
           style={[
             xstack,
@@ -133,6 +117,29 @@ export const FloatingButtons = () => {
             },
           ]}
           disabled={disable}
+          onPress={() => handleNavigation(activeSubButtonGlobal, project)}
+        >
+          <PlusIcon
+            width={28}
+            height={28}
+            fill={theme.textInverse}
+            stroke={theme.textInverse}
+            strokeWidth={2}
+          />
+        </Pressable>
+        <Pressable
+          style={[
+            xstack,
+            center,
+            {
+              width: 52,
+              height: 52,
+              borderRadius: borderRadius.full,
+              backgroundColor: theme.backgroundInverse,
+
+              boxShadow: theme.shadow.lg,
+            },
+          ]}
           onPress={() =>
             userNavigationRef.dispatch(StackActions.push("Search"))
           }

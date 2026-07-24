@@ -1,7 +1,5 @@
 import { StackActions } from "@react-navigation/native";
 import { userNavigationRef } from "@/navigation/UserNavigation";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
 import { ProjectRecord } from "@/store/slices/projectSlice/projectSliceTypes";
 import { openAddProjectBottomSheet } from "@/screens/dashboard/utils/addProjectBottomSheetService";
 
@@ -41,11 +39,8 @@ export const handleNavigation = (
         },
       }),
     );
-  } else if (
-    activeSubButtonGlobal === "dashboard" ||
-    activeSubButtonGlobal === "leads"
-  ) {
-    console.log("Hitting for dashboard");
+  } else if (activeSubButtonGlobal === "leads") {
+    console.log("Hitting for leads");
     openAddProjectBottomSheet();
   }
 };

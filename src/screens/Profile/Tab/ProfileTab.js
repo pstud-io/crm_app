@@ -199,6 +199,17 @@ const ProfileTab = () => {
     });
   };
   console.log("Profile", profile);
+
+  const getInitials = (name) => {
+    if (!name) return "";
+
+    return name
+      .trim()
+      .split(/\s+/)
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase();
+  };
   return (
     <View
       style={{
@@ -263,7 +274,7 @@ const ProfileTab = () => {
                   color: primaryColors.gray[25],
                 }}
               >
-                AA
+                {getInitials(profile.name)}
               </Text>
             </LinearGradient>
             <View
@@ -284,14 +295,14 @@ const ProfileTab = () => {
               >
                 {`${profile.name}`}
               </Text>
-              <Text
+              {/* <Text
                 style={{
                   ...body.md.semiBold,
                   color: Colors.primary,
                 }}
               >
                 {`Role`}
-              </Text>
+              </Text> */}
             </View>
             {/* <View
               style={{

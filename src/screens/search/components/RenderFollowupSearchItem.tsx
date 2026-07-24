@@ -11,7 +11,7 @@ import { UserNavigationProp } from "@/navigation/UserNavigation";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CallWhatsappPopover from "@/components/specific/CallWhatsappPopover";
-export const RenderTaskSearchItem = ({ item }: { item: any }) => {
+export const RenderFollowupSearchItem = ({ item }: { item: any }) => {
   const { theme } = useTheme();
   const navigation = useNavigation<UserNavigationProp>();
   return (

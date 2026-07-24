@@ -194,6 +194,7 @@ export const RenderTaskItem = ({
                 voiceInput: false,
                 onRefresh: () => {},
                 task_type: "followup",
+                lead_id: task.project_details.id,
               },
             }),
           );
@@ -203,6 +204,7 @@ export const RenderTaskItem = ({
             voiceInput: false,
             onRefresh: () => {},
             task_type: "followup",
+            lead_id: task.project_details.id,
           });
         }
       }
@@ -283,7 +285,7 @@ export const RenderTaskItem = ({
           >
             {task_type === "snag"
               ? "Snags"
-              : task_type.charAt(0).toUpperCase() + task_type.slice(1)}{" "}
+              : task_type?.charAt(0)?.toUpperCase() + task_type?.slice(1)}{" "}
           </Text>
           <View
             style={{ flexDirection: "row", alignItems: "center", gap: SW(8) }}
@@ -420,7 +422,7 @@ export const RenderTaskItem = ({
         }}
       />
       {/* Upper Middle Section */}
-      {task.task_type === "followup" && (
+      {task?.task_type === "followup" && (
         <>
           <View
             style={{
@@ -461,7 +463,7 @@ export const RenderTaskItem = ({
                     color: primaryColors.brand[1000],
                   }}
                 >
-                  {task.project_details.client_name}
+                  {task?.project_details?.client_name}
                 </Text>
               </View>
             </View>
@@ -493,7 +495,7 @@ export const RenderTaskItem = ({
                 }}
               >
                 <CallWhatsappPopover
-                  value={task?.project_details.client_phone}
+                  value={task?.project_details?.client_phone}
                   code={""}
                   fromInfo={false}
                 />

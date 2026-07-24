@@ -54,11 +54,11 @@ export default Sentry.wrap(function App() {
               <QueryProvider>
                 <AuthProvider>
                   <ThemeProvider>
-                    {/* <KeyboardProvider enabled> */}
-                    <Navigation />
-                    {/* <FirstComponent /> */}
-                    <FloatingButtons />
-                    {/* </KeyboardProvider> */}
+                    <KeyboardProvider enabled>
+                      <Navigation />
+                      {/* <FirstComponent /> */}
+                      <FloatingButtons />
+                    </KeyboardProvider>
                   </ThemeProvider>
                 </AuthProvider>
               </QueryProvider>

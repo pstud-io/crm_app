@@ -6,6 +6,7 @@ import { Text, View } from "react-native";
 import { RenderLeadSearchItem } from "./RenderLeadSearchItem";
 import { RenderTaskSearchItem } from "./RenderTaskSearchItem";
 import { RenderNoteSearchItem } from "./RenderNoteSearchItem";
+import { RenderFollowupSearchItem } from "./RenderFollowupSearchItem";
 
 export const RenderSearchItem = ({
   item,
@@ -23,6 +24,9 @@ export const RenderSearchItem = ({
   }
   if (type === "note") {
     return <RenderNoteSearchItem item={item} />;
+  }
+  if (type === "followup") {
+    return <RenderFollowupSearchItem item={item} />;
   }
   return (
     <View

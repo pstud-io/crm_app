@@ -27,7 +27,12 @@ import { SearchModules } from "./components/SearchModules";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { borderRadius, borderWidth } from "@/design/borders";
 import { SubTabBar } from "@/components/SubTabBar";
-import { searchSubButtons, SubButtonId } from "./types/searchTypes";
+import {
+  SearchSectionState,
+  searchSubButtons,
+  SubButtonId,
+  UniversalSearchState,
+} from "./types/searchTypes";
 import { ListWrapper } from "@/components/ListWrapper";
 
 export const Search = () => {
@@ -37,7 +42,9 @@ export const Search = () => {
   const insets = useSafeAreaInsets();
   const [activeSubButton, setActiveSubButton] =
     useState<SubButtonId<typeof searchSubButtons>>("all");
-  const [searchData, setSearchData] = useState<any>([]);
+  const [searchData, setSearchData] = useState<UniversalSearchState | null>(
+    null,
+  );
   const [searching, setSearching] = useState(false);
 
   const translateY = useSharedValue(0);
@@ -93,7 +100,9 @@ export const Search = () => {
   }));
 
   const universalSearch = usePaginatedSearch<any>({
+    //@ts-ignore
     data: searchData,
+    //@ts-ignore
     setData: setSearchData,
     getData: getAllData,
     loading: searchLoading.getAllData,
@@ -132,7 +141,7 @@ export const Search = () => {
           onChangeText={(text: string) => {
             if (text === "") {
               universalSearch.setSearchTerm(text);
-              setSearchData([]);
+              setSearchData(null);
               setSearching(false);
               return;
             } else {
@@ -161,7 +170,7 @@ export const Search = () => {
                 onPress={() => {
                   universalSearch.setSearchTerm("");
                   setSearching(false);
-                  setSearchData([]);
+                  setSearchData(null);
                   Keyboard.dismiss();
                 }}
                 style={[center, { width: 32, height: 32 }]}

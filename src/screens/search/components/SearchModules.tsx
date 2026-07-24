@@ -19,7 +19,12 @@ import {
 import { SearchModuleItem } from "./SearchModuleItem";
 import { spacing } from "@/design/spacing";
 import { SubTabBar } from "@/components/SubTabBar";
-import { searchSubButtons, SubButtonId } from "../types/searchTypes";
+import {
+  SearchSectionState,
+  searchSubButtons,
+  SubButtonId,
+  UniversalSearchState,
+} from "../types/searchTypes";
 import { SearchModulesList } from "./SearchModulesList";
 
 export const SearchModules = ({
@@ -33,7 +38,7 @@ export const SearchModules = ({
   setActiveSubButton,
 }: {
   search: string;
-  searchData: any[];
+  searchData: UniversalSearchState | null;
   loading: boolean;
   refreshing: boolean;
   // onRefresh: () => Promise<void>;
@@ -44,10 +49,12 @@ export const SearchModules = ({
   >;
 }) => {
   const { theme } = useTheme();
-  const [leads, setLeads] = useState<any>([]);
-  const [tasks, setTasks] = useState<any>([]);
-  const [notes, setNotes] = useState<any>([]);
-  const [followups, setFollowups] = useState<any>([]);
+
+  const [leads, setLeads] = useState<SearchSectionState | null>(null);
+  const [tasks, setTasks] = useState<SearchSectionState | null>(null);
+  const [notes, setNotes] = useState<SearchSectionState | null>(null);
+  const [followups, setFollowups] = useState<SearchSectionState | null>(null);
+  const [calls, setCalls] = useState<SearchSectionState | null>(null);
 
   console.log("Search data is", searchData);
   console.log("leads data is", leads);
@@ -56,33 +63,12 @@ export const SearchModules = ({
   console.log("followup data is", followups);
 
   useEffect(() => {
-    console.log("In useeffect of search data");
-    const tempLeads: any[] = [];
-    const tempTasks: any[] = [];
-    const tempNotes: any[] = [];
-    const tempFollowups: any[] = [];
-
-    for (const item of searchData) {
-      switch (item.type) {
-        case "project_search":
-          tempLeads.push(item);
-          break;
-        case "tasks_search":
-          tempTasks.push(item);
-          break;
-        case "notes_search":
-          tempNotes.push(item);
-          break;
-        case "followups_search":
-          tempFollowups.push(item);
-          break;
-      }
-    }
-
-    setLeads(tempLeads);
-    setTasks(tempTasks);
-    setNotes(tempNotes);
-    setFollowups(tempFollowups);
+    if (!searchData) return;
+    setLeads(searchData.project_search);
+    setTasks(searchData.tasks_search);
+    setNotes(searchData.notes_search);
+    setFollowups(searchData.followup_search);
+    setCalls(searchData.call_history_search);
   }, [searchData]);
 
   // if (searchData?.length === 0) {
@@ -125,6 +111,7 @@ export const SearchModules = ({
           tasks={tasks}
           notes={notes}
           followups={followups}
+          calls={calls}
           setActiveSubButton={setActiveSubButton}
           searchData={searchData}
         />

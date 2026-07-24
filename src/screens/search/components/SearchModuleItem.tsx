@@ -7,6 +7,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { Text, View } from "react-native";
 import { RenderSearchItem } from "./RenderSearchItem";
 import { spacing } from "@/design/spacing";
+import { SearchSectionState } from "../types/searchTypes";
 
 export const SearchModuleItem = ({
   data,
@@ -16,7 +17,7 @@ export const SearchModuleItem = ({
   onEndReached,
   type,
 }: {
-  data: any[];
+  data: SearchSectionState | null;
   loading: boolean;
   refreshing: boolean;
   // onRefresh: () => Promise<void>;
@@ -25,14 +26,14 @@ export const SearchModuleItem = ({
 }) => {
   return (
     <CustomLegendList<any>
-      data={data}
+      data={data?.data}
       keyExtractor={(item) => item.id as string}
       renderItem={({ item }) => <RenderSearchItem item={item} type={type} />}
       loading={loading}
       refreshing={refreshing}
       onRefresh={() => {}}
       // onRefresh={onRefresh}
-      onEndReached={onEndReached}
+      onEndReached={data?.hasNext ? onEndReached : null}
       contentContainerStyle={{ paddingBottom: spacing.extreme }}
       keyboardDismissMode="on-drag"
     />

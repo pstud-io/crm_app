@@ -10,13 +10,19 @@ import { useGeneralEndpoints } from "../../../hooks/useGeneralEndpoints";
 import { nanoid } from "@reduxjs/toolkit";
 import { useNavigation } from "@react-navigation/native";
 import { api } from "@/api/client";
+import { fetchNotes } from "./notesEndpoints";
+import { useState } from "react";
 
 export const useNoteEndpoints = () => {
   const token = useSelector((state) => state.auth.token);
   const organization_id = useSelector((state) => state.profile.organization_id);
   const { uploadMedia } = useGeneralEndpoints();
-  const navigation = useNavigation();
+  const selectedProject = useSelector((state) => state.project);
 
+  const navigation = useNavigation();
+  const [notesLoading, setNotesLoading] = useState({
+    getNotes: false,
+  });
   const handleAddNote = async (externalPayload) => {
     const {
       project_id,
@@ -106,28 +112,37 @@ export const useNoteEndpoints = () => {
     }
   };
 
-  const getNotes = async (project_id, setLoading, setNotesData) => {
-    setLoading((prev) => ({ ...prev, getNotes: true }));
+  const getNotes = async ({
+    page,
+    searchTerm,
+    hasMore,
+    data,
+    setData,
+    abortSignal,
+    pageSize,
+  }) => {
+    if (!hasMore && page !== 1) return;
+    setNotesLoading((prev) => ({ ...prev, getNotes: true }));
     try {
-      const response = await axios.get(
-        `${apiEndpoint}/crm/notes/${
-          project_id === "all_projects" ? "" : `?project_id=${project_id}`
-        }`,
-        {
-          headers: {
-            Authorization: `token ${token}`,
-            "X-OrganizationID": organization_id,
-          },
-        },
+      const response = await fetchNotes(
+        page,
+        searchTerm,
+        pageSize,
+        abortSignal,
+        selectedProject.id,
       );
       if (response.status >= 200 && response.status < 300) {
-        const reversed = [...response.data.result].reverse();
-        setNotesData(reversed);
+        const allData = response.data.results;
+        const updatedData = page === 1 ? allData : [...data, ...allData];
+        setData(updatedData);
+        const hasMore = response.data.next !== null;
+
+        return { hasMore };
       }
     } catch (error) {
       console.error("Fetch Notes Error:", error);
     } finally {
-      setLoading((prev) => ({ ...prev, getNotes: false }));
+      setNotesLoading((prev) => ({ ...prev, getNotes: false }));
     }
   };
 
@@ -147,5 +162,5 @@ export const useNoteEndpoints = () => {
     }
   };
 
-  return { handleAddNote, getNotes, getSingleNote };
+  return { handleAddNote, getNotes, getSingleNote, notesLoading };
 };

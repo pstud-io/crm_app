@@ -7,10 +7,15 @@ import { spacing } from "@/design/spacing";
 import { body } from "@/design/typography";
 import { useTheme } from "@/hooks/useTheme";
 import { Dispatch, SetStateAction } from "react";
-import { Text, View } from "react-native";
-import { searchSubButtons, SubButtonId } from "../types/searchTypes";
+import { Pressable, Text, View } from "react-native";
+import {
+  SearchSectionState,
+  searchSubButtons,
+  SubButtonId,
+} from "../types/searchTypes";
 import { primaryColors } from "@/design/colors";
-
+import { UserNavigationProp } from "@/navigation/UserNavigation";
+import { useNavigation } from "@react-navigation/native";
 export const SearchModulesListItem = ({
   id,
   label,
@@ -19,12 +24,52 @@ export const SearchModulesListItem = ({
 }: {
   id: SubButtonId<typeof searchSubButtons>;
   label: string;
-  data: any[];
+  data: SearchSectionState | null;
   setActiveSubButton: Dispatch<
     SetStateAction<SubButtonId<typeof searchSubButtons>>
   >;
 }) => {
-  if (data.length === 0) return;
+  if (!data) return;
+  if (data.data.length === 0) return;
+  const navigation = useNavigation<UserNavigationProp>();
+  const handleNavigation = (type: string, item: any) => {
+    if (type === "leads") {
+      navigation.push("Leads", {
+        screen: "LeadDetails",
+        params: {
+          screen: "Info",
+          params: {
+            project: { id: item.id, project_name: item.project_name },
+          } as any,
+        },
+      });
+    }
+    if (type === "notes") {
+      navigation.push("Notes", {
+        screen: "NoteDetails",
+        params: {
+          note: item,
+        } as any,
+      });
+    }
+    if (type === "tasks") {
+      navigation.push("Tasks", {
+        screen: "TaskDetails",
+        params: {
+          task: item,
+        } as any,
+      });
+    }
+    if (type === "followups") {
+      navigation.push("Tasks", {
+        screen: "TaskDetails",
+        params: {
+          task: item,
+        } as any,
+      });
+    }
+  };
+
   const { theme } = useTheme();
   return (
     <View style={[ystack, fullWidth, { gap: spacing.md }]} key={id}>
@@ -46,7 +91,7 @@ export const SearchModulesListItem = ({
             },
           ]}
         >
-          {label}
+          {`${label} (${data.count})`}
         </Text>
         <Text
           style={[
@@ -75,9 +120,9 @@ export const SearchModulesListItem = ({
           },
         ]}
       >
-        {data.slice(0, 3).map((item, index) => {
+        {data.data.slice(0, 3).map((item, index) => {
           return (
-            <View key={item.id}>
+            <Pressable key={item.id} onPress={() => handleNavigation(id, item)}>
               {index !== 0 && (
                 <ItemSeparatorComponent
                   direction="horizontal"
@@ -116,7 +161,7 @@ export const SearchModulesListItem = ({
                   />
                 </View>
               </View>
-            </View>
+            </Pressable>
           );
         })}
       </View>

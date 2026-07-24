@@ -19,3 +19,21 @@ export type SubButtonId<T extends readonly { id: string; title: string }[]> =
 
 export type SubButtonTitle<T extends readonly { id: string; title: string }[]> =
   SubButton<T>["title"];
+
+export type SearchSectionState<T = any> = {
+  data: T[];
+  count: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  hasNext: boolean;
+  loading: boolean;
+};
+
+export type UniversalSearchState = {
+  project_search: SearchSectionState;
+  notes_search: SearchSectionState;
+  tasks_search: SearchSectionState;
+  followup_search: SearchSectionState;
+  call_history_search: SearchSectionState;
+};

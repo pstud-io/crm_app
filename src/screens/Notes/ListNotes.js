@@ -26,6 +26,7 @@ import {
 import { setActiveSubButtonGlobal } from "../../store/slices/activeSubButtonGlobal";
 import { useTheme } from "@/hooks/useTheme";
 import { userNavigationRef } from "@/navigation/UserNavigation";
+import { usePaginatedSearch } from "@/hooks/usePaginatedSearch";
 
 const ListNotes = ({ route }) => {
   console.log("Route in notes is", route);
@@ -33,29 +34,26 @@ const ListNotes = ({ route }) => {
 
   const { theme } = useTheme();
   const navigation = useNavigation();
-  const activeTabButtonID = useSelector(
-    (state) => state.activeSubButtonGlobal.activeSubButtonGlobal,
-  );
+
   const savedProject = useSelector((state) => state.project);
   const project = selectedProject ?? savedProject;
   const [notesData, setNotesData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
   const [initialLoading, setInitialLoading] = useState(false);
-  const [loading, setLoading] = useState({ getNotes: false });
-  const [refreshing, setRefreshing] = useState(false);
-  const { getNotes } = useNoteEndpoints();
+  const { getNotes, notesLoading } = useNoteEndpoints();
+  const notesSearch = usePaginatedSearch({
+    data: notesData,
+    setData: setNotesData,
+    getData: getNotes,
+    loading: notesLoading.getNotes,
+    pageSize: 10,
+  });
   const dispatch = useDispatch();
-  const fetchData = useCallback(async () => {
-    if (project?.id) {
-      await getNotes(project.id, setLoading, setNotesData);
-    }
-  }, [project?.id]);
 
   useFocusEffect(
     useCallback(() => {
       const loadData = async () => {
         setInitialLoading(true);
-        await fetchData();
+        await notesSearch.onFocus();
         setInitialLoading(false);
       };
 
@@ -68,21 +66,6 @@ const ListNotes = ({ route }) => {
       dispatch(setActiveSubButtonGlobal("notes"));
     }, []),
   );
-
-  const onRefresh = async () => {
-    setRefreshing(true);
-    await fetchData();
-    setRefreshing(false);
-  };
-
-  const handleSearchChange = (text) => {
-    setSearchTerm(text);
-  };
-
-  const searchedNotesData = notesData.filter((note) => {
-    const noteTitle = note?.title || "";
-    return noteTitle.toLowerCase().includes(searchTerm.toLowerCase());
-  });
 
   return (
     <View
@@ -122,7 +105,7 @@ const ListNotes = ({ route }) => {
           </Text>
           <Badge
             color={badgeColors.gray}
-            text={searchedNotesData.length.toString()}
+            text={notesData?.length?.toString()}
             size={"lg"}
           />
         </View>
@@ -190,8 +173,8 @@ const ListNotes = ({ route }) => {
             gap: SW(2),
             borderRadius: SW(12),
           }}
-          value={searchTerm}
-          onChangeText={handleSearchChange}
+          value={notesSearch.searchTerm}
+          onChangeText={notesSearch.onSearch}
         />
         {/* {activeSubButton === "created" && (
               <FilterSortPopover
@@ -226,7 +209,7 @@ const ListNotes = ({ route }) => {
         </View>
       ) : (
         <FlatList
-          data={searchedNotesData}
+          data={notesData}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={{
@@ -275,12 +258,19 @@ const ListNotes = ({ route }) => {
           }
           refreshControl={
             <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
+              refreshing={notesSearch.refreshing}
+              onRefresh={notesSearch.onRefresh}
               tintColor={primaryColors.brand[1000]}
               colors={[primaryColors.brand[1000]]}
               progressBackgroundColor={Colors.white}
             />
+          }
+          onEndReached={
+            initialLoading === undefined
+              ? null
+              : initialLoading === true
+                ? null
+                : notesSearch.onEndReached
           }
         />
       )}

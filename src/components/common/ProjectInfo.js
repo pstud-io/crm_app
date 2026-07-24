@@ -31,6 +31,7 @@ import { LoadingIndicatorFooter } from "../UI/GeneralComponents";
 import { useFocusEffect } from "@react-navigation/native";
 import AddProject from "./AddProject/AddProject";
 import { LeadAdditionalFields } from "@/screens/Leads/components/LeadAdditionalFields";
+import { LeadAssignees } from "@/screens/Leads/components/LeadAssignees";
 const ProjectInfo = ({ route, editProjectFunctions }) => {
   const { project } = route.params;
   console.log("Add instance of project info", project);
@@ -232,7 +233,7 @@ const ProjectInfo = ({ route, editProjectFunctions }) => {
                     />
                   )}
                   onChange={async (item) => {
-                    await updateStage(setLoading, item);
+                    await updateStage(setLoading, item, project.id);
                     setProjectStage(item.id);
                   }}
                   confirmSelectItem={
@@ -249,7 +250,7 @@ const ProjectInfo = ({ route, editProjectFunctions }) => {
                         onPress: async () => {
                           console.log("Clicked confirm");
                           await stageDropdownRef.current.close();
-                          await updateStage(setLoading, item);
+                          await updateStage(setLoading, item, project.id);
                           setProjectStage(item.id);
                         },
                       },
@@ -392,6 +393,7 @@ const ProjectInfo = ({ route, editProjectFunctions }) => {
               additionalFields={clientDetails.additional_field_items}
               editProjectFunctions={editProjectFunctions}
             />
+            <LeadAssignees data={clientDetails.organization_contacts} />
             <ItemSeparatorComponent
               direction={"horizontal"}
               style={{ opacity: 0 }}

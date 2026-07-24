@@ -10,7 +10,12 @@ import { Text } from "react-native";
 import { ScrollView } from "react-native";
 import { SearchModulesListItem } from "./SearchModulesListItem";
 import { Dispatch, SetStateAction } from "react";
-import { searchSubButtons, SubButtonId } from "../types/searchTypes";
+import {
+  SearchSectionState,
+  searchSubButtons,
+  SubButtonId,
+  UniversalSearchState,
+} from "../types/searchTypes";
 import { body } from "@/design/typography";
 import { useTheme } from "@/hooks/useTheme";
 
@@ -19,20 +24,22 @@ export const SearchModulesList = ({
   tasks,
   notes,
   followups,
+  calls,
   setActiveSubButton,
   searchData,
 }: {
-  leads: any[];
-  notes: any[];
-  tasks: any[];
-  followups: any[];
+  leads: SearchSectionState | null;
+  notes: SearchSectionState | null;
+  tasks: SearchSectionState | null;
+  followups: SearchSectionState | null;
+  calls: SearchSectionState | null;
   setActiveSubButton: Dispatch<
     SetStateAction<SubButtonId<typeof searchSubButtons>>
   >;
-  searchData: any[];
+  searchData: UniversalSearchState | null;
 }) => {
   const { theme } = useTheme();
-  if (searchData.length === 0) {
+  if (!searchData) {
     return (
       <Text
         style={[
@@ -65,6 +72,7 @@ export const SearchModulesList = ({
           paddingBottom: spacing.ultra,
         },
       ]}
+      keyboardDismissMode="on-drag"
     >
       <SearchModulesListItem
         id={searchSubButtons[1].id}

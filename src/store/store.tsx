@@ -7,6 +7,7 @@ import networkCheckGlobal from "./slices/networkCheckGlobal";
 import syncDataCheckGlobal from "./slices/syncDataCheckGlobal";
 import isSyncing from "./slices/isSyncing";
 import { permissionsSlice } from "./slices/permissionSlice";
+import { isSheetButtonOpenSlice } from "./slices/isSheetOpenSlice";
 export const store = configureStore({
   reducer: {
     profile: profileSlice.reducer,
@@ -17,6 +18,7 @@ export const store = configureStore({
     syncDataCheckGlobal: syncDataCheckGlobal,
     isSyncing: isSyncing,
     permissions: permissionsSlice.reducer,
+    isSheetOpen: isSheetButtonOpenSlice.reducer,
   },
 });
 

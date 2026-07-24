@@ -65,7 +65,8 @@ const IMAGE_SIZE = SW(100);
 
 const AddTaskFromTasksTab = ({ route }) => {
   const dispatch = useDispatch();
-  const { voiceInput, onRefresh, task_type, fk_checkpoint } = route.params;
+  const { voiceInput, onRefresh, task_type, fk_checkpoint, lead_id } =
+    route.params;
   console.log("Route is", route);
   const { showActionSheetWithOptions } = useActionSheet();
   const selectedProject = useSelector((state) => state.project);
@@ -107,9 +108,9 @@ const AddTaskFromTasksTab = ({ route }) => {
         : { id: "issue", name: "Issue" }
       : { id: "task", name: "Task" },
   );
-
+  const initialProjectTitle = lead_id ? lead_id : null;
   const [allProjects, setAllProjects] = useState([]);
-  const [projectTitle, setProjectTitle] = useState(null);
+  const [projectTitle, setProjectTitle] = useState(initialProjectTitle);
 
   const [customFields, setCustomFields] = useState([]);
   const [customFieldValues, setCustomFieldValues] = useState({});
@@ -447,39 +448,10 @@ const AddTaskFromTasksTab = ({ route }) => {
             />
           </>
         )}
-        {task_type !== "followup" && (
-          <>
-            <Spacing space={SH(16)} />
-            <Text style={formElementsStyles.titleStyle}>Type:</Text>
-            <Spacing space={SH(6)} />
-            <TouchableOpacity
-              onPress={() => handleSelectTaksType()}
-              style={formElementsStyles.triggerStyle}
-            >
-              <Text style={formElementsStyles.valueStyle}>{taskType.name}</Text>
-              <DownArrowOutlineIcon width={16} height={16} />
-            </TouchableOpacity>
-          </>
-        )}
-        <Spacing space={SH(16)} />
-        <Text style={formElementsStyles.titleStyle}>Title *</Text>
-        <Spacing space={SH(6)} />
-        <Input
-          placeholder="Enter Task Title"
-          onChangeText={setNoteTitle}
-          placeholderTextColor={formElementsStyles.placeholderColor}
-          containerStyle={formElementsStyles.triggerStyle}
-          inputContainerStyle={formElementsStyles.inputContainerStyle}
-          inputStyle={formElementsStyles.valueStyle}
-          value={noteTitle}
-        />
-
-        <Spacing space={SH(16)} />
-
-        {/* Select Lead  */}
 
         {selectedProject.id === "all_projects" && (
           <>
+            <Spacing space={SH(16)} />
             <Text style={formElementsStyles.titleStyle}>Select Lead *</Text>
             <Spacing space={SH(6)} />
             <Dropdown
@@ -523,9 +495,38 @@ const AddTaskFromTasksTab = ({ route }) => {
                 )
               }
             />
-            <Spacing space={SH(16)} />
           </>
         )}
+
+        {task_type !== "followup" && (
+          <>
+            <Spacing space={SH(16)} />
+            <Text style={formElementsStyles.titleStyle}>Type:</Text>
+            <Spacing space={SH(6)} />
+            <TouchableOpacity
+              onPress={() => handleSelectTaksType()}
+              style={formElementsStyles.triggerStyle}
+            >
+              <Text style={formElementsStyles.valueStyle}>{taskType.name}</Text>
+              <DownArrowOutlineIcon width={16} height={16} />
+            </TouchableOpacity>
+          </>
+        )}
+        <Spacing space={SH(16)} />
+        <Text style={formElementsStyles.titleStyle}>Title *</Text>
+        <Spacing space={SH(6)} />
+        <Input
+          placeholder="Enter Task Title"
+          onChangeText={setNoteTitle}
+          placeholderTextColor={formElementsStyles.placeholderColor}
+          containerStyle={formElementsStyles.triggerStyle}
+          inputContainerStyle={formElementsStyles.inputContainerStyle}
+          inputStyle={formElementsStyles.valueStyle}
+          value={noteTitle}
+        />
+
+        <Spacing space={SH(16)} />
+
         <Text
           style={{
             ...body.sm.medium,
@@ -804,7 +805,11 @@ const AddTaskFromTasksTab = ({ route }) => {
       <View style={formElementsStyles.bottomButtonContainer}>
         <BottomButton
           disabled={loading.AddTaskFromTasksTab}
-          title={loading.AddTaskFromTasksTab ? "Creating Task" : "Create Task"}
+          title={
+            loading.AddTaskFromTasksTab
+              ? `Creating... ${task_type === "followup" ? "Creating Follow Up..." : "Creating Task..."}`
+              : `Create ${task_type === "followup" ? "Follow Up" : "Task"}`
+          }
           onPress={handleAddTaskFromTasksTab}
           type={loading.postComment ? "disabled" : "default"}
           icon={

@@ -17,6 +17,7 @@ import { CustomKanbanList } from "./components/CustomKanbanList";
 import { SCREEN_WIDTH } from "@/utils";
 import { borderRadius } from "@/design/borders";
 import { RenderKanbanItem } from "./components/RenderKanbanItem";
+import AddProject from "@/components/common/AddProject/AddProject";
 
 export const ListLeads = () => {
   const { kanbanLoading, getKanban } = useLeadsEndpoints();
@@ -85,6 +86,7 @@ export const ListLeads = () => {
           />
         )}
       </ListWrapper>
+      <AddProject />
     </>
   );
 };

@@ -40,19 +40,8 @@ export const FollowUpCompletModal = ({
   loading,
   setComment,
 }) => {
-  const [values, setValues] = useState({});
   const [note, setNote] = useState("");
   const [pressed, setPressed] = useState("a");
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!visible) {
-        setValues({});
-        return;
-      }
-    };
-
-    fetchData();
-  }, [visible]);
 
   useEffect(() => {
     setComment(note);
@@ -128,7 +117,7 @@ export const FollowUpCompletModal = ({
               style={{ paddingVertical: 8 }}
               icon={
                 loading && pressed === "a" ? (
-                  <ActivityIndicator size="small" color="white" />
+                  <ActivityIndicator size="small" color="black" />
                 ) : null
               }
             />

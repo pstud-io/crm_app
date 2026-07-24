@@ -127,16 +127,18 @@ export const OTPForm = () => {
           ystack,
           fullWidth,
           {
-            backgroundColor: theme.header,
-            padding: spacing.md,
-            borderRadius: borderRadius.lg,
+            // backgroundColor: theme.header,
+            // padding: spacing.md,
+            // borderRadius: borderRadius.lg,
             gap: spacing.sm,
-            boxShadow: theme.shadow.xs,
+            marginBottom: spacing.lg,
+            marginTop: spacing.lg,
+            // boxShadow: theme.shadow.xs,
           },
         ]}
       >
         <Text style={[body.sm.regular, { color: theme.text }]}>
-          Phone Number
+          Phone Number *
         </Text>
         <Controller
           control={control}
@@ -161,7 +163,7 @@ export const OTPForm = () => {
               maxLength={11}
               defaultCountry="IN"
               phoneInputStyles={{
-                callingCode: { ...body.md.medium, color: theme.text },
+                callingCode: { ...body.sm.regular, color: theme.text },
                 divider: {
                   height: 16,
                 },
@@ -180,13 +182,13 @@ export const OTPForm = () => {
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "space-around",
-                  backgroundColor: theme.background,
+                  backgroundColor: theme.header,
                 },
                 container: {
                   height: 44,
                   borderColor: theme.border,
                   borderWidth: 1,
-                  backgroundColor: theme.background,
+                  backgroundColor: theme.header,
                   borderRadius: borderRadius.md,
                   overflow: "hidden",
                 },

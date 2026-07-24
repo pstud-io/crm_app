@@ -73,6 +73,8 @@ import { TaskHistoryBottomSheet } from "./components/TaskHistoryBottomSheet";
 
 export const ListTasks = ({ route }: { route: any }) => {
   const { task_type, project, fromLeads } = route.params;
+  const [contentHeight, setContentHeight] = useState(0);
+  const [layoutHeight, setLayoutHeight] = useState(0);
   console.log("Task type in list taks", task_type);
   const dispatch = useDispatch();
   const navigation = useNavigation<UserNavigationProp>();
@@ -84,7 +86,9 @@ export const ListTasks = ({ route }: { route: any }) => {
   const selectedProject = project ?? savedProject;
   const profile = useSelector((state: RootState) => state.profile);
   const organization_contact_id = profile.organization_contact_id;
-
+  const [initialLoad, setInitialLoad] = useState<boolean | undefined>(
+    undefined,
+  );
   const [completedTasks, setCompletedTasks] = useState([]);
   const [createdTasks, setCreatedTasks] = useState([]);
   const [inProgressTasks, setInProgressTasks] = useState([]);
@@ -322,7 +326,10 @@ export const ListTasks = ({ route }: { route: any }) => {
     useCallback(() => {
       const fetchTasks = async () => {
         console.log("In fetch tasks");
+        setInitialLoad(true);
+
         await tasksSearch.onFocus();
+        setInitialLoad(false);
       };
       fetchTasks();
     }, [selectedProject]),
@@ -335,6 +342,12 @@ export const ListTasks = ({ route }: { route: any }) => {
       dispatch(setActiveSubButtonGlobal(setButton));
     }, []),
   );
+
+  useEffect(() => {
+    if (contentHeight < layoutHeight && !tasksLoading.getTasks) {
+      tasksSearch.onEndReached();
+    }
+  }, [contentHeight, layoutHeight, tasksLoading.getTasks]);
 
   const returnTasksCount = (title: string) => {
     const count =
@@ -584,9 +597,17 @@ export const ListTasks = ({ route }: { route: any }) => {
               />
             )}
             loading={tasksLoading.getTasks}
+            onContentSizeChange={(_, h) => setContentHeight(h)}
+            onLayout={(e) => setLayoutHeight(e.nativeEvent.layout.height)}
             refreshing={tasksSearch.refreshing}
             onRefresh={tasksSearch.onRefresh}
-            onEndReached={tasksSearch.onEndReached}
+            onEndReached={
+              initialLoad === undefined
+                ? null
+                : initialLoad === true
+                  ? null
+                  : tasksSearch.onEndReached
+            }
           />
         )}
       </ListWrapper>

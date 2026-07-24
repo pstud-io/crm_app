@@ -7,6 +7,7 @@ export const ProjectInfoCardItem = ({
   color,
   size,
   location = false,
+  leftIcon,
 }) => {
   const handleOpenInChrome = async () => {
     console.log("Location is pressed", value, supported);
@@ -27,7 +28,18 @@ export const ProjectInfoCardItem = ({
         width: "100%",
       }}
     >
-      <Text style={formElementsStyles.titleStyle}>{label}</Text>
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 8,
+        }}
+      >
+        {leftIcon && leftIcon}
+        <Text style={formElementsStyles.titleStyle}>{label}</Text>
+      </View>
       {location ? (
         <TouchableOpacity
           style={{ maxWidth: "60%" }}

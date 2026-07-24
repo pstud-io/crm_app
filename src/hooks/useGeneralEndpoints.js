@@ -343,12 +343,12 @@ export const useGeneralEndpoints = () => {
     }
   };
 
-  const updateStage = async (setLoading, item) => {
+  const updateStage = async (setLoading, item, project_id) => {
     setLoading((prev) => ({ ...prev, updatingStage: true }));
     console.log("item in update stage", item);
     try {
       const response = await axios.put(
-        `${apiEndpoint}/customers/project/?project_id=${selectedProject?.id}`,
+        `${apiEndpoint}/customers/project/?project_id=${project_id}`,
         { fk_project_stage: item.id },
         {
           headers: {
