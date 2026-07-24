@@ -6,48 +6,66 @@ import {
   NativeStackHeaderProps,
 } from "@react-navigation/native-stack";
 
-export const NotesStack = createNativeStackNavigator({
-  initialRouteName: "ListNotes",
-  screenOptions: {
-    headerShown: false,
-    headerTitle: undefined,
-  },
-  screens: {
-    ListNotes: {
-      linking: "list-notes",
-      screen: ListNotes,
-      initialParams: {
-        project: {
-          id: "",
-          project_name: "",
-        } as const,
-      },
-      options: {
-        headerShown: true,
-        header: (props: NativeStackHeaderProps) => (
-          <CommonHeaderWithProject {...props} title="Notes" />
-        ),
-      },
-    },
-    AddNote: {
-      linking: "add-note",
-      screen: AddNote,
-      options: {
-        headerShown: true,
-        header: (props: NativeStackHeaderProps) => (
-          <CommonHeader {...props} title="Add Note" />
-        ),
-      },
-    },
-    NoteDetails: {
-      linking: "note-details",
-      screen: NoteDetails,
-      options: {
-        headerShown: true,
-        header: (props: NativeStackHeaderProps) => (
-          <CommonHeader {...props} title="Note Details" />
-        ),
-      },
-    },
-  },
-});
+export type NotesStackParamList = {
+  ListNotes: {
+    project: {
+      id: string;
+      project_name: string;
+    };
+  };
+  AddNote: undefined;
+  NoteDetails: undefined;
+};
+
+const Stack = createNativeStackNavigator<NotesStackParamList>();
+
+export const NotesStack = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="ListNotes"
+      screenOptions={{
+        headerShown: false,
+        headerTitle: undefined,
+      }}
+    >
+      <Stack.Screen
+        name="ListNotes"
+        component={ListNotes}
+        initialParams={{
+          project: {
+            id: "",
+            project_name: "",
+          },
+        }}
+        options={{
+          headerShown: true,
+          header: (props: NativeStackHeaderProps) => (
+            <CommonHeaderWithProject {...props} title="Notes" />
+          ),
+        }}
+      />
+
+      <Stack.Screen
+        name="AddNote"
+        component={AddNote}
+        options={{
+          headerShown: true,
+          header: (props: NativeStackHeaderProps) => (
+            <CommonHeader {...props} title="Add Note" />
+          ),
+        }}
+      />
+
+      <Stack.Screen
+        name="NoteDetails"
+        component={NoteDetails}
+        options={{
+          headerShown: true,
+          header: (props: NativeStackHeaderProps) => (
+            <CommonHeader {...props} title="Note Details" />
+          ),
+        }}
+      />
+    </Stack.Navigator>
+  );
+};

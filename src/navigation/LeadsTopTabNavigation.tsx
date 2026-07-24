@@ -5,51 +5,91 @@ import { ListNotes } from "@/screens/Notes";
 import { ListTasks } from "@/screens/tasks/ListTasks";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-export const LeadDetailsTabs = createMaterialTopTabNavigator({
-  tabBar: (props) => <LeadsTopBar {...props} />,
-  screenOptions: {
-    swipeEnabled: false,
-  },
-  initialRouteName: "Info",
-  screens: {
-    Info: {
-      screen: LeadInfo,
-      initialParams: {
-        project: "",
-      },
-    },
-    Timeline: {
-      screen: LeadStage,
-      initialParams: {
-        project: "",
-      } as const,
-    },
-    "Follow Ups": {
-      screen: ListTasks,
-      initialParams: {
-        task_type: "followup",
-        fromLeads: true,
-      },
-    },
-    Tasks: {
-      screen: ListTasks,
-      initialParams: {
-        task_type: "",
-        fromLeads: true,
-      },
-    },
-    Notes: {
-      screen: ListNotes,
-      initialParams: {
-        selectedProject: null,
-        fromLeads: true,
-      },
-    },
-    "Stage History": {
-      screen: LeadStage,
-      initialParams: {
-        project: "",
-      } as const,
-    },
-  },
-});
+export type LeadDetailsTabParamList = {
+  Info: {
+    project: string;
+  };
+  Timeline: {
+    project: string;
+  };
+  "Follow Ups": {
+    task_type: "followup";
+    fromLeads: boolean;
+  };
+  Tasks: {
+    task_type: string;
+    fromLeads: boolean;
+  };
+  Notes: {
+    selectedProject: any;
+    fromLeads: boolean;
+  };
+  "Stage History": {
+    project: string;
+  };
+};
+
+const Tab = createMaterialTopTabNavigator<LeadDetailsTabParamList>();
+
+export const LeadDetailsTabs = () => {
+  return (
+    <Tab.Navigator
+      initialRouteName="Info"
+      tabBar={(props) => <LeadsTopBar {...props} />}
+      screenOptions={{
+        swipeEnabled: false,
+      }}
+    >
+      <Tab.Screen
+        name="Info"
+        component={LeadInfo}
+        initialParams={{
+          project: "",
+        }}
+      />
+
+      <Tab.Screen
+        name="Timeline"
+        component={LeadStage}
+        initialParams={{
+          project: "",
+        }}
+      />
+
+      <Tab.Screen
+        name="Follow Ups"
+        component={ListTasks}
+        initialParams={{
+          task_type: "followup",
+          fromLeads: true,
+        }}
+      />
+
+      <Tab.Screen
+        name="Tasks"
+        component={ListTasks}
+        initialParams={{
+          task_type: "",
+          fromLeads: true,
+        }}
+      />
+
+      <Tab.Screen
+        name="Notes"
+        component={ListNotes}
+        initialParams={{
+          selectedProject: null,
+          fromLeads: true,
+        }}
+      />
+
+      <Tab.Screen
+        name="Stage History"
+        component={LeadStage}
+        initialParams={{
+          project: "",
+        }}
+      />
+    </Tab.Navigator>
+  );
+};

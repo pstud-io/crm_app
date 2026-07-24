@@ -1,12 +1,5 @@
 import { Dashboard } from "@/screens/dashboard/Dashboard";
-import {
-  createStaticNavigation,
-  DefaultTheme,
-  LinkingOptions,
-  NavigationIndependentTree,
-  StaticParamList,
-  Theme,
-} from "@react-navigation/native";
+import { DefaultTheme, LinkingOptions } from "@react-navigation/native";
 import {
   createNativeStackNavigator,
   NativeStackHeaderProps,
@@ -24,114 +17,51 @@ import { ProfileStack } from "./ProfileNavigation";
 import { NotificationsStack } from "./NotificationNavigation";
 import { Search } from "@/screens/search/Search";
 import { CommonHeader } from "@/components/CommonHeader";
+import { NavigationContainer } from "@react-navigation/native";
 
-const UserStack = createNativeStackNavigator({
-  initialRouteName: "Dashboard",
-  screenOptions: {
-    headerShown: false,
-    headerTitle: undefined,
-  },
-  screens: {
-    Dashboard: {
-      linking: "dashboard",
-      layout: ({ children }) => (
-        <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
-      ),
-      screen: Dashboard,
-      options: {
-        headerShown: true,
-        header: (props: NativeStackHeaderProps) => (
-          <DashboardHeader {...props} />
-        ),
-        animation: "fade",
-      },
-    },
-    Search: {
-      linking: "search",
-      layout: ({ children }) => (
-        <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
-      ),
-      screen: Search,
-      options: {
-        headerShown: true,
-        header: (props: NativeStackHeaderProps) => (
-          <CommonHeader {...props} title="Search" />
-        ),
-        animation: "fade",
-      },
-    },
-    Leads: {
-      layout: ({ children }) => (
-        <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
-      ),
-      linking: "leads",
-      screen: LeadsStack,
-      options: {
-        headerShown: false,
-      },
-    },
-    Tasks: {
-      layout: ({ children }) => (
-        <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
-      ),
-      linking: "tasks",
-      screen: TasksStack,
-      options: {
-        headerShown: false,
-      },
-    },
-    Notes: {
-      layout: ({ children }) => (
-        <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
-      ),
-      linking: "notes",
-      screen: NotesStack,
-      options: {
-        headerShown: false,
-      },
-    },
-    CameraScreen: {
-      linking: "camera",
-      screen: CameraScreen,
-      options: {
-        headerShown: false,
-      },
-    },
-    Profile: {
-      linking: "profile",
-      screen: ProfileStack,
-      options: {
-        headerShown: false,
-      },
-    },
-    Notifications: {
-      linking: "notifications",
-      screen: NotificationsStack,
-      options: {
-        headerShown: false,
-      },
-    },
-  },
-});
+export type UserStackParamsList = {
+  Dashboard: undefined;
+  Search: undefined;
+  Leads: undefined;
+  Tasks: undefined;
+  Notes: undefined;
+  CameraScreen: undefined;
+  Profile: undefined;
+  Notifications: undefined;
+};
 
-export type UserStackParamsList = StaticParamList<typeof UserStack>;
 declare global {
   namespace ReactNavigation {
-    interface UserParamsList extends UserStackParamsList {}
+    interface RootParamList extends UserStackParamsList {}
   }
 }
 
-const StaticUserNavigation = createStaticNavigation(UserStack);
+const Stack = createNativeStackNavigator<UserStackParamsList>();
 
 export const userNavigationRef =
   createNavigationContainerRef<UserStackParamsList>();
 
 export type UserNavigationProp = NativeStackNavigationProp<UserStackParamsList>;
 
+const BottomSheetLayout = ({ children }: { children: React.ReactNode }) => (
+  <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
+);
+
 export const UserNavigation = () => {
-  const linking: LinkingOptions<ReactNavigation.UserParamsList> = {
+  const linking: LinkingOptions<UserStackParamsList> = {
     prefixes: ["pipeline://"],
-    enabled: true,
+    config: {
+      screens: {
+        Dashboard: "dashboard",
+        Search: "search",
+        Leads: "leads",
+        Tasks: "tasks",
+        Notes: "notes",
+        CameraScreen: "camera",
+        Profile: "profile",
+        Notifications: "notifications",
+      },
+    },
   };
 
   const { theme } = useTheme();
@@ -145,12 +75,91 @@ export const UserNavigation = () => {
   };
 
   return (
-    // <NavigationIndependentTree>
-    <StaticUserNavigation
+    <NavigationContainer
+      ref={userNavigationRef}
       linking={linking}
       theme={navigationTheme}
-      ref={userNavigationRef}
-    />
-    // </NavigationIndependentTree>
+    >
+      <Stack.Navigator
+        initialRouteName="Dashboard"
+        screenOptions={{
+          headerShown: false,
+          headerTitle: undefined,
+        }}
+      >
+        <Stack.Screen
+          name="Dashboard"
+          component={Dashboard}
+          options={{
+            headerShown: true,
+            header: (props: NativeStackHeaderProps) => (
+              <DashboardHeader {...props} />
+            ),
+            animation: "fade",
+          }}
+          layout={BottomSheetLayout}
+        />
+
+        <Stack.Screen
+          name="Search"
+          component={Search}
+          options={{
+            headerShown: true,
+            header: (props: NativeStackHeaderProps) => (
+              <CommonHeader {...props} title="Search" />
+            ),
+            animation: "fade",
+          }}
+          layout={BottomSheetLayout}
+        />
+
+        <Stack.Screen
+          name="Leads"
+          component={LeadsStack}
+          options={{ headerShown: false }}
+          layout={BottomSheetLayout}
+        />
+
+        <Stack.Screen
+          name="Tasks"
+          component={TasksStack}
+          options={{ headerShown: false }}
+          layout={BottomSheetLayout}
+        />
+
+        <Stack.Screen
+          name="Notes"
+          component={NotesStack}
+          options={{ headerShown: false }}
+          layout={BottomSheetLayout}
+        />
+
+        <Stack.Screen name="CameraScreen" options={{ headerShown: false }}>
+          {(props) => (
+            <CameraScreen
+              {...props}
+              onSave={(mediaArray: any[]) => {
+                // @ts-ignore
+                props.route.params?.onSave(mediaArray);
+                props.navigation.pop();
+              }}
+              onClose={() => props.navigation.pop()}
+            />
+          )}
+        </Stack.Screen>
+
+        <Stack.Screen
+          name="Profile"
+          component={ProfileStack}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="Notifications"
+          component={NotificationsStack}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };

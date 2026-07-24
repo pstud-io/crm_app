@@ -32,17 +32,10 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { body } from "../../components/UI/DesignSystem/typography";
 import Toast from "react-native-toast-message";
 
-const CameraScreen = ({ route }) => {
+const CameraScreen = ({ navigation, route, onClose, onSave }) => {
   const [cameraPermission, requestCameraPermission] = useCameraPermissions();
   const initialMode = route?.params?.mode || "picture";
   const maxMediaLength = route?.params?.maxMediaLength;
-  const navigation = useNavigation();
-  const { onSave } = route.params;
-  // const onSave = () => {};
-  const close = () => {
-    navigation.pop();
-  };
-
   const [microphonePermission, requestMicrophonePermission] =
     useMicrophonePermissions();
   const [cameraType, setCameraType] = useState("back");
@@ -67,7 +60,7 @@ const CameraScreen = ({ route }) => {
               {
                 text: "Cancel",
                 style: "cancel",
-                onPress: () => close(),
+                onPress: onClose,
               },
               {
                 text: "Open Settings",
@@ -82,7 +75,7 @@ const CameraScreen = ({ route }) => {
   );
 
   const handleBackPress = () => {
-    close();
+    navigation.pop();
     return true; // Prevent default behavior
   };
 
@@ -205,7 +198,7 @@ const CameraScreen = ({ route }) => {
                 width: SH(40),
                 height: SH(40),
               }}
-              onPress={() => close()}
+              onPress={onClose}
             >
               <CloseOutlineIcon
                 fill={Colors.white}
@@ -469,12 +462,7 @@ const CameraScreen = ({ route }) => {
                   height: SH(40),
                 }}
                 onPress={() => {
-                  if (captures.length > 0) {
-                    onSave(captures);
-                    close();
-                  } else {
-                    () => {};
-                  }
+                  captures.length > 0 ? onSave(captures) : () => {};
                 }}
               >
                 <TickOutline
