@@ -1,20 +1,11 @@
 import * as Sentry from "@sentry/react-native";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-import { FirstComponent } from "@/providers/FirstComponent";
 import * as SplashScreen from "expo-splash-screen";
 import AuthProvider from "@/providers/AuthProvider";
-import { Navigation } from "@/navigation/Navigation";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { QueryProvider } from "@/providers/QueryProvider";
-import { NavigationContainer } from "@react-navigation/native";
-import { FloatingButtons } from "@/components/FloatingButtons";
 import { Provider } from "react-redux";
 import { store } from "@/store/store";
-import { ActionSheetProvider } from "@expo/react-native-action-sheet";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import VideoScreen from "@/components/VideoScreen";
-import { KeyboardProvider } from "react-native-keyboard-controller";
+import RootNavigation from "@/navigation/RootNavigation";
 SplashScreen.preventAutoHideAsync();
 
 SplashScreen.setOptions({
@@ -49,21 +40,11 @@ export default Sentry.wrap(function App() {
     <SafeAreaProvider style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
         <Provider store={store}>
-          <ActionSheetProvider>
-            <GestureHandlerRootView style={{ flex: 1 }}>
-              <QueryProvider>
-                <AuthProvider>
-                  <ThemeProvider>
-                    <KeyboardProvider enabled>
-                      <Navigation />
-                      {/* <FirstComponent /> */}
-                      <FloatingButtons />
-                    </KeyboardProvider>
-                  </ThemeProvider>
-                </AuthProvider>
-              </QueryProvider>
-            </GestureHandlerRootView>
-          </ActionSheetProvider>
+          <AuthProvider>
+            <ThemeProvider>
+              <RootNavigation />
+            </ThemeProvider>
+          </AuthProvider>
         </Provider>
       </SafeAreaView>
     </SafeAreaProvider>

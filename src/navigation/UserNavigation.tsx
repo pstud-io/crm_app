@@ -43,43 +43,25 @@ export const userNavigationRef =
 
 export type UserNavigationProp = NativeStackNavigationProp<UserStackParamsList>;
 
-const BottomSheetLayout = ({ children }: { children: React.ReactNode }) => (
-  <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
-);
+export const linking: LinkingOptions<UserStackParamsList> = {
+  prefixes: ["pipeline://"],
+  config: {
+    screens: {
+      Dashboard: "dashboard",
+      Search: "search",
+      Leads: "leads",
+      Tasks: "tasks",
+      Notes: "notes",
+      CameraScreen: "camera",
+      Profile: "profile",
+      Notifications: "notifications",
+    },
+  },
+};
 
 export const UserNavigation = () => {
-  const linking: LinkingOptions<UserStackParamsList> = {
-    prefixes: ["pipeline://"],
-    config: {
-      screens: {
-        Dashboard: "dashboard",
-        Search: "search",
-        Leads: "leads",
-        Tasks: "tasks",
-        Notes: "notes",
-        CameraScreen: "camera",
-        Profile: "profile",
-        Notifications: "notifications",
-      },
-    },
-  };
-
-  const { theme } = useTheme();
-
-  const navigationTheme = {
-    ...DefaultTheme,
-    colors: {
-      ...DefaultTheme.colors,
-      background: theme.background,
-    },
-  };
-
   return (
-    <NavigationContainer
-      ref={userNavigationRef}
-      linking={linking}
-      theme={navigationTheme}
-    >
+    <>
       <Stack.Navigator
         initialRouteName="Dashboard"
         screenOptions={{
@@ -97,7 +79,6 @@ export const UserNavigation = () => {
             ),
             animation: "fade",
           }}
-          layout={BottomSheetLayout}
         />
 
         <Stack.Screen
@@ -110,28 +91,24 @@ export const UserNavigation = () => {
             ),
             animation: "fade",
           }}
-          layout={BottomSheetLayout}
         />
 
         <Stack.Screen
           name="Leads"
           component={LeadsStack}
           options={{ headerShown: false }}
-          layout={BottomSheetLayout}
         />
 
         <Stack.Screen
           name="Tasks"
           component={TasksStack}
           options={{ headerShown: false }}
-          layout={BottomSheetLayout}
         />
 
         <Stack.Screen
           name="Notes"
           component={NotesStack}
           options={{ headerShown: false }}
-          layout={BottomSheetLayout}
         />
 
         <Stack.Screen name="CameraScreen" options={{ headerShown: false }}>
@@ -160,6 +137,6 @@ export const UserNavigation = () => {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
-    </NavigationContainer>
+    </>
   );
 };
