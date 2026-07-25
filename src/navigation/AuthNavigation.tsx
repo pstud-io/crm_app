@@ -1,4 +1,8 @@
-import { NavigationContainer, LinkingOptions } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  LinkingOptions,
+  createNavigationContainerRef,
+} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SignIn } from "@/screens/signin/SignIn";
 
@@ -14,27 +18,28 @@ declare global {
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
-export const AuthNavigation = () => {
-  const linking: LinkingOptions<AuthStackParamList> = {
-    prefixes: ["pipeline://"],
-    config: {
-      screens: {
-        SignIn: "signin",
-      },
-    },
-  };
+export const authNavigationRef =
+  createNavigationContainerRef<AuthStackParamList>();
 
+export const authLinking: LinkingOptions<AuthStackParamList> = {
+  prefixes: ["pipeline://"],
+  config: {
+    screens: {
+      SignIn: "signin",
+    },
+  },
+};
+
+export const AuthNavigation = () => {
   return (
-    <NavigationContainer linking={linking}>
-      <Stack.Navigator
-        initialRouteName="SignIn"
-        screenOptions={{
-          headerShown: false,
-          headerTitle: undefined,
-        }}
-      >
-        <Stack.Screen name="SignIn" component={SignIn} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator
+      initialRouteName="SignIn"
+      screenOptions={{
+        headerShown: false,
+        headerTitle: undefined,
+      }}
+    >
+      <Stack.Screen name="SignIn" component={SignIn} />
+    </Stack.Navigator>
   );
 };

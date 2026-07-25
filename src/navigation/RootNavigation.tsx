@@ -8,9 +8,13 @@ import { QueryProvider } from "@/providers/QueryProvider";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { Navigation } from "./Navigation";
 import { FloatingButtons } from "@/components/FloatingButtons";
+import { useAuth } from "@/hooks/useAuth";
+import { Role } from "@/types/AuthTypes";
+import { authLinking, authNavigationRef } from "./AuthNavigation";
 
 function RootNavigation() {
   const { theme } = useTheme();
+  const { role } = useAuth();
 
   const navigationTheme = {
     ...DefaultTheme,
@@ -19,11 +23,12 @@ function RootNavigation() {
       background: theme.background,
     },
   };
-
+  const finalLinking = role === Role.GUEST ? authLinking : linking;
+  const finalRef = role === Role.GUEST ? authNavigationRef : userNavigationRef;
   return (
     <NavigationContainer
-      ref={userNavigationRef}
-      linking={linking}
+      ref={finalRef}
+      linking={finalLinking}
       theme={navigationTheme}
     >
       <ActionSheetProvider>

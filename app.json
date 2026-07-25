@@ -88,7 +88,8 @@
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
         }
       ],
-      "expo-asset"
+      "expo-asset",
+      "react-native-call-detection"
     ],
     "assetBundlePatterns": ["**/*", "assets/pdfjs/*"]
   }
