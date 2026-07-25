@@ -59,10 +59,10 @@ export const BottomButton = ({
   title,
   type = "default",
   onPress,
-  icon,
-  iconLeft,
+  icon = <></>,
+  iconLeft = <></>,
   disabled,
-  style,
+  style = {},
   disableUIonly = false,
 }) => {
   const currentType = disabled ? "disabled" : type || "default";

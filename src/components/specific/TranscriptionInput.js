@@ -40,6 +40,7 @@ const TranscriptionInput = ({
   rightIcon,
   mentions = [],
   hasIcon = true,
+  placeholderTextColor = "",
   usesBottomSheet = false,
 }) => {
   const [isRecording, setIsRecording] = useState(false);
@@ -258,6 +259,7 @@ const TranscriptionInput = ({
           placeholder={placeholder}
           style={inputStyle}
           multiline
+          placeholderTextColor={placeholderTextColor}
         />
 
         <View

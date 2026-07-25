@@ -807,7 +807,7 @@ const AddTaskFromTasksTab = ({ route }) => {
           disabled={loading.AddTaskFromTasksTab}
           title={
             loading.AddTaskFromTasksTab
-              ? `Creating... ${task_type === "followup" ? "Creating Follow Up..." : "Creating Task..."}`
+              ? `Creating ${task_type === "followup" ? "Follow Up..." : "Task..."}`
               : `Create ${task_type === "followup" ? "Follow Up" : "Task"}`
           }
           onPress={handleAddTaskFromTasksTab}

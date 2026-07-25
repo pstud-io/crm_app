@@ -16,6 +16,7 @@ export const Dashboard = () => {
   return (
     <>
       <ListModules />
+      <AddProject />
     </>
   );
 };

@@ -31,7 +31,7 @@ import { usePaginatedSearch } from "@/hooks/usePaginatedSearch";
 const ListNotes = ({ route }) => {
   console.log("Route in notes is", route);
   const { selectedProject, fromLeads } = route.params;
-
+  console.log("selected project in list notes", selectedProject, fromLeads);
   const { theme } = useTheme();
   const navigation = useNavigation();
 
@@ -46,6 +46,9 @@ const ListNotes = ({ route }) => {
     getData: getNotes,
     loading: notesLoading.getNotes,
     pageSize: 10,
+    extraParams: {
+      project: project,
+    },
   });
   const dispatch = useDispatch();
 
@@ -242,18 +245,24 @@ const ListNotes = ({ route }) => {
           ListHeaderComponent={<Spacing space={SH(10)} />}
           ListEmptyComponent={
             <EmptyContent
-              onPress={() =>
-                navigation.push("TabNavigator", {
-                  screen: "MoreStack",
-                  params: {
-                    screen: "AddNote",
-                    params: {
-                      project_id: project.id,
-                      project,
-                    },
-                  },
-                })
-              }
+              onPress={() => {
+                if (fromLeads) {
+                  userNavigationRef.dispatch(
+                    StackActions.push("Notes", {
+                      screen: "AddNote",
+                      params: {
+                        project_id: project.id,
+                        project,
+                      },
+                    }),
+                  );
+                } else {
+                  navigation.push("AddNote", {
+                    project_id: project.id,
+                    project,
+                  });
+                }
+              }}
             />
           }
           refreshControl={

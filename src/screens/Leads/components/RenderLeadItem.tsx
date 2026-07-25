@@ -42,9 +42,9 @@ export const RenderLeadItem = ({
             screen: "Info",
             params: {
               project: { id: item.id, project_name: item.project_name },
-            } as any,
+            },
           },
-        })
+        } as any)
       }
     >
       <View

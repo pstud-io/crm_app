@@ -39,7 +39,10 @@ export const handleNavigation = (
         },
       }),
     );
-  } else if (activeSubButtonGlobal === "leads") {
+  } else if (
+    activeSubButtonGlobal === "leads" ||
+    activeSubButtonGlobal === "dashboard"
+  ) {
     console.log("Hitting for leads");
     openAddProjectBottomSheet();
   }

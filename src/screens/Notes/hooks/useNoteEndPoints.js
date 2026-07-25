@@ -120,16 +120,18 @@ export const useNoteEndpoints = () => {
     setData,
     abortSignal,
     pageSize,
+    ...notesExtraParams
   }) => {
     if (!hasMore && page !== 1) return;
     setNotesLoading((prev) => ({ ...prev, getNotes: true }));
+    console.log("Notes extra params", notesExtraParams);
     try {
       const response = await fetchNotes(
         page,
         searchTerm,
         pageSize,
         abortSignal,
-        selectedProject.id,
+        notesExtraParams.project.id,
       );
       if (response.status >= 200 && response.status < 300) {
         const allData = response.data.results;

@@ -1,9 +1,13 @@
-import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
+import {
+  DefaultTheme,
+  LinkingOptions,
+  NavigationContainer,
+  ParamListBase,
+} from "@react-navigation/native";
 import { linking, userNavigationRef } from "./UserNavigation";
 import { useTheme } from "@/hooks/useTheme";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { Navigation } from "./Navigation";
@@ -11,6 +15,7 @@ import { FloatingButtons } from "@/components/FloatingButtons";
 import { useAuth } from "@/hooks/useAuth";
 import { Role } from "@/types/AuthTypes";
 import { authLinking, authNavigationRef } from "./AuthNavigation";
+import { CallLog } from "@/screens/CallHistory/components/CallLog";
 
 function RootNavigation() {
   const { theme } = useTheme();
@@ -23,8 +28,14 @@ function RootNavigation() {
       background: theme.background,
     },
   };
-  const finalLinking = role === Role.GUEST ? authLinking : linking;
+
+  const finalLinking: LinkingOptions<ParamListBase> =
+    role === Role.GUEST
+      ? (authLinking as LinkingOptions<ParamListBase>)
+      : (linking as LinkingOptions<ParamListBase>);
+
   const finalRef = role === Role.GUEST ? authNavigationRef : userNavigationRef;
+
   return (
     <NavigationContainer
       ref={finalRef}
@@ -33,14 +44,13 @@ function RootNavigation() {
     >
       <ActionSheetProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <BottomSheetModalProvider>
-            <QueryProvider>
-              <KeyboardProvider enabled>
-                <Navigation />
-                <FloatingButtons />
-              </KeyboardProvider>
-            </QueryProvider>
-          </BottomSheetModalProvider>
+          <QueryProvider>
+            <KeyboardProvider enabled>
+              <Navigation />
+              <FloatingButtons />
+              <CallLog />
+            </KeyboardProvider>
+          </QueryProvider>
         </GestureHandlerRootView>
       </ActionSheetProvider>
     </NavigationContainer>

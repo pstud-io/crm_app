@@ -39,34 +39,6 @@ Sentry.init({
 });
 
 export default Sentry.wrap(function App() {
-  const [granted, setGranted] = useState(false);
-
-  useEffect(() => {
-    async function requestPermissions() {
-      const result = await PermissionsAndroid.requestMultiple([
-        PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE,
-        PermissionsAndroid.PERMISSIONS.READ_CALL_LOG,
-      ]);
-
-      const granted =
-        result[PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE] ===
-          PermissionsAndroid.RESULTS.GRANTED &&
-        result[PermissionsAndroid.PERMISSIONS.READ_CALL_LOG] ===
-          PermissionsAndroid.RESULTS.GRANTED;
-
-      console.log(result);
-
-      setGranted(granted);
-    }
-
-    requestPermissions();
-  }, []);
-
-  useCallDetection(granted);
-  console.log("NativeModules.CallDetectionManager");
-  console.log(NativeModules.CallDetectionManager);
-  console.log("Android module");
-  console.log(NativeModules.CallDetectionManagerAndroid);
   return (
     <SafeAreaProvider style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>

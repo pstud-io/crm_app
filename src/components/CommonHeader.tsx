@@ -121,7 +121,7 @@ export const CommonHeader = ({
           <Text style={[body.xl.semiBold, { color: theme.text }]}>{title}</Text>
         </View>
       </Pressable>
-      <Button
+      {/* <Button
         label={null}
         loading={false}
         onPress={() => {}}
@@ -145,7 +145,7 @@ export const CommonHeader = ({
             strokeWidth={2}
           />
         }
-      />
+      /> */}
     </View>
   );
 };

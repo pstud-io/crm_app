@@ -40,11 +40,11 @@ index 0000000..fd488d3
 Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManager.dex differ
 diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.dex b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.dex
 new file mode 100644
-index 0000000..0d03de6
+index 0000000..91233ce
 Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.dex differ
 diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule.dex b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule.dex
 new file mode 100644
-index 0000000..6cd49c6
+index 0000000..710f1a5
 Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule.dex differ
 diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.dex b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.dex
 new file mode 100644
@@ -71,7 +71,7 @@ index 0000000..0d259dd
 +o/classes
 diff --git a/node_modules/react-native-call-detection/android/build/.transforms/4c374fd509e2df4cf778a40abe6a77d4/transformed/classes/classes_dex/classes.dex b/node_modules/react-native-call-detection/android/build/.transforms/4c374fd509e2df4cf778a40abe6a77d4/transformed/classes/classes_dex/classes.dex
 new file mode 100644
-index 0000000..8fa59d6
+index 0000000..2ac6358
 Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/4c374fd509e2df4cf778a40abe6a77d4/transformed/classes/classes_dex/classes.dex differ
 diff --git a/node_modules/react-native-call-detection/android/build/generated/source/buildConfig/debug/com/pritesh/calldetection/BuildConfig.java b/node_modules/react-native-call-detection/android/build/generated/source/buildConfig/debug/com/pritesh/calldetection/BuildConfig.java
 new file mode 100644
@@ -158,7 +158,7 @@ index 0000000..9e26dfe
 \ No newline at end of file
 diff --git a/node_modules/react-native-call-detection/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar b/node_modules/react-native-call-detection/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar
 new file mode 100644
-index 0000000..8f80397
+index 0000000..ce8eb73
 Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar differ
 diff --git a/node_modules/react-native-call-detection/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar b/node_modules/react-native-call-detection/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar
 new file mode 100644
@@ -235,11 +235,11 @@ index 0000000..20de944
 Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionManager.class differ
 diff --git a/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.class b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.class
 new file mode 100644
-index 0000000..9956316
+index 0000000..48311c2
 Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.class differ
 diff --git a/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionManagerModule.class b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionManagerModule.class
 new file mode 100644
-index 0000000..8bf89ec
+index 0000000..0fa904c
 Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionManagerModule.class differ
 diff --git a/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.class b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.class
 new file mode 100644
@@ -350,11 +350,11 @@ index 0000000..20de944
 Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionManager.class differ
 diff --git a/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.class b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.class
 new file mode 100644
-index 0000000..9956316
+index 0000000..48311c2
 Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.class differ
 diff --git a/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionManagerModule.class b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionManagerModule.class
 new file mode 100644
-index 0000000..8bf89ec
+index 0000000..0fa904c
 Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionManagerModule.class differ
 diff --git a/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.class b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.class
 new file mode 100644
@@ -370,7 +370,7 @@ index 0000000..baeea1b
 Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallStateUpdateActionModule.class differ
 diff --git a/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar
 new file mode 100644
-index 0000000..118ffb3
+index 0000000..8a76f40
 Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar differ
 diff --git a/node_modules/react-native-call-detection/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt b/node_modules/react-native-call-detection/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt
 new file mode 100644
@@ -419,12 +419,28 @@ index 0000000..1f5be8b
 +		INJECTED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml
 +	android:minSdkVersion
 +		INJECTED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml
+diff --git a/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManager.class.uniqueId1 b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManager.class.uniqueId1
+new file mode 100644
+index 0000000..20de944
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManager.class.uniqueId1 differ
+diff --git a/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule$1.class.uniqueId0 b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule$1.class.uniqueId0
+new file mode 100644
+index 0000000..5080cc1
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule$1.class.uniqueId0 differ
+diff --git a/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule$CallInfo.class.uniqueId2 b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule$CallInfo.class.uniqueId2
+new file mode 100644
+index 0000000..6242120
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule$CallInfo.class.uniqueId2 differ
+diff --git a/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule.class.uniqueId3 b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule.class.uniqueId3
+new file mode 100644
+index 0000000..5293f97
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule.class.uniqueId3 differ
 diff --git a/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
 new file mode 100644
-index 0000000..df50f93
+index 0000000..c7936cf
 Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
 diff --git a/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionManagerModule.java b/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionManagerModule.java
-index d480f0f..fb43076 100644
+index d480f0f..38ed980 100644
 --- a/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionManagerModule.java
 +++ b/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionManagerModule.java
 @@ -3,14 +3,18 @@ package com.pritesh.calldetection;
@@ -463,7 +479,7 @@ index d480f0f..fb43076 100644
  
      public CallDetectionManagerModule(ReactApplicationContext reactContext) {
          super(reactContext);
-@@ -40,105 +45,215 @@ public class CallDetectionManagerModule
+@@ -40,105 +45,219 @@ public class CallDetectionManagerModule
  
      @ReactMethod
      public void startListener() {
@@ -610,11 +626,11 @@ index d480f0f..fb43076 100644
 +            }
 +
 +        } finally {
- 
++
 +            if (cursor != null) {
 +                cursor.close();
 +            }
-+
+ 
 +        }
 +
 +        return new CallInfo(null, 0);
@@ -635,6 +651,8 @@ index d480f0f..fb43076 100644
 +
 +                if (wasAppInOffHook) {
 +
++                    new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
++
 +                    CallInfo info = getLastCall();
 +
 +                    emitEvent(
@@ -643,6 +661,8 @@ index d480f0f..fb43076 100644
 +                            info.duration,
 +                            info.duration > 0
 +                    );
++
++                }, 1000);
 +
 +                } else if (wasAppInRinging) {
 +
@@ -727,9 +747,8 @@ index d480f0f..fb43076 100644
 +    @Override
 +    public void onActivityDestroyed(Activity activity) {}
  }
-\ No newline at end of file
 diff --git a/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionPhoneStateListener.java b/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionPhoneStateListener.java
-index 86bdf9d..b458314 100644
+index 86bdf9d..e6b90f6 100644
 --- a/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionPhoneStateListener.java
 +++ b/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionPhoneStateListener.java
 @@ -4,20 +4,23 @@ import android.telephony.PhoneStateListener;
@@ -761,7 +780,6 @@ index 86bdf9d..b458314 100644
      }
 -
  }
-\ No newline at end of file
 diff --git a/node_modules/react-native-call-detection/index.d.ts b/node_modules/react-native-call-detection/index.d.ts
 index e3c9564..c9cb164 100644
 --- a/node_modules/react-native-call-detection/index.d.ts

@@ -8,6 +8,7 @@ import syncDataCheckGlobal from "./slices/syncDataCheckGlobal";
 import isSyncing from "./slices/isSyncing";
 import { permissionsSlice } from "./slices/permissionSlice";
 import { isSheetButtonOpenSlice } from "./slices/isSheetOpenSlice";
+import { callHistorySlice } from "./slices/callHistorySlice";
 export const store = configureStore({
   reducer: {
     profile: profileSlice.reducer,
@@ -19,6 +20,7 @@ export const store = configureStore({
     isSyncing: isSyncing,
     permissions: permissionsSlice.reducer,
     isSheetOpen: isSheetButtonOpenSlice.reducer,
+    callHistory: callHistorySlice.reducer,
   },
 });
 

@@ -270,7 +270,7 @@ const ProjectHistory = ({ route }) => {
                           height: "100%",
                         }}
                       >
-                        On {formatDate(h.changed_at)}
+                        On {formatDate(h.changed_on)}
                       </Text>
                     </View>
                   </View>

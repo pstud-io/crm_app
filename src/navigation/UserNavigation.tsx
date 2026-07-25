@@ -18,6 +18,7 @@ import { NotificationsStack } from "./NotificationNavigation";
 import { Search } from "@/screens/search/Search";
 import { CommonHeader } from "@/components/CommonHeader";
 import { NavigationContainer } from "@react-navigation/native";
+import { View } from "react-native";
 
 export type UserStackParamsList = {
   Dashboard: undefined;
@@ -42,6 +43,10 @@ export const userNavigationRef =
   createNavigationContainerRef<UserStackParamsList>();
 
 export type UserNavigationProp = NativeStackNavigationProp<UserStackParamsList>;
+
+const BottomSheetLayout = ({ children }: { children: React.ReactNode }) => (
+  <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
+);
 
 export const linking: LinkingOptions<UserStackParamsList> = {
   prefixes: ["pipeline://"],
@@ -79,6 +84,7 @@ export const UserNavigation = () => {
             ),
             animation: "fade",
           }}
+          layout={BottomSheetLayout}
         />
 
         <Stack.Screen
@@ -91,26 +97,43 @@ export const UserNavigation = () => {
             ),
             animation: "fade",
           }}
+          layout={BottomSheetLayout}
         />
 
         <Stack.Screen
           name="Leads"
           component={LeadsStack}
           options={{ headerShown: false }}
+          layout={BottomSheetLayout}
         />
 
         <Stack.Screen
           name="Tasks"
           component={TasksStack}
           options={{ headerShown: false }}
+          layout={BottomSheetLayout}
         />
 
         <Stack.Screen
           name="Notes"
           component={NotesStack}
           options={{ headerShown: false }}
+          layout={BottomSheetLayout}
         />
 
+        <Stack.Screen
+          name="Profile"
+          component={ProfileStack}
+          options={{ headerShown: false }}
+          layout={BottomSheetLayout}
+        />
+
+        <Stack.Screen
+          name="Notifications"
+          component={NotificationsStack}
+          options={{ headerShown: false }}
+          layout={BottomSheetLayout}
+        />
         <Stack.Screen name="CameraScreen" options={{ headerShown: false }}>
           {(props) => (
             <CameraScreen
@@ -124,18 +147,6 @@ export const UserNavigation = () => {
             />
           )}
         </Stack.Screen>
-
-        <Stack.Screen
-          name="Profile"
-          component={ProfileStack}
-          options={{ headerShown: false }}
-        />
-
-        <Stack.Screen
-          name="Notifications"
-          component={NotificationsStack}
-          options={{ headerShown: false }}
-        />
       </Stack.Navigator>
     </>
   );

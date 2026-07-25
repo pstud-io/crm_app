@@ -33,7 +33,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import TranscriptionInputFormatted from "../../components/specific/TranscriptionInputFormatted";
-import { MultiSelect } from "react-native-element-dropdown";
+import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 import { useNoteEndpoints } from "./hooks/useNoteEndPoints";
 import { handleDeleteImage } from "./utils/noteUtils";
 // import { useRecorder } from "./utils/useAudioRecorder";
@@ -48,6 +48,8 @@ import { useCameraScreen } from "../../hooks/useCameraScreen";
 import { useCheckNetworkPerformance } from "../../hooks/useCheckNetworkPerformance";
 import { SlowNetworkCard } from "../../components/UI/GeneralComponents/SlowNetworkCard";
 import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
+import { useGeneralEndpoints } from "@/hooks/useGeneralEndpoints";
+import { RenderDataForDropdown } from "@/components/UI/GeneralComponents/RenderDataForDropdown";
 
 const AddNote = ({ route }) => {
   const { showActionSheetWithOptions } = useActionSheet();
@@ -56,19 +58,21 @@ const AddNote = ({ route }) => {
   console.log("This is the project id and project in add note", project);
   const token = useSelector((state) => state.auth.token);
   const organization_id = useSelector((state) => state.profile.organization_id);
-  const networkCheckGlobal = useSelector(
-    (state) => state.networkCheckGlobal.networkCheckGlobal,
-  );
+  // const networkCheckGlobal = useSelector(
+  //   (state) => state.networkCheckGlobal.networkCheckGlobal,
+  // );
   const { handleAddNote: submitNote } = useNoteEndpoints();
-
-  const {
-    latency,
-    setLatency,
-    checkNetworkSpeed,
-    isSlow,
-    setIsSlow,
-    addToSyncQueue,
-  } = useCheckNetworkPerformance();
+  const [allProjects, setAllProjects] = useState([]);
+  const [projectTitle, setProjectTitle] = useState("");
+  const { getAllProjects } = useGeneralEndpoints();
+  // const {
+  //   latency,
+  //   setLatency,
+  //   checkNetworkSpeed,
+  //   isSlow,
+  //   setIsSlow,
+  //   addToSyncQueue,
+  // } = useCheckNetworkPerformance();
 
   // const {
   //   isRecording,
@@ -84,6 +88,7 @@ const AddNote = ({ route }) => {
   const [loading, setLoading] = useState({
     AddNote: false,
     getCCForDropdown: false,
+    fetchingProjects: false,
   });
   const [selectedMedia, setSelectedMedia] = useState([]);
   const [note, setNote] = useState(null);
@@ -100,16 +105,32 @@ const AddNote = ({ route }) => {
     setSelectedMedia,
   });
 
-  useFocusEffect(
-    useCallback(() => {
-      checkNetworkSpeed(setLatency, setIsSlow);
-    }, []),
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     checkNetworkSpeed(setLatency, setIsSlow);
+  //   }, []),
+  // );
 
   useFocusEffect(
     useCallback(() => {
       dispatch(setActiveSubButtonGlobal("add-note"));
     }, []),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      const fetchData = async () => {
+        try {
+          if (project_id === "all_projects") {
+            await getAllProjects(setLoading, setAllProjects);
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+
+      fetchData();
+    }, [project_id]),
   );
 
   // useEffect(() => {
@@ -170,7 +191,7 @@ const AddNote = ({ route }) => {
     }
 
     const externalPayload = {
-      project_id,
+      project_id: project_id === "all_projects" ? projectTitle : project_id,
       noteTitle,
       note: marked(note),
       cc,
@@ -178,18 +199,18 @@ const AddNote = ({ route }) => {
       setLoading,
     };
     console.log("This is the external payload", externalPayload);
-    let networkCheck = null;
-    if (!isSlow) {
-      setLoading((prev) => ({ ...prev, AddNote: true }));
-      networkCheck = await checkNetworkSpeed(setLatency, setIsSlow);
-    }
-    if (isSlow || networkCheck?.isSlow || networkCheckGlobal?.isSlow) {
-      setLoading((prev) => ({ ...prev, AddNote: true }));
-      await addToSyncQueue("note", externalPayload);
-      setLoading((prev) => ({ ...prev, AddNote: false }));
-      navigation.pop();
-      return;
-    }
+    // let networkCheck = null;
+    // if (!isSlow) {
+    //   setLoading((prev) => ({ ...prev, AddNote: true }));
+    //   networkCheck = await checkNetworkSpeed(setLatency, setIsSlow);
+    // }
+    // if (isSlow || networkCheck?.isSlow || networkCheckGlobal?.isSlow) {
+    //   setLoading((prev) => ({ ...prev, AddNote: true }));
+    //   await addToSyncQueue("note", externalPayload);
+    //   setLoading((prev) => ({ ...prev, AddNote: false }));
+    //   navigation.pop();
+    //   return;
+    // }
 
     submitNote(externalPayload);
   };
@@ -203,13 +224,63 @@ const AddNote = ({ route }) => {
           paddingBottom: SH(100),
         }}
       >
-        {(isSlow || networkCheckGlobal?.isSlow) && (
+        {/* {(isSlow || networkCheckGlobal?.isSlow) && (
           <>
             <Spacing space={SH(20)} />
             <SlowNetworkCard module={"Quick Update"} />
           </>
+        )} */}
+        {/* {!(isSlow || networkCheckGlobal?.isSlow) && <Spacing space={SH(20)} />} */}
+
+        {project_id === "all_projects" && (
+          <>
+            <Text style={formElementsStyles.titleStyle}>Select Lead *</Text>
+            <Spacing space={SH(6)} />
+            <Dropdown
+              mode="modal"
+              iconStyle={{ display: "none" }}
+              style={formElementsStyles.triggerStyle}
+              placeholderStyle={formElementsStyles.placeholderStyle} // Placeholder font
+              itemContainerStyle={
+                formElementsStyles.dropdownOptionsItemContainerStyle
+              }
+              selectedTextStyle={formElementsStyles.valueStyle}
+              searchPlaceholderTextColor={formElementsStyles.placeholderColor}
+              containerStyle={formElementsStyles.dropdownOptionsContainerStyle}
+              showsVerticalScrollIndicator={false}
+              autoScroll={false}
+              activeColor="transparent"
+              inputSearchStyle={formElementsStyles.dropdownOptionsSearchStyle}
+              labelField="project_name"
+              data={allProjects}
+              valueField="id"
+              placeholder={
+                loading.fetchingProjects ? "Fetching Leads..." : "Select Lead"
+              }
+              value={projectTitle}
+              search
+              searchPlaceholder="Find Lead"
+              renderItem={(item, isSelected) => (
+                <RenderDataForDropdown
+                  isSelected={isSelected}
+                  itemName={item.project_name}
+                />
+              )}
+              onChange={(item) => {
+                setProjectTitle(item.id);
+              }}
+              renderRightIcon={() =>
+                loading.fetchingProjects ? (
+                  <ActivityIndicator size={12} color={Colors.gray_text_color} />
+                ) : (
+                  <DownArrowOutlineIcon width={SH(16)} height={SH(16)} />
+                )
+              }
+            />
+            <Spacing space={SH(16)} />
+          </>
         )}
-        {!(isSlow || networkCheckGlobal?.isSlow) && <Spacing space={SH(20)} />}
+
         <Text style={formElementsStyles.titleStyle}>Title *</Text>
         <Spacing space={SH(6)} />
         <Input
@@ -234,7 +305,7 @@ const AddNote = ({ route }) => {
           onTranscriptionEnd={(formattedText) =>
             console.log("Transcription finished")
           }
-          showMicIcon={!(isSlow || networkCheckGlobal?.isSlow)}
+          // showMicIcon={!(isSlow || networkCheckGlobal?.isSlow)}
         />
 
         <Spacing space={SH(16)} />

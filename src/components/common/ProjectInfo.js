@@ -314,6 +314,13 @@ const ProjectInfo = ({ route, editProjectFunctions }) => {
                     ?.country_code || "NA"
                 }
                 fromInfo={true}
+                project_id={clientDetails?.id}
+                project_name={clientDetails?.project_name}
+                client_name={
+                  clientDetails?.client_details?.contact_details?.name
+                }
+                task_id={""}
+                task_name={""}
               />
               <View
                 style={{

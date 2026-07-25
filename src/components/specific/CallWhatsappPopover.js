@@ -8,24 +8,60 @@ import { ProjectInfoCardItem } from "../common/ProjectInfoCardItem";
 import PhoneIcon from "../../svg/phone";
 import WhatsappIcon from "../../svg/whatsapp";
 import { useTheme } from "@/hooks/useTheme";
+import { useDispatch } from "react-redux";
+import { setCallHistory } from "@/store/slices/callHistorySlice";
 
-const CallWhatsappPopover = ({ value, code, fromInfo }) => {
+const CallWhatsappPopover = ({
+  value,
+  code,
+  fromInfo,
+  project_id,
+  project_name,
+  task_name,
+  client_name,
+  task_id,
+}) => {
   const { theme } = useTheme();
   const CallWhatsappPopoverRef = useRef(null);
+  const dispatch = useDispatch();
+
   const handleCall = (phone) => {
     if (!phone || phone === "NA") return;
 
     const url = `tel:${phone}`;
+    console.log("details in call whatsapp popover", {
+      project_id,
+      project_name,
+      task_id,
+      task_name,
+      client_name,
+      client_phone: value,
+      duration: null,
+    });
+    dispatch(
+      setCallHistory({
+        project_id,
+        project_name,
+        task_id,
+        task_name,
+        client_name,
+        client_phone: value,
+        duration: null,
+      }),
+    );
 
-    Linking.openURL(url)
-      .then((supported) => {
-        if (supported) {
-          return Linking.openURL(url);
-        } else {
-          Alert.alert("Error", "Phone call not supported on this device");
-        }
-      })
-      .catch((err) => console.error("Error opening dialer", err));
+    CallWhatsappPopoverRef.current.requestClose();
+    setTimeout(() => {
+      Linking.openURL(url)
+        .then((supported) => {
+          if (supported) {
+            return Linking.openURL(url);
+          } else {
+            Alert.alert("Error", "Phone call not supported on this device");
+          }
+        })
+        .catch((err) => console.error("Error opening dialer", err));
+    }, 250);
   };
   const handleWhatsapp = async (phone) => {
     try {
