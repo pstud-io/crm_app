@@ -1,7 +1,7 @@
 import { Button } from "@/components/Button";
 import ChevronDown from "@/components/ChevronDown";
 import { SelectProject } from "@/components/SelectProject";
-import { borderRadius } from "@/design/borders";
+import { borderRadius, borderWidth } from "@/design/borders";
 import { height, width } from "@/design/distance";
 import {
   center,
@@ -121,7 +121,7 @@ export const CommonHeader = ({
           <Text style={[body.xl.semiBold, { color: theme.text }]}>{title}</Text>
         </View>
       </Pressable>
-      {/* <Button
+      <Button
         label={null}
         loading={false}
         onPress={() => {}}
@@ -132,6 +132,8 @@ export const CommonHeader = ({
           height: 32,
           borderRadius: borderRadius.xs,
           boxShadow: theme.shadow.sm,
+          borderWidth: borderWidth.thin,
+          borderColor: theme.border,
         }}
         themeInverse
         hasBorder={false}
@@ -143,7 +145,7 @@ export const CommonHeader = ({
             strokeWidth={2}
           />
         }
-      /> */}
+      />
     </View>
   );
 };

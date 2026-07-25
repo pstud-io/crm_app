@@ -1,0 +1,968 @@
+diff --git a/node_modules/react-native-call-detection/android/build.gradle b/node_modules/react-native-call-detection/android/build.gradle
+index 65b6d24..176cdde 100644
+--- a/node_modules/react-native-call-detection/android/build.gradle
++++ b/node_modules/react-native-call-detection/android/build.gradle
+@@ -20,8 +20,10 @@ android {
+     }
+ }
+ 
+-repositories{
+-    jcenter()
++repositories {
++    google()
++    mavenCentral()
++
+     maven {
+         url './libs'
+     }
+@@ -29,7 +31,6 @@ repositories{
+ 
+ dependencies {
+     api fileTree(dir: 'libs', include: ['*.jar'])
+-    api 'com.android.support:appcompat-v7:23.0.1'
+     api 'com.facebook.react:react-native:+'
+     testImplementation "junit:junit:4.12"
+ }
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/results.bin b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/results.bin
+new file mode 100644
+index 0000000..7ed749e
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/results.bin
+@@ -0,0 +1 @@
++o/bundleLibRuntimeToDirDebug
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/BuildConfig.dex b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/BuildConfig.dex
+new file mode 100644
+index 0000000..8d804f3
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/BuildConfig.dex differ
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManager.dex b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManager.dex
+new file mode 100644
+index 0000000..fd488d3
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManager.dex differ
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.dex b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.dex
+new file mode 100644
+index 0000000..0d03de6
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.dex differ
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule.dex b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule.dex
+new file mode 100644
+index 0000000..6cd49c6
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule.dex differ
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.dex b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.dex
+new file mode 100644
+index 0000000..ecebfc4
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.dex differ
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener.dex b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener.dex
+new file mode 100644
+index 0000000..2e25a35
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener.dex differ
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallStateUpdateActionModule.dex b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallStateUpdateActionModule.dex
+new file mode 100644
+index 0000000..5463653
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallStateUpdateActionModule.dex differ
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin
+new file mode 100644
+index 0000000..4ef3277
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin differ
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/4c374fd509e2df4cf778a40abe6a77d4/results.bin b/node_modules/react-native-call-detection/android/build/.transforms/4c374fd509e2df4cf778a40abe6a77d4/results.bin
+new file mode 100644
+index 0000000..0d259dd
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/.transforms/4c374fd509e2df4cf778a40abe6a77d4/results.bin
+@@ -0,0 +1 @@
++o/classes
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/4c374fd509e2df4cf778a40abe6a77d4/transformed/classes/classes_dex/classes.dex b/node_modules/react-native-call-detection/android/build/.transforms/4c374fd509e2df4cf778a40abe6a77d4/transformed/classes/classes_dex/classes.dex
+new file mode 100644
+index 0000000..8fa59d6
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/4c374fd509e2df4cf778a40abe6a77d4/transformed/classes/classes_dex/classes.dex differ
+diff --git a/node_modules/react-native-call-detection/android/build/generated/source/buildConfig/debug/com/pritesh/calldetection/BuildConfig.java b/node_modules/react-native-call-detection/android/build/generated/source/buildConfig/debug/com/pritesh/calldetection/BuildConfig.java
+new file mode 100644
+index 0000000..c38a363
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/generated/source/buildConfig/debug/com/pritesh/calldetection/BuildConfig.java
+@@ -0,0 +1,10 @@
++/**
++ * Automatically generated file. DO NOT MODIFY
++ */
++package com.pritesh.calldetection;
++
++public final class BuildConfig {
++  public static final boolean DEBUG = Boolean.parseBoolean("true");
++  public static final String LIBRARY_PACKAGE_NAME = "com.pritesh.calldetection";
++  public static final String BUILD_TYPE = "debug";
++}
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml b/node_modules/react-native-call-detection/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
+new file mode 100644
+index 0000000..c9fbf70
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
+@@ -0,0 +1,15 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="com.pritesh.calldetection" >
++
++    <uses-sdk android:minSdkVersion="16" />
++
++    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
++    <uses-permission android:name="android.permission.READ_CALL_LOG" />
++
++    <application
++        android:allowBackup="true"
++        android:label="@string/app_name"
++        android:supportsRtl="true" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json b/node_modules/react-native-call-detection/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json
+new file mode 100644
+index 0000000..42975b5
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/output-metadata.json
+@@ -0,0 +1,18 @@
++{
++  "version": 3,
++  "artifactType": {
++    "type": "AAPT_FRIENDLY_MERGED_MANIFESTS",
++    "kind": "Directory"
++  },
++  "applicationId": "com.pritesh.calldetection",
++  "variantName": "debug",
++  "elements": [
++    {
++      "type": "SINGLE",
++      "filters": [],
++      "attributes": [],
++      "outputFile": "AndroidManifest.xml"
++    }
++  ],
++  "elementType": "File"
++}
+\ No newline at end of file
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties b/node_modules/react-native-call-detection/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties
+new file mode 100644
+index 0000000..1211b1e
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/aar_metadata/debug/writeDebugAarMetadata/aar-metadata.properties
+@@ -0,0 +1,6 @@
++aarFormatVersion=1.0
++aarMetadataVersion=1.0
++minCompileSdk=1
++minCompileSdkExtension=0
++minAndroidGradlePluginVersion=1.0.0
++coreLibraryDesugaringEnabled=false
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json b/node_modules/react-native-call-detection/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
+new file mode 100644
+index 0000000..9e26dfe
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/annotation_processor_list/debug/javaPreCompileDebug/annotationProcessors.json
+@@ -0,0 +1 @@
++{}
+\ No newline at end of file
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar b/node_modules/react-native-call-detection/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar
+new file mode 100644
+index 0000000..8f80397
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar differ
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar b/node_modules/react-native-call-detection/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar
+new file mode 100644
+index 0000000..c42c2fe
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/compile_r_class_jar/debug/generateDebugRFile/R.jar differ
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt b/node_modules/react-native-call-detection/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt
+new file mode 100644
+index 0000000..a9551e5
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/compile_symbol_list/debug/generateDebugRFile/R.txt
+@@ -0,0 +1 @@
++int string app_name 0x0
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties b/node_modules/react-native-call-detection/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+new file mode 100644
+index 0000000..f17c917
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
+@@ -0,0 +1 @@
++#Fri Jul 24 22:43:55 IST 2026
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/incremental/debug/packageDebugResources/merged.dir/values/values.xml b/node_modules/react-native-call-detection/android/build/intermediates/incremental/debug/packageDebugResources/merged.dir/values/values.xml
+new file mode 100644
+index 0000000..5743252
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/incremental/debug/packageDebugResources/merged.dir/values/values.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="app_name">CallDetection</string>
++</resources>
+\ No newline at end of file
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml b/node_modules/react-native-call-detection/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+new file mode 100644
+index 0000000..40d56c3
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/incremental/debug/packageDebugResources/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/res"><file path="/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/res/values/strings.xml" qualifiers=""><string name="app_name">CallDetection</string></file></source></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/build/generated/res/resValues/debug"/></dataSet><mergedItems/></merger>
+\ No newline at end of file
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/incremental/mergeDebugAssets/merger.xml b/node_modules/react-native-call-detection/android/build/intermediates/incremental/mergeDebugAssets/merger.xml
+new file mode 100644
+index 0000000..f186c72
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/incremental/mergeDebugAssets/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/assets"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/debug/assets"/></dataSet><dataSet config="generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/build/intermediates/shader_assets/debug/compileDebugShaders/out"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml b/node_modules/react-native-call-detection/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+new file mode 100644
+index 0000000..b77e759
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/jniLibs"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/debug/jniLibs"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/incremental/mergeDebugShaders/merger.xml b/node_modules/react-native-call-detection/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+new file mode 100644
+index 0000000..fc58d93
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/incremental/mergeDebugShaders/merger.xml
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="utf-8"?>
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/debug/shaders"/></dataSet></merger>
+\ No newline at end of file
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/BuildConfig.class b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/BuildConfig.class
+new file mode 100644
+index 0000000..7976a17
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/BuildConfig.class differ
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionManager.class b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionManager.class
+new file mode 100644
+index 0000000..20de944
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionManager.class differ
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.class b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.class
+new file mode 100644
+index 0000000..9956316
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.class differ
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionManagerModule.class b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionManagerModule.class
+new file mode 100644
+index 0000000..8bf89ec
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionManagerModule.class differ
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.class b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.class
+new file mode 100644
+index 0000000..da26978
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.class differ
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionPhoneStateListener.class b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionPhoneStateListener.class
+new file mode 100644
+index 0000000..f93247c
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallDetectionPhoneStateListener.class differ
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallStateUpdateActionModule.class b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallStateUpdateActionModule.class
+new file mode 100644
+index 0000000..baeea1b
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/pritesh/calldetection/CallStateUpdateActionModule.class differ
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt b/node_modules/react-native-call-detection/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt
+new file mode 100644
+index 0000000..34ca0ec
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/local_only_symbol_list/debug/parseDebugLocalResources/R-def.txt
+@@ -0,0 +1,3 @@
++R_DEF: Internal format may change without notice
++local
++string app_name
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt b/node_modules/react-native-call-detection/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt
+new file mode 100644
+index 0000000..1ce5f84
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/manifest_merge_blame_file/debug/processDebugManifest/manifest-merger-blame-debug-report.txt
+@@ -0,0 +1,23 @@
++1<?xml version="1.0" encoding="utf-8"?>
++2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++3    package="com.pritesh.calldetection" >
++4
++5    <uses-sdk android:minSdkVersion="16" />
++6
++7    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
++7-->/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:5:3-73
++7-->/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:5:20-70
++8    <uses-permission android:name="android.permission.READ_CALL_LOG" />
++8-->/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:6:3-70
++8-->/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:6:20-67
++9
++10    <application
++10-->/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:8:3-11:34
++11        android:allowBackup="true"
++11-->/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:9:5-31
++12        android:label="@string/app_name"
++12-->/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:10:5-37
++13        android:supportsRtl="true" />
++13-->/Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:11:5-31
++14
++15</manifest>
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml b/node_modules/react-native-call-detection/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml
+new file mode 100644
+index 0000000..c9fbf70
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml
+@@ -0,0 +1,15 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="com.pritesh.calldetection" >
++
++    <uses-sdk android:minSdkVersion="16" />
++
++    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
++    <uses-permission android:name="android.permission.READ_CALL_LOG" />
++
++    <application
++        android:allowBackup="true"
++        android:label="@string/app_name"
++        android:supportsRtl="true" />
++
++</manifest>
+\ No newline at end of file
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json b/node_modules/react-native-call-detection/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json
+new file mode 100644
+index 0000000..0637a08
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/navigation_json/debug/extractDeepLinksDebug/navigation.json
+@@ -0,0 +1 @@
++[]
+\ No newline at end of file
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt b/node_modules/react-native-call-detection/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt
+new file mode 100644
+index 0000000..08f4ebe
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/nested_resources_validation_report/debug/generateDebugResources/nestedResourcesValidationReport.txt
+@@ -0,0 +1 @@
++0 Warning/Error
+\ No newline at end of file
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/packaged_res/debug/packageDebugResources/values/values.xml b/node_modules/react-native-call-detection/android/build/intermediates/packaged_res/debug/packageDebugResources/values/values.xml
+new file mode 100644
+index 0000000..5743252
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/packaged_res/debug/packageDebugResources/values/values.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="app_name">CallDetection</string>
++</resources>
+\ No newline at end of file
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/BuildConfig.class b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/BuildConfig.class
+new file mode 100644
+index 0000000..7976a17
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/BuildConfig.class differ
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionManager.class b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionManager.class
+new file mode 100644
+index 0000000..20de944
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionManager.class differ
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.class b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.class
+new file mode 100644
+index 0000000..9956316
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.class differ
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionManagerModule.class b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionManagerModule.class
+new file mode 100644
+index 0000000..8bf89ec
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionManagerModule.class differ
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.class b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.class
+new file mode 100644
+index 0000000..da26978
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.class differ
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionPhoneStateListener.class b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionPhoneStateListener.class
+new file mode 100644
+index 0000000..f93247c
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallDetectionPhoneStateListener.class differ
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallStateUpdateActionModule.class b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallStateUpdateActionModule.class
+new file mode 100644
+index 0000000..baeea1b
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_dir/debug/bundleLibRuntimeToDirDebug/com/pritesh/calldetection/CallStateUpdateActionModule.class differ
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar
+new file mode 100644
+index 0000000..118ffb3
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/intermediates/runtime_library_classes_jar/debug/bundleLibRuntimeToJarDebug/classes.jar differ
+diff --git a/node_modules/react-native-call-detection/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt b/node_modules/react-native-call-detection/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt
+new file mode 100644
+index 0000000..97934de
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/intermediates/symbol_list_with_package_name/debug/generateDebugRFile/package-aware-r.txt
+@@ -0,0 +1,2 @@
++com.pritesh.calldetection
++string app_name
+diff --git a/node_modules/react-native-call-detection/android/build/outputs/logs/manifest-merger-debug-report.txt b/node_modules/react-native-call-detection/android/build/outputs/logs/manifest-merger-debug-report.txt
+new file mode 100644
+index 0000000..1f5be8b
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/outputs/logs/manifest-merger-debug-report.txt
+@@ -0,0 +1,33 @@
++-- Merging decision tree log ---
++manifest
++ADDED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:1:1-13:12
++INJECTED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:1:1-13:12
++	package
++		ADDED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:3:3-38
++		INJECTED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml
++	xmlns:android
++		ADDED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:2:3-61
++uses-permission#android.permission.READ_PHONE_STATE
++ADDED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:5:3-73
++	android:name
++		ADDED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:5:20-70
++uses-permission#android.permission.READ_CALL_LOG
++ADDED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:6:3-70
++	android:name
++		ADDED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:6:20-67
++application
++ADDED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:8:3-11:34
++	android:supportsRtl
++		ADDED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:11:5-31
++	android:label
++		ADDED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:10:5-37
++	android:allowBackup
++		ADDED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml:9:5-31
++uses-sdk
++INJECTED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
++INJECTED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml
++INJECTED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml
++	android:targetSdkVersion
++		INJECTED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml
++	android:minSdkVersion
++		INJECTED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml
+diff --git a/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
+new file mode 100644
+index 0000000..df50f93
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
+diff --git a/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionManagerModule.java b/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionManagerModule.java
+index d480f0f..fb43076 100644
+--- a/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionManagerModule.java
++++ b/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionManagerModule.java
+@@ -3,14 +3,18 @@ package com.pritesh.calldetection;
+ import android.app.Activity;
+ import android.app.Application;
+ import android.content.Context;
++import android.database.Cursor;
+ import android.os.Bundle;
++import android.provider.CallLog;
+ import android.telephony.PhoneStateListener;
+ import android.telephony.TelephonyManager;
+-import android.util.Log;
+ 
++import com.facebook.react.bridge.Arguments;
+ import com.facebook.react.bridge.ReactApplicationContext;
+ import com.facebook.react.bridge.ReactContextBaseJavaModule;
+ import com.facebook.react.bridge.ReactMethod;
++import com.facebook.react.bridge.WritableMap;
++import com.facebook.react.modules.core.DeviceEventManagerModule;
+ 
+ import java.util.HashMap;
+ import java.util.Map;
+@@ -22,11 +26,12 @@ public class CallDetectionManagerModule
+ 
+     private boolean wasAppInOffHook = false;
+     private boolean wasAppInRinging = false;
+-    private ReactApplicationContext reactContext;
++
++    private final ReactApplicationContext reactContext;
++
+     private TelephonyManager telephonyManager;
+-    private CallStateUpdateActionModule jsModule = null;
+     private CallDetectionPhoneStateListener callDetectionPhoneStateListener;
+-    private Activity activity = null;
++    private Activity activity;
+ 
+     public CallDetectionManagerModule(ReactApplicationContext reactContext) {
+         super(reactContext);
+@@ -40,105 +45,215 @@ public class CallDetectionManagerModule
+ 
+     @ReactMethod
+     public void startListener() {
++
+         if (activity == null) {
+             activity = getCurrentActivity();
+-            activity.getApplication().registerActivityLifecycleCallbacks(this);
++
++            if (activity != null) {
++                activity.getApplication().registerActivityLifecycleCallbacks(this);
++            }
+         }
+ 
+-        telephonyManager = (TelephonyManager) this.reactContext.getSystemService(
+-                Context.TELEPHONY_SERVICE);
+-        callDetectionPhoneStateListener = new CallDetectionPhoneStateListener(this);
+-        telephonyManager.listen(callDetectionPhoneStateListener,
+-                PhoneStateListener.LISTEN_CALL_STATE);
++        telephonyManager =
++                (TelephonyManager) reactContext.getSystemService(Context.TELEPHONY_SERVICE);
++
++        callDetectionPhoneStateListener =
++                new CallDetectionPhoneStateListener(this);
+ 
++        telephonyManager.listen(
++                callDetectionPhoneStateListener,
++                PhoneStateListener.LISTEN_CALL_STATE
++        );
+     }
+ 
+     @ReactMethod
+     public void stopListener() {
+-        telephonyManager.listen(callDetectionPhoneStateListener,
+-                PhoneStateListener.LISTEN_NONE);
++
++        if (telephonyManager != null && callDetectionPhoneStateListener != null) {
++            telephonyManager.listen(
++                    callDetectionPhoneStateListener,
++                    PhoneStateListener.LISTEN_NONE
++            );
++        }
++
+         telephonyManager = null;
+         callDetectionPhoneStateListener = null;
+     }
+ 
+-    /**
+-     * @return a map of constants this module exports to JS. Supports JSON types.
+-     */
+-    public
+-    Map<String, Object> getConstants() {
+-        Map<String, Object> map = new HashMap<String, Object>();
++    @ReactMethod
++    public void addListener(String eventName) {}
++
++    @ReactMethod
++    public void removeListeners(Integer count) {}
++
++    @Override
++    public Map<String, Object> getConstants() {
++
++        Map<String, Object> map = new HashMap<>();
++
+         map.put("Incoming", "Incoming");
+         map.put("Offhook", "Offhook");
+         map.put("Disconnected", "Disconnected");
+         map.put("Missed", "Missed");
++
+         return map;
+     }
+ 
+-    // Activity Lifecycle Methods
+-    @Override
+-    public void onActivityCreated(Activity activity, Bundle savedInstanceType) {
++    private void emitEvent(
++            String event,
++            String phoneNumber,
++            long duration,
++            boolean answered
++    ) {
+ 
+-    }
++        WritableMap params = Arguments.createMap();
+ 
+-    @Override
+-    public void onActivityStarted(Activity activity) {
++        params.putString("event", event);
+ 
+-    }
++        if (phoneNumber != null) {
++            params.putString("phoneNumber", phoneNumber);
++        } else {
++            params.putNull("phoneNumber");
++        }
+ 
+-    @Override
+-    public void onActivityResumed(Activity activity) {
++        params.putDouble("duration", duration);
++        params.putBoolean("answered", answered);
+ 
++        reactContext
++                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
++                .emit("PhoneCallStateUpdate", params);
+     }
+ 
+-    @Override
+-    public void onActivityPaused(Activity activity) {
++    private CallInfo getLastCall() {
+ 
+-    }
++        Cursor cursor = null;
+ 
+-    @Override
+-    public void onActivityStopped(Activity activity) {
++        try {
+ 
+-    }
++            cursor = reactContext.getContentResolver().query(
++                    CallLog.Calls.CONTENT_URI,
++                    new String[]{
++                            CallLog.Calls.NUMBER,
++                            CallLog.Calls.DURATION,
++                            CallLog.Calls.DATE
++                    },
++                    null,
++                    null,
++                    CallLog.Calls.DATE + " DESC"
++            );
+ 
+-    @Override
+-    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
++            if (cursor != null && cursor.moveToFirst()) {
+ 
+-    }
++                String number =
++                        cursor.getString(cursor.getColumnIndexOrThrow(CallLog.Calls.NUMBER));
+ 
+-    @Override
+-    public void onActivityDestroyed(Activity activity) {
++                long duration =
++                        cursor.getLong(cursor.getColumnIndexOrThrow(CallLog.Calls.DURATION));
++
++                return new CallInfo(number, duration);
++            }
++
++        } finally {
+ 
++            if (cursor != null) {
++                cursor.close();
++            }
++
++        }
++
++        return new CallInfo(null, 0);
+     }
+ 
+     @Override
+     public void phoneCallStateUpdated(int state, String phoneNumber) {
+-        jsModule = this.reactContext.getJSModule(CallStateUpdateActionModule.class);
+ 
+         switch (state) {
+-            //Hangup
++
+             case TelephonyManager.CALL_STATE_IDLE:
+-                if(wasAppInOffHook == true) { // if there was an ongoing call and the call state switches to idle, the call must have gotten disconnected
+-                    jsModule.callStateUpdated("Disconnected", phoneNumber);
+-                } else if(wasAppInRinging == true) { // if the phone was ringing but there was no actual ongoing call, it must have gotten missed
+-                    jsModule.callStateUpdated("Missed", phoneNumber);
++
++                if (wasAppInOffHook) {
++
++                    CallInfo info = getLastCall();
++
++                    emitEvent(
++                            "Disconnected",
++                            info.phoneNumber != null ? info.phoneNumber : phoneNumber,
++                            info.duration,
++                            info.duration > 0
++                    );
++
++                } else if (wasAppInRinging) {
++
++                    emitEvent(
++                            "Missed",
++                            phoneNumber,
++                            0,
++                            false
++                    );
+                 }
+ 
+-                //reset device state
+-                wasAppInRinging = false;
+                 wasAppInOffHook = false;
++                wasAppInRinging = false;
++
+                 break;
+-            //Outgoing
++
+             case TelephonyManager.CALL_STATE_OFFHOOK:
+-                //Device call state: Off-hook. At least one call exists that is dialing, active, or on hold, and no calls are ringing or waiting.
++
+                 wasAppInOffHook = true;
+-                jsModule.callStateUpdated("Offhook", phoneNumber);
++
++                emitEvent(
++                        "Offhook",
++                        phoneNumber,
++                        0,
++                        false
++                );
++
+                 break;
+-            //Incoming
++
+             case TelephonyManager.CALL_STATE_RINGING:
+-                // Device call state: Ringing. A new call arrived and is ringing or waiting. In the latter case, another call is already active.
++
+                 wasAppInRinging = true;
+-                jsModule.callStateUpdated("Incoming", phoneNumber);
++
++                emitEvent(
++                        "Incoming",
++                        phoneNumber,
++                        0,
++                        false
++                );
++
+                 break;
+         }
+     }
++
++    private static class CallInfo {
++
++        final String phoneNumber;
++        final long duration;
++
++        CallInfo(String phoneNumber, long duration) {
++            this.phoneNumber = phoneNumber;
++            this.duration = duration;
++        }
++    }
++
++    @Override
++    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
++
++    @Override
++    public void onActivityStarted(Activity activity) {}
++
++    @Override
++    public void onActivityResumed(Activity activity) {}
++
++    @Override
++    public void onActivityPaused(Activity activity) {}
++
++    @Override
++    public void onActivityStopped(Activity activity) {}
++
++    @Override
++    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
++
++    @Override
++    public void onActivityDestroyed(Activity activity) {}
+ }
+\ No newline at end of file
+diff --git a/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionPhoneStateListener.java b/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionPhoneStateListener.java
+index 86bdf9d..b458314 100644
+--- a/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionPhoneStateListener.java
++++ b/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionPhoneStateListener.java
+@@ -4,20 +4,23 @@ import android.telephony.PhoneStateListener;
+ 
+ public class CallDetectionPhoneStateListener extends PhoneStateListener {
+ 
+-    private PhoneCallStateUpdate callStatCallBack;
++    private final PhoneCallStateUpdate callback;
+ 
+-    public CallDetectionPhoneStateListener(PhoneCallStateUpdate callStatCallBack) {
++    public CallDetectionPhoneStateListener(PhoneCallStateUpdate callback) {
+         super();
+-        this.callStatCallBack = callStatCallBack;
++        this.callback = callback;
+     }
+ 
+     @Override
+     public void onCallStateChanged(int state, String incomingNumber) {
+-        this.callStatCallBack.phoneCallStateUpdated(state, incomingNumber);
++        super.onCallStateChanged(state, incomingNumber);
++
++        if (callback != null) {
++            callback.phoneCallStateUpdated(state, incomingNumber);
++        }
+     }
+ 
+     interface PhoneCallStateUpdate {
+         void phoneCallStateUpdated(int state, String incomingNumber);
+     }
+-
+ }
+\ No newline at end of file
+diff --git a/node_modules/react-native-call-detection/index.d.ts b/node_modules/react-native-call-detection/index.d.ts
+index e3c9564..c9cb164 100644
+--- a/node_modules/react-native-call-detection/index.d.ts
++++ b/node_modules/react-native-call-detection/index.d.ts
+@@ -1,7 +1,8 @@
+ declare module 'react-native-call-detection' {
+   export type Event = 'Disconnected' | 'Connected' | 'Incoming' | 'Dialing' | 'Offhook' | 'Missed';
+ 
+-  export type CallDetectorManagerCallback = (event: Event, phoneNumber: string) => void;
++  export type CallDetectorManagerCallback = (event: Event, phoneNumber: string,   duration?: number,
++  answered?: boolean,) => void;
+ 
+   export type PermissionDeniedCallback = () => void;
+ 
+diff --git a/node_modules/react-native-call-detection/index.js b/node_modules/react-native-call-detection/index.js
+index de8a861..a4a89f3 100644
+--- a/node_modules/react-native-call-detection/index.js
++++ b/node_modules/react-native-call-detection/index.js
+@@ -1,76 +1,131 @@
+ /*
+-* @providesModule react-native-call-detection
+-*/
++ * @providesModule react-native-call-detection
++ */
++
+ import {
+   NativeModules,
+   NativeEventEmitter,
+   Platform,
+-  PermissionsAndroid
+-} from 'react-native'
+-export const permissionDenied = 'PERMISSION DENIED'
+-
+-const BatchedBridge = require('react-native/Libraries/BatchedBridge/BatchedBridge')
++  PermissionsAndroid,
++} from "react-native";
+ 
+-const NativeCallDetector = NativeModules.CallDetectionManager
+-const NativeCallDetectorAndroid = NativeModules.CallDetectionManagerAndroid
++export const permissionDenied = "PERMISSION DENIED";
+ 
+-var CallStateUpdateActionModule = require('./CallStateUpdateActionModule')
+-BatchedBridge.registerCallableModule('CallStateUpdateActionModule', CallStateUpdateActionModule)
++const NativeCallDetector = NativeModules.CallDetectionManager;
++const NativeCallDetectorAndroid =
++  NativeModules.CallDetectionManagerAndroid;
+ 
+-// https://stackoverflow.com/questions/13154445/how-to-get-phone-number-from-an-incoming-call : Amjad Alwareh's answer.
++// https://stackoverflow.com/questions/13154445/how-to-get-phone-number-from-an-incoming-call
+ const requestPermissionsAndroid = (permissionMessage) => {
+-  const requiredPermission = Platform.constants.Release >= 9
+-    ? PermissionsAndroid.PERMISSIONS.READ_CALL_LOG
+-    : PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE
+-  return PermissionsAndroid.check(requiredPermission)
+-    .then((gotPermission) => gotPermission
++  const requiredPermission =
++    Platform.constants.Release >= 9
++      ? PermissionsAndroid.PERMISSIONS.READ_CALL_LOG
++      : PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE;
++
++  return PermissionsAndroid.check(requiredPermission).then((gotPermission) =>
++    gotPermission
+       ? true
+-      : PermissionsAndroid.request(requiredPermission, permissionMessage)
+-        .then((result) => result === PermissionsAndroid.RESULTS.GRANTED)
+-    )
+-}
++      : PermissionsAndroid.request(
++          requiredPermission,
++          permissionMessage
++        ).then(
++          (result) => result === PermissionsAndroid.RESULTS.GRANTED
++        )
++  );
++};
+ 
+ class CallDetectorManager {
+-
+   subscription;
+-  callback
+-  constructor(callback, readPhoneNumberAndroid = false, permissionDeniedCallback = () => { }, permissionMessage = {
+-    title: 'Phone State Permission',
+-    message: 'This app needs access to your phone state in order to react and/or to adapt to incoming calls.'
+-  }) {
+-    this.callback = callback
+-    if (Platform.OS === 'ios') {
+-      NativeCallDetector && NativeCallDetector.startListener()
+-      this.subscription = new NativeEventEmitter(NativeCallDetector)
+-      this.subscription.addListener('PhoneCallStateUpdate', callback);
++
++  callback;
++
++  constructor(
++    callback,
++    readPhoneNumberAndroid = false,
++    permissionDeniedCallback = () => {},
++    permissionMessage = {
++      title: "Phone State Permission",
++      message:
++        "This app needs access to your phone state in order to react and/or adapt to incoming calls.",
+     }
+-    else {
+-      if (NativeCallDetectorAndroid) {
+-        if (readPhoneNumberAndroid) {
+-
+-          requestPermissionsAndroid(permissionMessage)
+-            .then((permissionGrantedReadState) => {
+-              if (!permissionGrantedReadState) {
+-                permissionDeniedCallback(permissionDenied)
+-              }
+-            })
+-            .catch(permissionDeniedCallback)
+-
+-        }
+-        NativeCallDetectorAndroid.startListener();
++  ) {
++    this.callback = callback;
++
++if (Platform.OS === "ios") {
++  console.log("iOS module:", NativeCallDetector);
++
++  if (NativeCallDetector) {
++    console.log("Calling startListener");
++console.log("[CallDetection] A");
++    NativeCallDetector.startListener();
++console.log("[CallDetection] B");
++    const emitter = new NativeEventEmitter(NativeCallDetector);
++
++    this.subscription = emitter.addListener(
++      "PhoneCallStateUpdate",
++      (data) => {
++        console.log("Native event:", data);
++        callback(data);
+       }
+-      CallStateUpdateActionModule.callback = callback
++    );
++    console.log("[CallDetection] C");
++  }
++
++  return;
++}
++
++    // Android
++
++    if (!NativeCallDetectorAndroid) {
++      console.warn(
++        "CallDetectionManagerAndroid native module not found."
++      );
++      return;
++    }
++
++    const startListening = () => {
++      const emitter = new NativeEventEmitter();
++
++    this.subscription = emitter.addListener(
++      "PhoneCallStateUpdate",
++      ({ event, phoneNumber, duration, answered }) => {
++        callback(event, phoneNumber, duration, answered);
++      }
++    );
++
++      NativeCallDetectorAndroid.startListener();
++    };
++
++    if (readPhoneNumberAndroid) {
++      requestPermissionsAndroid(permissionMessage)
++        .then((permissionGranted) => {
++          if (!permissionGranted) {
++            permissionDeniedCallback(permissionDenied);
++            return;
++          }
++
++          startListening();
++        })
++        .catch(permissionDeniedCallback);
++    } else {
++      startListening();
+     }
+   }
+ 
+   dispose() {
+-    NativeCallDetector && NativeCallDetector.stopListener()
+-    NativeCallDetectorAndroid && NativeCallDetectorAndroid.stopListener()
+-    CallStateUpdateActionModule.callback = undefined
++    if (NativeCallDetector) {
++      NativeCallDetector.stopListener();
++    }
++
++    if (NativeCallDetectorAndroid) {
++      NativeCallDetectorAndroid.stopListener();
++    }
++
+     if (this.subscription) {
+-      this.subscription.removeAllListeners('PhoneCallStateUpdate');
+-      this.subscription = undefined
++      this.subscription.remove();
++      this.subscription = null;
+     }
+   }
+ }
+-export default module.exports = CallDetectorManager;
++
++export default CallDetectorManager;
+\ No newline at end of file

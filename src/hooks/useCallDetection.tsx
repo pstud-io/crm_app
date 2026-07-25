@@ -9,7 +9,7 @@ export function useCallDetection(enabled: boolean) {
   useEffect(() => {
     if (!enabled && Platform.OS === "android") return;
     // detector.current = new CallDetectorManager(() => {}, false);
-
+    console.log("[Hook] Before new CallDetection");
     detector.current = new CallDetectorManager(
       (event, phoneNumber, duration, answered) => {
         console.log("Call Event:", event, phoneNumber, duration, answered);
@@ -44,6 +44,8 @@ export function useCallDetection(enabled: boolean) {
       },
       false,
     );
+
+    console.log("[Hook] After new CallDetectionr");
 
     return () => {
       detector.current?.dispose();
