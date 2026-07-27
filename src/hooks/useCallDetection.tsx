@@ -1,4 +1,3 @@
-import { useCallHistory } from "@/screens/CallHistory/hooks/useCallHistory";
 import { setCallHistory } from "@/store/slices/callHistorySlice";
 import { RootState } from "@/store/store";
 import { universalPopoverRef } from "@/utils/universalPopover";
@@ -86,6 +85,12 @@ export function useCallDetection(
 
           case "Offhook":
             console.log("Offhook");
+            dispatch(
+              setCallHistory({
+                ...callHistoryRef.current,
+                contacted_on: new Date().toISOString(),
+              }),
+            );
             break;
 
           case "Missed":

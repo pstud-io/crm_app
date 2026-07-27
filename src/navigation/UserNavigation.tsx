@@ -1,5 +1,9 @@
 import { Dashboard } from "@/screens/dashboard/Dashboard";
-import { DefaultTheme, LinkingOptions } from "@react-navigation/native";
+import {
+  DefaultTheme,
+  LinkingOptions,
+  NavigatorScreenParams,
+} from "@react-navigation/native";
 import {
   createNativeStackNavigator,
   NativeStackHeaderProps,
@@ -8,24 +12,29 @@ import {
 import { createNavigationContainerRef } from "@react-navigation/native";
 import { DashboardHeader } from "@/screens/dashboard/components/DashboardHeader";
 import { useTheme } from "@/hooks/useTheme";
-import { TasksStack } from "./TasksNavigation";
+import { TasksStack, TasksStackParamList } from "./TasksNavigation";
 import { CameraScreen } from "@/screens/CameraScreen";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { NotesStack } from "./NotesNavigation";
-import { LeadsStack } from "./LeadsNavigation";
+import { NotesStack, NotesStackParamList } from "./NotesNavigation";
+import { LeadsStack, LeadsStackParamList } from "./LeadsNavigation";
 import { ProfileStack } from "./ProfileNavigation";
 import { NotificationsStack } from "./NotificationNavigation";
 import { Search } from "@/screens/search/Search";
 import { CommonHeader } from "@/components/CommonHeader";
 import { NavigationContainer } from "@react-navigation/native";
 import { View } from "react-native";
+import {
+  CallHistoryStack,
+  CallHistoryStackParamList,
+} from "./CallHistoryNavigation";
 
 export type UserStackParamsList = {
   Dashboard: undefined;
   Search: undefined;
-  Leads: undefined;
-  Tasks: undefined;
-  Notes: undefined;
+  Leads: NavigatorScreenParams<LeadsStackParamList>;
+  Tasks: NavigatorScreenParams<TasksStackParamList>;
+  Notes: NavigatorScreenParams<NotesStackParamList>;
+  Calls: NavigatorScreenParams<CallHistoryStackParamList>;
   CameraScreen: undefined;
   Profile: undefined;
   Notifications: undefined;
@@ -117,6 +126,13 @@ export const UserNavigation = () => {
         <Stack.Screen
           name="Notes"
           component={NotesStack}
+          options={{ headerShown: false }}
+          layout={BottomSheetLayout}
+        />
+
+        <Stack.Screen
+          name="Calls"
+          component={CallHistoryStack}
           options={{ headerShown: false }}
           layout={BottomSheetLayout}
         />

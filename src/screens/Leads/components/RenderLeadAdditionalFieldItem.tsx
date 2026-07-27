@@ -80,6 +80,7 @@ export const RenderLeadAdditionalFieldItem = ({
                 location={true}
                 color={Colors.black_text_color}
                 size={13}
+                leftIcon={null}
               />
             </>
           );

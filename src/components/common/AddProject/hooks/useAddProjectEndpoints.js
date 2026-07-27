@@ -1,30 +1,40 @@
-import apiEndpoint from "../../../../config/apiConfig";
-import axios from "axios";
-import { useSelector } from "react-redux";
-
+import { useState } from "react";
+import {
+  fetchAllAdditionalFields,
+  fetchAllClients,
+} from "../utils/addProjectEndpoints";
 export const useAddProjectEndpoints = () => {
-  const token = useSelector((state) => state.auth.token);
-  const organization_id = useSelector((state) => state.profile.organization_id);
-
-  const getClientsForDropdown = async (
-    loading,
-    setLoading,
-    setClientDetails,
-  ) => {
-    setLoading({ ...loading, getClientsForDropdown: true });
-    // console.log("Token in dropdown", token);
+  const [addProjectLoading, setAddProjectLoading] = useState({
+    getClientsForDropdown: false,
+    getAllAdditionalFields: false,
+  });
+  const getClientsForDropdown = async ({
+    page,
+    searchTerm,
+    hasMore,
+    data,
+    setData,
+    abortSignal,
+    pageSize,
+  }) => {
+    if (!hasMore && page !== 1) return;
+    console.log("before set loading");
+    setAddProjectLoading((prev) => ({ ...prev, getClientsForDropdown: true }));
+    console.log("After set loading of get clients");
     try {
-      const response = await axios.get(`${apiEndpoint}/customers/clients/`, {
-        headers: {
-          Authorization: `token ${token}`,
-          "X-OrganizationID": organization_id,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetchAllClients(
+        page,
+        searchTerm,
+        pageSize,
+        abortSignal,
+      );
 
-      if (response.status >= 200 && response.status < 300) {
-        // console.log("Client details", response.data.result);
-        setClientDetails([...response.data.result]);
+      if (response?.status >= 200 && response?.status < 300) {
+        const allData = response.data.results;
+        const updatedData = page === 1 ? allData : [...data, ...allData];
+        setData(() => updatedData);
+        const hasMore = response.data.next !== null;
+        return { hasMore };
       }
     } catch (error) {
       console.error(
@@ -32,9 +42,29 @@ export const useAddProjectEndpoints = () => {
         error.response?.data || error.message,
       );
     } finally {
-      setLoading({ ...loading, getClientsForDropdown: false });
+      setAddProjectLoading((prev) => ({
+        ...prev,
+        getClientsForDropdown: false,
+      }));
     }
   };
 
-  return { getClientsForDropdown };
+  const getAllAdditionalFields = async (setAdditionalFields) => {
+    setAddProjectLoading((prev) => ({ ...prev, getAllAdditionalFields: true }));
+    try {
+      const response = await fetchAllAdditionalFields();
+      if (response?.status >= 200 && response?.status < 300) {
+        const allData = response.data.result;
+        setAdditionalFields(() => allData);
+      }
+    } catch (error) {
+    } finally {
+      setAddProjectLoading((prev) => ({
+        ...prev,
+        getAllAdditionalFields: false,
+      }));
+    }
+  };
+
+  return { getClientsForDropdown, addProjectLoading, getAllAdditionalFields };
 };

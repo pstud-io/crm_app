@@ -2,7 +2,7 @@ import { borderRadius } from "@/design/borders";
 import { center, xstack, ystack } from "@/design/layout";
 import { heading } from "@/design/typography";
 import { useTheme } from "@/hooks/useTheme";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import HomeIcon from "assets/icons/HomeIcon";
 import PlusIcon from "assets/icons/PlusIcon";
@@ -12,7 +12,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { SearchOutline } from "@/svg";
 import { StackActions } from "@react-navigation/native";
+import { ExpandableFloatingButton } from "./ExpandableFloatingButton";
+import { useState } from "react";
 export const FloatingButtons = () => {
+  const [expanded, setExpanded] = useState<boolean>(false);
+
   const activeSubButtonGlobal = useSelector(
     (state: RootState) => state.activeSubButtonGlobal.activeSubButtonGlobal,
   );
@@ -36,7 +40,7 @@ export const FloatingButtons = () => {
     "auth",
   ];
 
-  const disableOn = ["lead-info", "lead-stage", "dashboard"];
+  const disableOn = ["lead-info", "lead-stage", "calls"];
 
   const disable =
     activeSubButtonGlobal && disableOn.includes(activeSubButtonGlobal);
@@ -52,6 +56,14 @@ export const FloatingButtons = () => {
 
   return (
     <>
+      {expanded && (
+        <Pressable
+          style={[StyleSheet.absoluteFill, { backgroundColor: "transparent" }]}
+          onPress={() => {
+            setExpanded((prev) => !prev);
+          }}
+        />
+      )}
       <Pressable
         onPress={() => {
           if (activeSubButtonGlobal === "dashboard") return;
@@ -97,36 +109,17 @@ export const FloatingButtons = () => {
             bottom: 16,
             right: 16,
             justifyContent: "center",
-            alignItems: "center",
+            alignItems: "flex-end",
           },
         ]}
       >
-        <Pressable
-          style={[
-            xstack,
-            center,
-            {
-              width: 52,
-              height: 52,
-              borderRadius: borderRadius.full,
-              backgroundColor: disable
-                ? theme.backgroundDisabled
-                : theme.backgroundInverse,
-
-              boxShadow: theme.shadow.lg,
-            },
-          ]}
-          disabled={disable}
+        <ExpandableFloatingButton
           onPress={() => handleNavigation(activeSubButtonGlobal, project)}
-        >
-          <PlusIcon
-            width={28}
-            height={28}
-            fill={theme.textInverse}
-            stroke={theme.textInverse}
-            strokeWidth={2}
-          />
-        </Pressable>
+          disable={disable}
+          activeSubButtonGlobal={activeSubButtonGlobal}
+          expanded={expanded}
+          setExpanded={setExpanded}
+        />
         <Pressable
           style={[
             xstack,

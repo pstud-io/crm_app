@@ -84,7 +84,7 @@ export const useLeadsEndpoints = () => {
         const allData = response.data.results.substages;
 
         const updatedData = page === 1 ? allData : [...data, ...allData];
-        setData(updatedData);
+        setData(() => updatedData);
         const hasMore = response.data.next !== null;
 
         return { hasMore };
@@ -208,7 +208,7 @@ export const useLeadsEndpoints = () => {
       if (response && response.status >= 200 && response.status < 300) {
         const allData = response.data.results.substages;
         const updatedData = page === 1 ? allData : [...data, ...allData];
-        setData(updatedData);
+        setData(() => updatedData);
         const hasMore = response.data.next !== null;
         return { hasMore };
       }

@@ -29,31 +29,35 @@ import { borderWidth } from "@/design/borders";
 import { useKeyboard } from "@react-native-community/hooks";
 import { formatDate, formatDuration } from "@/utils";
 import { Spacing, TranscriptionInput } from "@/components";
+import { useCallHistoryEndpoints } from "../hooks/useCallHistoryEndpoints";
+import { callHistoryRefreshRef } from "../utils/callHistoryFunctions";
 
 interface CallLogBottomSheetProps {
   callLogBottomSheetRef: RefObject<BottomSheetModal | null>;
-  openCallLogBottomSheet: () => void;
   closeCallLogBottomSheet: () => void;
 }
 
 export default function CallLogBottomSheet({
   callLogBottomSheetRef,
-  openCallLogBottomSheet,
   closeCallLogBottomSheet,
 }: CallLogBottomSheetProps) {
+  const { postCallHistory, callHistoryLoading } = useCallHistoryEndpoints();
   const keyboardVisible = useKeyboardStatus();
   const snapPoints = keyboardVisible ? ["100%"] : ["70%"];
   const [note, setNote] = useState<string>("");
   const [subject, setSubject] = useState<string>("");
-  const [loading, setLoading] = useState<Record<string, boolean>>({
-    addingCallLog: false,
-  });
   const { theme } = useTheme();
   const keyboard = useKeyboard();
   const formElementsStyles = useFormElementsStyles();
   const dispatch = useDispatch();
   const callHistory = useSelector((state: RootState) => state.callHistory);
   console.log("Call history in bottom sheeet is", callHistory);
+
+  const resetCallLogBottomSheet = () => {
+    setNote("");
+    setSubject("");
+  };
+
   return (
     <BottomSheetModal
       snapPoints={snapPoints}
@@ -75,8 +79,13 @@ export default function CallLogBottomSheet({
           />
         );
       }}
-      onDismiss={() => {
+      onDismiss={async () => {
+        resetCallLogBottomSheet();
         dispatch(setCallHistory({ ...callHistoryInitialState }));
+        if (callHistoryRefreshRef.current) {
+          await callHistoryRefreshRef.current.onRefresh();
+          callHistoryRefreshRef.current = null;
+        }
       }}
     >
       <View
@@ -347,16 +356,31 @@ export default function CallLogBottomSheet({
             closeCallLogBottomSheet();
           }}
           type={"outlined"}
-          disabled={loading.addingCallLog}
+          disabled={callHistoryLoading.postCallHistory}
         />
         <BottomButton
-          title={loading.addingCallLog ? "Add call log..." : "Add Call Log"}
-          onPress={() => {}}
+          title={
+            callHistoryLoading.postCallHistory
+              ? "Add call log..."
+              : "Add Call Log"
+          }
+          onPress={async () => {
+            const payload = {
+              fk_project: callHistory.project_id,
+              fk_task: callHistory.task_id,
+              duration: callHistory.duration,
+              context_value: note,
+              subject: subject,
+              contacted_on: callHistory.contacted_on,
+            };
+            await postCallHistory(payload);
+            closeCallLogBottomSheet();
+          }}
           type={"default"}
-          disabled={loading.addingCallLog}
+          disabled={callHistoryLoading.postCallHistory}
           style={{}}
           icon={
-            loading.addingCallLog ? (
+            callHistoryLoading.postCallHistory ? (
               <ActivityIndicator size={12} color={theme.textInverse} />
             ) : undefined
           }

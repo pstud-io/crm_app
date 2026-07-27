@@ -1,10 +1,9 @@
 import { ActivityIndicator, Text, TouchableOpacity } from "react-native";
 import { useState } from "react";
-import { SH, SW } from "../../../utils";
-import { body } from "../DesignSystem/typography";
-import { primaryColors } from "../DesignSystem/colorPalette";
 import { useTheme } from "@/hooks/useTheme";
-export const RenderPopoverMenuOption = ({ item }) => {
+import { primaryColors } from "@/design/colors";
+import { body } from "@/design/typography";
+export const RenderFloatingActionItem = ({ item }: { item: any }) => {
   const [loading, setLoading] = useState(false);
   const { theme } = useTheme();
   return (
@@ -13,27 +12,31 @@ export const RenderPopoverMenuOption = ({ item }) => {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        gap: SW(8),
-        justifyContent: "center",
-        paddingHorizontal: SW(12),
+        gap: 16,
+        justifyContent: "space-between",
+        paddingHorizontal: 16,
         alignSelf: "flex-start",
-        paddingVertical: SH(12),
+        paddingVertical: 16,
+        width: "100%",
+        flexGrow: 1,
+        height: 60,
       }}
       onPress={async () => {
-        setLoading(true);
+        // setLoading(true);
         await item.onPress();
-        setLoading(false);
+        // setLoading(false);
       }}
     >
       {loading ? (
-        <ActivityIndicator size={SW(14)} color={primaryColors.gray[900]} />
+        <ActivityIndicator size={14} color={primaryColors.gray[900]} />
       ) : (
         item.icon
       )}
       <Text
         style={{
           ...body.sm.medium,
-          color: primaryColors.gray[700],
+          color: theme.textInverse,
+          flexGrow: 1,
         }}
       >
         {item.title}

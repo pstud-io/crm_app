@@ -1,3 +1,4 @@
+import { ListCallHistory } from "@/screens/CallHistory/ListCallHistory";
 import { LeadsTopBar } from "@/screens/Leads/components/LeadsTopBar";
 import { LeadInfo } from "@/screens/Leads/LeadInfo";
 import { LeadStage } from "@/screens/Leads/LeadStage";
@@ -26,6 +27,9 @@ export type LeadDetailsTabParamList = {
   };
   "Stage History": {
     project: string;
+  };
+  "Call History": {
+    project_id: string;
   };
 };
 
@@ -88,6 +92,14 @@ export const LeadDetailsTabs = () => {
         component={LeadStage}
         initialParams={{
           project: "",
+        }}
+      />
+
+      <Tab.Screen
+        name="Call History"
+        component={ListCallHistory}
+        initialParams={{
+          project_id: "",
         }}
       />
     </Tab.Navigator>

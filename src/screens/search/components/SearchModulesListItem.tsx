@@ -40,8 +40,8 @@ export const SearchModulesListItem = ({
           screen: "Info",
           params: {
             project: { id: item.id, project_name: item.project_name },
-          } as any,
-        },
+          },
+        } as any,
       });
     }
     if (type === "notes") {
@@ -121,6 +121,15 @@ export const SearchModulesListItem = ({
         ]}
       >
         {data.data.slice(0, 3).map((item, index) => {
+          console.log("Item in seaerhc module list item", item);
+          const task_id =
+            item.type === "followup_search" || item.type === "tasks_search"
+              ? item.id
+              : "";
+          const task_name =
+            item.type === "followup_search" || item.type === "tasks_search"
+              ? item.title
+              : "";
           return (
             <Pressable key={item.id} onPress={() => handleNavigation(id, item)}>
               {index !== 0 && (
@@ -158,6 +167,11 @@ export const SearchModulesListItem = ({
                     value={item?.client_phone || "-"}
                     code={""}
                     fromInfo={false}
+                    project_id={item?.fk_project}
+                    project_name={item?.project_name}
+                    client_name={item?.client_name}
+                    task_id={task_id}
+                    task_name={task_name}
                   />
                 </View>
               </View>

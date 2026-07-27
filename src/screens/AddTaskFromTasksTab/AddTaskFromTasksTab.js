@@ -65,8 +65,8 @@ const IMAGE_SIZE = SW(100);
 
 const AddTaskFromTasksTab = ({ route }) => {
   const dispatch = useDispatch();
-  const { voiceInput, onRefresh, task_type, fk_checkpoint, lead_id } =
-    route.params;
+  const { voiceInput, onRefresh, fk_checkpoint, lead_id } = route.params;
+  const task_type = route.params.task_type;
   console.log("Route is", route);
   const { showActionSheetWithOptions } = useActionSheet();
   const selectedProject = useSelector((state) => state.project);

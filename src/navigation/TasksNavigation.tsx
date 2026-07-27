@@ -16,7 +16,11 @@ export type TasksStackParamList = {
   ListFollowUps: {
     task_type: string;
   };
-  AddTask: undefined;
+  AddTask: {
+    voiceInput: boolean;
+    onRefresh: () => void | Promise<void>;
+    task_type?: string;
+  };
   EditTask: undefined;
   TaskDetails: undefined;
 };

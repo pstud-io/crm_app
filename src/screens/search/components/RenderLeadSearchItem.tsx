@@ -14,6 +14,7 @@ import CallWhatsappPopover from "@/components/specific/CallWhatsappPopover";
 export const RenderLeadSearchItem = ({ item }: { item: any }) => {
   const { theme } = useTheme();
   const navigation = useNavigation<UserNavigationProp>();
+  console.log("Item in render lead search item", item);
   return (
     <Pressable
       style={[
@@ -37,8 +38,8 @@ export const RenderLeadSearchItem = ({ item }: { item: any }) => {
             screen: "Info",
             params: {
               project: { id: item.id, project_name: item.project_name },
-            } as any,
-          },
+            },
+          } as any,
         })
       }
     >
@@ -118,6 +119,11 @@ export const RenderLeadSearchItem = ({ item }: { item: any }) => {
             value={item?.client_phone}
             code={""}
             fromInfo={false}
+            project_id={item?.fk_project}
+            project_name={item?.project_name}
+            client_name={item?.client_name}
+            task_id={""}
+            task_name={""}
           />
           {/* <Text
             style={[body.sm.semiBold, { color: theme.text, flexShrink: 1 }]}

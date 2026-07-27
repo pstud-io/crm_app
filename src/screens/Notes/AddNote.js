@@ -234,6 +234,7 @@ const AddNote = ({ route }) => {
 
         {project_id === "all_projects" && (
           <>
+            <Spacing space={SH(16)} />
             <Text style={formElementsStyles.titleStyle}>Select Lead *</Text>
             <Spacing space={SH(6)} />
             <Dropdown

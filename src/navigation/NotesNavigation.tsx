@@ -1,6 +1,7 @@
 import { CommonHeader } from "@/components/CommonHeader";
 import { CommonHeaderWithProject } from "@/components/CommonHeaderWithProject";
 import { AddNote, ListNotes, NoteDetails } from "@/screens/Notes";
+import { ProjectRecord } from "@/store/slices/projectSlice/projectSliceTypes";
 import {
   createNativeStackNavigator,
   NativeStackHeaderProps,
@@ -13,7 +14,10 @@ export type NotesStackParamList = {
       project_name: string;
     };
   };
-  AddNote: undefined;
+  AddNote: {
+    project_id: string | null;
+    project: ProjectRecord;
+  };
   NoteDetails: undefined;
 };
 

@@ -57,7 +57,6 @@ export const CallLog = () => {
       />
       <CallLogBottomSheet
         callLogBottomSheetRef={callLogBottomSheetRef}
-        openCallLogBottomSheet={openCallLogBottomSheet}
         closeCallLogBottomSheet={closeCallLogBottomSheet}
       />
     </BottomSheetModalProvider>

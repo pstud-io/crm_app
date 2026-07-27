@@ -49,12 +49,15 @@ import {
   closeAddProjectBottomSheet,
 } from "@/screens/dashboard/utils/addProjectBottomSheetService";
 import { setIsSheetOpen } from "@/store/slices/isSheetOpenSlice";
+import { usePaginatedSearch } from "@/hooks/usePaginatedSearch";
+import LoadingIndicatorFooter from "@/components/LoadingIndicatorFooter";
+import AdditionalFieldsForm from "./components/AdditionalFieldsForm";
 
 function AddProject() {
   console.log("AddProject mounted", addProjectBottomSheetRef);
-  useEffect(() => {
-    console.log("BottomSheet ref:", addProjectBottomSheetRef.current);
-  }, []);
+  // useEffect(() => {
+  //   console.log("BottomSheet ref:", addProjectBottomSheetRef.current);
+  // }, []);
   const allCountries = getAllCountries();
   const defaultCountry = allCountries.find((country) => country.cioc === "IND");
   const { triggerAutomation } = useGeneralEndpoints();
@@ -70,9 +73,11 @@ function AddProject() {
     addingProject: false,
   });
   const [activeForm, setActiveForm] = useState("Details");
-
+  const [additionalFields, setAllAdditionalFields] = useState([]);
+  const [additionalValues, setAdditionalValues] = useState({});
   const [clientDetails, setClientDetails] = useState([]);
-  const [client, setClient] = useState("");
+  const [client, setClient] = useState(null);
+  const [selectedClientName, setSelectedClientName] = useState("");
   const [projectName, setProjectName] = useState("");
   const [allProjectStages, setAllProjectStages] = useState([]);
   const [projectStage, setProjectStage] = useState("");
@@ -103,9 +108,16 @@ function AddProject() {
   );
   const dispatch = useDispatch();
 
-  const navigation = useNavigation();
+  const { getClientsForDropdown, addProjectLoading, getAllAdditionalFields } =
+    useAddProjectEndpoints();
 
-  const { getClientsForDropdown } = useAddProjectEndpoints();
+  const clientsSearch = usePaginatedSearch({
+    data: clientDetails,
+    setData: setClientDetails,
+    getData: getClientsForDropdown,
+    loading: addProjectLoading.getClientsForDropdown,
+    pageSize: 25,
+  });
 
   const getStatesForDropdown = async () => {
     setLoading({ ...loading, getStatesForDropdown: true });
@@ -254,9 +266,11 @@ function AddProject() {
       addingProject: false,
     });
     setActiveForm("Details");
+    setAllAdditionalFields([]);
 
     setClientDetails([]);
     setClient("");
+    setSelectedClientName("");
     setProjectName("");
     setAllProjectStages([]);
     setProjectStage("");
@@ -431,7 +445,7 @@ function AddProject() {
       if (response.status >= 200 && response.status < 300) {
         const newClient = response.data.result;
         addClientBottomSheetRef.current?.dismiss();
-        await getClientsForDropdown(loading, setLoading, setClientDetails);
+        await clientsSearch.onFocus();
         setClient(newClient.id);
       }
     } catch (error) {
@@ -458,7 +472,7 @@ function AddProject() {
       fk_project_stage: projectStage,
       budget: budget,
       description: note,
-      fk_client: client,
+      fk_client: client?.id,
       project_name: projectName,
     };
 
@@ -478,6 +492,38 @@ function AddProject() {
 
       if (response.status >= 200 && response.status < 300) {
         const newProject = response.data.result;
+        try {
+          const additionalFieldsPayload = createPayload(
+            additionalFields,
+            additionalValues,
+            newProject.id,
+          );
+          const addUserResadditionalFieldsResponse = await axios.post(
+            `${apiEndpoint}/customers/additional-fields/items/`,
+            additionalFieldsPayload,
+            {
+              headers: {
+                Authorization: `token ${token}`,
+                "X-OrganizationID": organization_id,
+                "Content-Type": "application/json",
+              },
+            },
+          );
+          if (
+            addUserResadditionalFieldsResponse.status >= 200 &&
+            addUserResadditionalFieldsResponse.status < 300
+          ) {
+            console.log("User added successfully");
+          }
+        } catch (error) {
+          Toast.show({
+            type: "error",
+            text1: "Error Occured",
+            text2: error.response?.data || error.message,
+            visibilityTime: 3000,
+            autoHide: true,
+          });
+        }
         try {
           const addUserResponse = await axios.post(
             `${apiEndpoint}/customers/projectuser/?project_id=${newProject.id}`,
@@ -534,11 +580,11 @@ function AddProject() {
   };
 
   const handleSetActiveForm = () => {
-    if (!client || !projectName) {
+    if (!client?.id || !projectName) {
       Toast.show({
         type: "error",
         text1: "Error",
-        text2: !client ? "No Client Selected" : "Lead Name is required",
+        text2: !client?.id ? "No Client Selected" : "Lead Name is required",
       });
       return;
     } else {
@@ -546,12 +592,20 @@ function AddProject() {
     }
   };
 
+  const createPayload = (fields, values, project_id) => {
+    return fields.map((field) => ({
+      fk_project_additional_field: field.id,
+      fk_project: project_id,
+      value: values[field.id]?.value ?? "",
+    }));
+  };
+
   return (
     <>
       <BottomSheetModal
         ref={addProjectBottomSheetRef}
         // index={-1} // hidden by default
-        snapPoints={isKeyboardVisible ? ["100%"] : ["75%"]}
+        snapPoints={isKeyboardVisible ? ["100%"] : ["90%"]}
         enableOverDrag={false}
         enableContentPanningGesture={false}
         enableDynamicSizing={false}
@@ -575,9 +629,10 @@ function AddProject() {
           }
           if (index > -1) {
             await Promise.all([
-              getClientsForDropdown(loading, setLoading, setClientDetails),
+              clientsSearch.onFocus(),
               getStatesForDropdown(),
               getStagesForDropdown(),
+              getAllAdditionalFields(setAllAdditionalFields),
             ]);
           }
         }}
@@ -685,19 +740,28 @@ function AddProject() {
                           formElementsStyles.dropdownOptionsContainerStyle
                         }
                         showsVerticalScrollIndicator={false}
-                        data={clientDetails}
+                        data={
+                          client?.id &&
+                          !clientDetails.some((x) => x.id === client?.id)
+                            ? [client, ...clientDetails]
+                            : clientDetails
+                        }
                         labelField={
-                          !loading.getClientsForDropdown &&
+                          !addProjectLoading.getClientsForDropdown &&
                           "contact_details.name"
                         }
                         valueField="id"
                         searchField="contact_details.name"
                         placeholder={
-                          loading.getClientsForDropdown
+                          addProjectLoading.getClientsForDropdown
                             ? "Fetching Clients..."
                             : "Select Client"
                         }
-                        value={loading.getClientsForDropdown ? "" : client}
+                        value={
+                          addProjectLoading.getClientsForDropdown
+                            ? ""
+                            : client?.id
+                        }
                         search
                         searchPlaceholder="Search Client"
                         inputSearchStyle={
@@ -708,16 +772,16 @@ function AddProject() {
                         }
                         renderItem={(item, isSelected) => (
                           <RenderDataForDropdown
-                            itemName={item.contact_details.name}
+                            itemName={item?.contact_details?.name}
                             isSelected={isSelected}
                           />
                         )}
                         autoScroll={false}
                         onChange={(item) => {
-                          setClient(item.id);
+                          setClient(item);
                         }}
                         renderRightIcon={() =>
-                          loading.getClientsForDropdown ? (
+                          addProjectLoading.getClientsForDropdown ? (
                             <ActivityIndicator
                               size={12}
                               color={Colors.gray_text_color}
@@ -729,6 +793,14 @@ function AddProject() {
                             />
                           )
                         }
+                        onChangeText={(text) => clientsSearch.onSearch(text)}
+                        flatListProps={{
+                          onEndReached: clientsSearch.onEndReached,
+                          ListFooterComponent:
+                            addProjectLoading.getClientsForDropdown && (
+                              <LoadingIndicatorFooter />
+                            ),
+                        }}
                       />
                     </View>
                     <View
@@ -1189,7 +1261,6 @@ function AddProject() {
                       alignItems: "flex-start",
                       flex: 1,
                       gap: SH(6),
-                      marginBottom: SH(16),
                     }}
                   >
                     <Text style={formElementsStyles.titleStyle}>Location</Text>
@@ -1258,6 +1329,11 @@ function AddProject() {
                       </TouchableOpacity>
                     </View>
                   </View>
+                  <AdditionalFieldsForm
+                    values={additionalValues}
+                    setValues={setAdditionalValues}
+                    allFields={additionalFields}
+                  />
                 </>
               )}
             </View>

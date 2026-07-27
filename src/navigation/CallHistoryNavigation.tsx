@@ -5,44 +5,40 @@ import {
   NativeStackHeaderProps,
 } from "@react-navigation/native-stack";
 import { LeadDetailsTabs } from "./LeadsTopTabNavigation";
+import { ListCallHistory } from "@/screens/CallHistory/ListCallHistory";
+import { CommonHeaderWithProject } from "@/components/CommonHeaderWithProject";
 
-export type LeadsStackParamList = {
-  ListLeads: {
-    autoOpenAddLead?: boolean;
+export type CallHistoryStackParamList = {
+  ListCallHistory: {
+    project_id: string | null;
   };
-  LeadDetails: {
-    project: string;
-  };
+  CallHistoryDetails: undefined;
 };
 
-const Stack = createNativeStackNavigator<LeadsStackParamList>();
+const Stack = createNativeStackNavigator<CallHistoryStackParamList>();
 
-export const LeadsStack = () => {
+export const CallHistoryStack = () => {
   return (
     <Stack.Navigator
-      initialRouteName="ListLeads"
+      initialRouteName="ListCallHistory"
       screenOptions={{
         headerShown: false,
         headerTitle: undefined,
       }}
     >
       <Stack.Screen
-        name="ListLeads"
-        component={ListLeads}
+        name="ListCallHistory"
+        component={ListCallHistory}
         options={{
           headerShown: true,
           header: (props: NativeStackHeaderProps) => (
-            <CommonHeader {...props} title="Leads" />
+            <CommonHeaderWithProject {...props} title="Call History" />
           ),
         }}
       />
-
       <Stack.Screen
-        name="LeadDetails"
+        name="CallHistoryDetails"
         component={LeadDetailsTabs}
-        initialParams={{
-          project: "",
-        }}
         options={{
           headerShown: true,
           header: (props: NativeStackHeaderProps) => (

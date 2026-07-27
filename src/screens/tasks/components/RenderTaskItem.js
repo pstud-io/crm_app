@@ -498,6 +498,11 @@ export const RenderTaskItem = ({
                   value={task?.project_details?.client_phone}
                   code={""}
                   fromInfo={false}
+                  project_id={task?.project_details?.id}
+                  project_name={task?.project_details?.name}
+                  client_name={task?.project_details?.client_name}
+                  task_id={task?.id}
+                  task_name={task?.title}
                 />
               </View>
             </View>

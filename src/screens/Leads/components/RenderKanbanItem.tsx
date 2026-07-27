@@ -17,11 +17,18 @@ import { ActivityIndicatorWrapper } from "@/components/ActivityIndicatorWrapper"
 import { CustomLegendList } from "@/components/CustomLegendList";
 import { RenderLeadItem } from "./RenderLeadItem";
 
-export const RenderKanbanItem = ({ item }: { item: any }) => {
+export const RenderKanbanItem = ({
+  item,
+  uniSearch,
+}: {
+  item: any;
+  uniSearch: string;
+}) => {
   const { theme } = useTheme();
   const { leadsLoading, getLeads } = useLeadsEndpoints();
-  console.log("item in render item", item);
   const [leadsData, setLeadsData] = useState<any>([...item.projects]);
+  const [leadFilters, setLeadFilters] =
+    useState<LeadsExtraParams>(leadsExtraParams);
   const [initialLoad, setInitialLoad] = useState<boolean>(false);
   const leadsSearch = usePaginatedSearch<any, LeadsExtraParams>({
     data: leadsData,
@@ -29,17 +36,12 @@ export const RenderKanbanItem = ({ item }: { item: any }) => {
     getData: getLeads,
     loading: leadsLoading.getLeads,
     pageSize: 6,
-    extraParams: { ...leadsExtraParams, substage_id: item.substage_id },
+    extraParams: {
+      ...leadFilters,
+      substage_id: item.substage_id,
+      search: uniSearch,
+    },
   });
-
-  // useEffect(() => {
-  //   const fetchKanban = async () => {
-  //     setInitialLoad(true);
-  //     await leadsSearch.onFocus();
-  //     setInitialLoad(false);
-  //   };
-  //   fetchKanban();
-  // }, []);
 
   return (
     <View
@@ -75,6 +77,7 @@ export const RenderKanbanItem = ({ item }: { item: any }) => {
           refreshing={leadsSearch.refreshing}
           onRefresh={leadsSearch.onRefresh}
           onEndReached={leadsSearch.onEndReached}
+          onEndReachedThreshold={0.9}
         />
       )}
     </View>

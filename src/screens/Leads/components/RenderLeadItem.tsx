@@ -20,6 +20,7 @@ export const RenderLeadItem = ({
 }) => {
   const { theme } = useTheme();
   const navigation = useNavigation<UserNavigationProp>();
+  console.log("item in render lead item", item);
   return (
     <Pressable
       style={[
@@ -123,6 +124,11 @@ export const RenderLeadItem = ({
             value={item?.client_details?.phone}
             code={""}
             fromInfo={false}
+            project_id={item?.id}
+            project_name={item?.project_name}
+            client_name={item?.client_details?.name}
+            task_id={""}
+            task_name={""}
           />
           {/* <Text
             style={[body.sm.semiBold, { color: theme.text, flexShrink: 1 }]}

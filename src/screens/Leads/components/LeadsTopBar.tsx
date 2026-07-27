@@ -116,6 +116,10 @@ export function LeadsTopBar({
                 navigation.navigate(route.name, {
                   project: project,
                 });
+              } else if (route.name === "Call History") {
+                navigation.navigate(route.name, {
+                  project_id: project.id,
+                });
               } else {
                 navigation.navigate(route.name, route.params);
               }

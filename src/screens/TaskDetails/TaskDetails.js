@@ -34,6 +34,7 @@ import { useTaskEndpoints } from "../tasks/hooks/useTasksEndpoints";
 import { RenderTaskItem } from "../tasks/components/RenderTaskItem";
 import { TaskHistoryBottomSheet } from "../tasks/components/TaskHistoryBottomSheet";
 import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
+import { TaskCallHistory } from "./components/TaskCallHistory";
 const TaskDetails = ({ route }) => {
   const navigation = useNavigation();
   const { autoOpenComments, fromLeads } = route.params || {};
@@ -98,6 +99,9 @@ const TaskDetails = ({ route }) => {
 
   if (hasCustomFields) {
     subButtons.unshift({ id: "custom", title: "Custom Fields" });
+  }
+  if (task.task_type === "followup") {
+    subButtons.push({ id: "calls", title: "Call History" });
   }
 
   const [loading, setLoading] = useState({
@@ -312,6 +316,12 @@ const TaskDetails = ({ route }) => {
         {activeSubButton === "custom" && (
           <CustomFieldDetailView
             customFieldItemDetails={task?.custom_field_item_details}
+          />
+        )}
+        {activeSubButton === "calls" && (
+          <TaskCallHistory
+            task_id={task?.id}
+            project_id={task?.project_details?.id}
           />
         )}
       </ScrollView>
