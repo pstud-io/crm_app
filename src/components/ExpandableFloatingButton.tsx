@@ -1,4 +1,4 @@
-import { borderRadius } from "@/design/borders";
+import { borderRadius, borderWidth } from "@/design/borders";
 import { center, xstack } from "@/design/layout";
 import { useTheme } from "@/hooks/useTheme";
 import { SCREEN_WIDTH } from "@/utils";
@@ -140,7 +140,7 @@ export const ExpandableFloatingButton = ({
           ItemSeparatorComponent={
             <ItemSeparatorComponent
               direction={"horizontal"}
-              style={{ marginVertical: 0 }}
+              style={{ marginVertical: 0, borderTopWidth: borderWidth.xs }}
             />
           }
         />

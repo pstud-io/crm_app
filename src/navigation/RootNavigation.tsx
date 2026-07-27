@@ -42,17 +42,8 @@ function RootNavigation() {
       linking={finalLinking}
       theme={navigationTheme}
     >
-      <ActionSheetProvider>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <QueryProvider>
-            <KeyboardProvider enabled>
-              <Navigation />
-              <FloatingButtons />
-              <CallLog />
-            </KeyboardProvider>
-          </QueryProvider>
-        </GestureHandlerRootView>
-      </ActionSheetProvider>
+      <Navigation />
+      <CallLog />
     </NavigationContainer>
   );
 }

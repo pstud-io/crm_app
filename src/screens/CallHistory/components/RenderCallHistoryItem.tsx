@@ -1,8 +1,11 @@
+import CallWhatsappPopover from "@/components/specific/CallWhatsappPopover";
 import { borderRadius, borderWidth } from "@/design/borders";
+import { fullWidth, xstack } from "@/design/layout";
 import { spacing } from "@/design/spacing";
 import { body } from "@/design/typography";
 import { useTheme } from "@/hooks/useTheme";
 import { formatDate, formatDuration } from "@/utils";
+import { useState } from "react";
 import { Text, View } from "react-native";
 
 export const RenderCallHistoryItem = ({
@@ -11,6 +14,8 @@ export const RenderCallHistoryItem = ({
   callHistory: any;
 }) => {
   const { theme } = useTheme();
+  const [expanded, setExpanded] = useState(false);
+
   return (
     <View
       style={{
@@ -54,6 +59,45 @@ export const RenderCallHistoryItem = ({
           {callHistory.client_details.name || "-"}
         </Text>
       </View>
+
+      <View
+        style={[
+          xstack,
+          fullWidth,
+          {
+            justifyContent: "space-between",
+          },
+        ]}
+      >
+        <Text
+          style={[
+            body.sm.regular,
+            { color: theme.textSecondary, flexShrink: 1 },
+          ]}
+          numberOfLines={1}
+          ellipsizeMode="middle"
+        >
+          Phone
+        </Text>
+        <CallWhatsappPopover
+          value={callHistory.client_details.phone || "-"}
+          code={""}
+          fromInfo={false}
+          project_id={callHistory?.fk_project}
+          project_name={callHistory?.project_name || ""}
+          client_name={callHistory?.client_details?.name}
+          task_id={callHistory?.task_details?.id || ""}
+          task_name={callHistory?.task_details?.title || ""}
+        />
+      </View>
+
+      <View
+        style={{
+          height: borderWidth.hw,
+          backgroundColor: theme.border,
+          marginVertical: spacing.tiny,
+        }}
+      />
 
       <View
         style={{
@@ -115,15 +159,7 @@ export const RenderCallHistoryItem = ({
         </Text>
       </View>
 
-      <View
-        style={{
-          height: borderWidth.hw,
-          backgroundColor: theme.border,
-          marginVertical: spacing.xxs,
-        }}
-      />
-
-      <View
+      {/* <View
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
@@ -153,7 +189,7 @@ export const RenderCallHistoryItem = ({
         >
           {callHistory.project_name || "-"}
         </Text>
-      </View>
+      </View> */}
 
       <View
         style={{
@@ -186,6 +222,45 @@ export const RenderCallHistoryItem = ({
           {callHistory?.task_details?.title || "-"}
         </Text>
       </View>
+      {callHistory?.context_value === null ||
+      callHistory?.context_value === "" ? (
+        <></>
+      ) : (
+        <>
+          <View
+            style={{
+              width: "100%",
+              borderBottomWidth: 1,
+              borderBottomColor: "#F2F2F2",
+            }}
+          />
+          <View style={{ gap: 4, width: "100%" }}>
+            <Text
+              style={{
+                ...body.sm.medium,
+                color: theme.textSecondary,
+              }}
+            >
+              Description
+            </Text>
+
+            <Text
+              style={{
+                ...body.sm.semiBold,
+                color: theme.text,
+              }}
+              numberOfLines={expanded ? undefined : 2}
+              ellipsizeMode="tail"
+              onPress={() => {
+                setExpanded(!expanded);
+              }}
+              suppressHighlighting
+            >
+              {callHistory?.context_value}
+            </Text>
+          </View>
+        </>
+      )}
     </View>
   );
 };

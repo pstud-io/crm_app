@@ -1,7 +1,8 @@
 import { Role } from "@/types/AuthTypes";
 import { Dispatch, SetStateAction } from "react";
-import { StorageKeys } from "./storageFunctions";
+import { storage, StorageKeys } from "./storageFunctions";
 import * as SecureStore from "expo-secure-store";
+import { ProfileSliceState } from "@/store/slices/profileSlice/profileSliceTypes";
 
 export async function storeToken(token: string) {
   await SecureStore.setItemAsync(StorageKeys.TOKEN_KEY, token);
@@ -25,7 +26,8 @@ export async function loadAuth(
   try {
     setLoading(true);
     const token = await getToken();
-    if (token) {
+    const profile = await storage.get<ProfileSliceState>(StorageKeys.PROFILE);
+    if (token && profile) {
       setRole(Role.USER);
     } else {
       setRole(Role.GUEST);

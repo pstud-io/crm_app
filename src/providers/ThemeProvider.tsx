@@ -37,7 +37,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [themeMode, setThemeMode] = useState<ThemeMode>(ThemeMode.System);
   const [isReady, setIsReady] = useState<boolean>(false);
   const dispatch = useDispatch();
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isReady) return;
     const load: () => Promise<void> = async () => {
       await Promise.all([

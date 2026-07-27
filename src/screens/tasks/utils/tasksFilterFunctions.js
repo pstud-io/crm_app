@@ -13,6 +13,7 @@ export const filterCompletedTasks = (
   showOverdueTasks,
   showAssignedToMeTasks,
   showSelfCreatedTasks,
+  showDueTodayTasks,
   organization_contact_id,
   overdueOption,
   overdueFromDate,
@@ -67,6 +68,7 @@ export const filterCompletedTasks = (
       showOverdueTasks,
       showAssignedToMeTasks,
       showSelfCreatedTasks,
+      showDueTodayTasks,
       sortedTasks,
       organization_contact_id,
       overdueOption,
@@ -86,6 +88,7 @@ export const filterCreatedTasks = (
   showOverdueTasks,
   showAssignedToMeTasks,
   showSelfCreatedTasks,
+  showDueTodayTasks,
   organization_contact_id,
   overdueOption,
   overdueFromDate,
@@ -115,6 +118,7 @@ export const filterCreatedTasks = (
       showOverdueTasks,
       showAssignedToMeTasks,
       showSelfCreatedTasks,
+      showDueTodayTasks,
       sortedTasks,
       organization_contact_id,
       overdueOption,
@@ -134,6 +138,7 @@ export const filterInProgressTasks = (
   showOverdueTasks,
   showAssignedToMeTasks,
   showSelfCreatedTasks,
+  showDueTodayTasks,
   organization_contact_id,
   overdueOption,
   overdueFromDate,
@@ -167,6 +172,7 @@ export const filterInProgressTasks = (
       showOverdueTasks,
       showAssignedToMeTasks,
       showSelfCreatedTasks,
+      showDueTodayTasks,
       sortedTasks,
       organization_contact_id,
       overdueOption,
@@ -186,6 +192,7 @@ export const filterOnHoldTasks = (
   showOverdueTasks,
   showAssignedToMeTasks,
   showSelfCreatedTasks,
+  showDueTodayTasks,
   organization_contact_id,
   overdueOption,
   overdueFromDate,
@@ -215,6 +222,7 @@ export const filterOnHoldTasks = (
       showOverdueTasks,
       showAssignedToMeTasks,
       showSelfCreatedTasks,
+      showDueTodayTasks,
       sortedTasks,
       organization_contact_id,
       overdueOption,
@@ -234,6 +242,7 @@ export const filterDiscardedTasks = (
   showOverdueTasks,
   showAssignedToMeTasks,
   showSelfCreatedTasks,
+  showDueTodayTasks,
   organization_contact_id,
   overdueOption,
   overdueFromDate,
@@ -263,6 +272,7 @@ export const filterDiscardedTasks = (
       showOverdueTasks,
       showAssignedToMeTasks,
       showSelfCreatedTasks,
+      showDueTodayTasks,
       sortedTasks,
       organization_contact_id,
       overdueOption,
@@ -278,21 +288,37 @@ export const filterByQuickFilters = (
   showOverdueTasks,
   showAssignedToMeTasks,
   showSelfCreatedTasks,
+  showDueTodayTasks,
   tasksArray,
   id,
   overdueOption,
   overdueFromDate,
   overdueToDate,
 ) => {
-  // if no filters selected return original array
-  if (!showOverdueTasks && !showAssignedToMeTasks && !showSelfCreatedTasks) {
+  // If no filters are selected, return the original array
+  if (
+    !showOverdueTasks &&
+    !showAssignedToMeTasks &&
+    !showSelfCreatedTasks &&
+    !showDueTodayTasks
+  ) {
     return tasksArray;
   }
 
   const currentTime = Date.now() + 19800000;
+  const today = new Date();
+
+  const isSameDay = (date1, date2) => {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  };
 
   return tasksArray.filter((task) => {
-    const dueDate = task?.due_date ? new Date(task.due_date).getTime() : null;
+    const dueDate = task?.due_date ? new Date(task.due_date) : null;
+    const dueDateTime = dueDate?.getTime();
 
     const isTaskClosed =
       task?.stage?.toLowerCase() === "completed" ||
@@ -300,10 +326,15 @@ export const filterByQuickFilters = (
       task?.stage?.toLowerCase() === "rejected" ||
       task?.stage?.toLowerCase() === "discarded";
 
-    // basic overdue check
-    const isOverdue = dueDate && dueDate < currentTime && !isTaskClosed;
+    // Overdue check
+    const isOverdue =
+      dueDateTime != null && dueDateTime < currentTime && !isTaskClosed;
 
-    // overdue filter logic
+    // Due today check
+    const isDueToday =
+      dueDate != null && isSameDay(dueDate, today) && !isTaskClosed;
+
+    // Overdue custom date range logic
     let matchesOverdueFilter = isOverdue;
 
     if (
@@ -311,7 +342,7 @@ export const filterByQuickFilters = (
       overdueOption === "custom" &&
       overdueFromDate &&
       overdueToDate &&
-      dueDate
+      dueDateTime != null
     ) {
       const fromDate = new Date(overdueFromDate);
       fromDate.setHours(0, 0, 0, 0);
@@ -321,15 +352,15 @@ export const filterByQuickFilters = (
 
       matchesOverdueFilter =
         isOverdue &&
-        dueDate >= fromDate.getTime() &&
-        dueDate <= toDate.getTime();
+        dueDateTime >= fromDate.getTime() &&
+        dueDateTime <= toDate.getTime();
     }
 
     const isAssignedToMe = task?.organization_contact_details?.id === id;
 
     const isSelfCreated = task?.added_by === id;
 
-    // AND condition based on enabled filters
+    // Apply enabled filters (AND logic)
     if (showOverdueTasks && !matchesOverdueFilter) {
       return false;
     }
@@ -339,6 +370,10 @@ export const filterByQuickFilters = (
     }
 
     if (showSelfCreatedTasks && !isSelfCreated) {
+      return false;
+    }
+
+    if (showDueTodayTasks && !isDueToday) {
       return false;
     }
 

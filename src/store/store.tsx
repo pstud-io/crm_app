@@ -9,6 +9,7 @@ import isSyncing from "./slices/isSyncing";
 import { permissionsSlice } from "./slices/permissionSlice";
 import { isSheetButtonOpenSlice } from "./slices/isSheetOpenSlice";
 import { callHistorySlice } from "./slices/callHistorySlice";
+import { activeLeadSlice } from "./slices/activeLeadGlobal";
 export const store = configureStore({
   reducer: {
     profile: profileSlice.reducer,
@@ -21,6 +22,7 @@ export const store = configureStore({
     permissions: permissionsSlice.reducer,
     isSheetOpen: isSheetButtonOpenSlice.reducer,
     callHistory: callHistorySlice.reducer,
+    activeLead: activeLeadSlice.reducer,
   },
 });
 

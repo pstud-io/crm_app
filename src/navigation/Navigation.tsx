@@ -7,6 +7,7 @@ import { center, fullScreen, SCREEN_HEIGHT, xstack } from "@/design/layout";
 import { borderRadius } from "@/design/borders";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { body, heading } from "@/design/typography";
+import { FloatingButtons } from "@/components/FloatingButtons";
 export const Navigation = () => {
   const { role, authLoading } = useAuth();
   const { theme } = useTheme();

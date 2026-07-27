@@ -65,7 +65,8 @@ const IMAGE_SIZE = SW(100);
 
 const AddTaskFromTasksTab = ({ route }) => {
   const dispatch = useDispatch();
-  const { voiceInput, onRefresh, fk_checkpoint, lead_id } = route.params;
+  const { voiceInput, onRefresh, fk_checkpoint } = route.params;
+  const lead_id = route.params.lead_id;
   const task_type = route.params.task_type;
   console.log("Route is", route);
   const { showActionSheetWithOptions } = useActionSheet();
@@ -259,8 +260,12 @@ const AddTaskFromTasksTab = ({ route }) => {
 
   const handleAddTaskFromTasksTab = async () => {
     console.log("In handle add task from task tab");
-    const fk_project =
+    let fk_project =
       selectedProject.id === "all_projects" ? projectTitle : selectedProject.id;
+
+    if (lead_id) {
+      fk_project = lead_id;
+    }
 
     if (selectedProject.id === "all_projects" && !fk_project) {
       Toast.show({
@@ -449,7 +454,7 @@ const AddTaskFromTasksTab = ({ route }) => {
           </>
         )}
 
-        {selectedProject.id === "all_projects" && (
+        {selectedProject.id === "all_projects" && !lead_id && (
           <>
             <Spacing space={SH(16)} />
             <Text style={formElementsStyles.titleStyle}>Select Lead *</Text>

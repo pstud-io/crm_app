@@ -19,6 +19,7 @@ export const FilterChip = ({
         color={filter ? badgeColors.blueGray : badgeColors.outline}
         border={filter ? true : false}
         text={label}
+        alignSelf="center"
       />
     </TouchableOpacity>
   );

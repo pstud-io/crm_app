@@ -9,6 +9,10 @@ import RootNavigation from "@/navigation/RootNavigation";
 import { useCallDetection } from "@/hooks/useCallDetection";
 import { NativeModules, PermissionsAndroid } from "react-native";
 import { useEffect, useState } from "react";
+import { ActionSheetProvider } from "@expo/react-native-action-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { QueryProvider } from "@/providers/QueryProvider";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 SplashScreen.preventAutoHideAsync();
 
 SplashScreen.setOptions({
@@ -42,13 +46,21 @@ export default Sentry.wrap(function App() {
   return (
     <SafeAreaProvider style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
-        <Provider store={store}>
-          <AuthProvider>
-            <ThemeProvider>
-              <RootNavigation />
-            </ThemeProvider>
-          </AuthProvider>
-        </Provider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <ActionSheetProvider>
+            <QueryProvider>
+              <KeyboardProvider enabled>
+                <Provider store={store}>
+                  <AuthProvider>
+                    <ThemeProvider>
+                      <RootNavigation />
+                    </ThemeProvider>
+                  </AuthProvider>
+                </Provider>
+              </KeyboardProvider>
+            </QueryProvider>
+          </ActionSheetProvider>
+        </GestureHandlerRootView>
       </SafeAreaView>
     </SafeAreaProvider>
   );

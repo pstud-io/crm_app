@@ -27,6 +27,7 @@ import {
   CallHistoryStack,
   CallHistoryStackParamList,
 } from "./CallHistoryNavigation";
+import { FloatingButtons } from "@/components/FloatingButtons";
 
 export type UserStackParamsList = {
   Dashboard: undefined;
@@ -164,6 +165,7 @@ export const UserNavigation = () => {
           )}
         </Stack.Screen>
       </Stack.Navigator>
+      <FloatingButtons />
     </>
   );
 };

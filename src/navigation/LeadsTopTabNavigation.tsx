@@ -3,7 +3,9 @@ import { LeadsTopBar } from "@/screens/Leads/components/LeadsTopBar";
 import { LeadInfo } from "@/screens/Leads/LeadInfo";
 import { LeadStage } from "@/screens/Leads/LeadStage";
 import { ListNotes } from "@/screens/Notes";
+import ListNotesLeads from "@/screens/Notes/ListNotesLeads";
 import { ListTasks } from "@/screens/tasks/ListTasks";
+import { ListTasksLeads } from "@/screens/tasks/ListTasksLeads";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 export type LeadDetailsTabParamList = {
@@ -62,7 +64,7 @@ export const LeadDetailsTabs = () => {
 
       <Tab.Screen
         name="Follow Ups"
-        component={ListTasks}
+        component={ListTasksLeads}
         initialParams={{
           task_type: "followup",
           fromLeads: true,
@@ -71,7 +73,7 @@ export const LeadDetailsTabs = () => {
 
       <Tab.Screen
         name="Tasks"
-        component={ListTasks}
+        component={ListTasksLeads}
         initialParams={{
           task_type: "",
           fromLeads: true,
@@ -80,7 +82,7 @@ export const LeadDetailsTabs = () => {
 
       <Tab.Screen
         name="Notes"
-        component={ListNotes}
+        component={ListNotesLeads}
         initialParams={{
           selectedProject: null,
           fromLeads: true,

@@ -54,7 +54,7 @@ export const useTaskEndpoints = () => {
     }
   };
 
-  const getTaskSummary = async (setTaskCount) => {
+  const getTaskSummary = async (setTaskCount, project) => {
     console.log("IN get single task");
     const queryParams = new URLSearchParams();
 

@@ -11,6 +11,8 @@ import { UserNavigationProp } from "@/navigation/UserNavigation";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CallWhatsappPopover from "@/components/specific/CallWhatsappPopover";
+import { useDispatch } from "react-redux";
+import { setActiveLead } from "@/store/slices/activeLeadGlobal";
 export const RenderLeadItem = ({
   item,
   index,
@@ -21,6 +23,7 @@ export const RenderLeadItem = ({
   const { theme } = useTheme();
   const navigation = useNavigation<UserNavigationProp>();
   console.log("item in render lead item", item);
+  const dispatch = useDispatch();
   return (
     <Pressable
       style={[
@@ -36,7 +39,10 @@ export const RenderLeadItem = ({
         },
       ]}
       key={index}
-      onPress={() =>
+      onPress={() => {
+        dispatch(
+          setActiveLead({ id: item.id, project_name: item.project_name }),
+        );
         navigation.push("Leads", {
           screen: "LeadDetails",
           params: {
@@ -45,8 +51,8 @@ export const RenderLeadItem = ({
               project: { id: item.id, project_name: item.project_name },
             },
           },
-        } as any)
-      }
+        } as any);
+      }}
     >
       <View
         style={[

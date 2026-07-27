@@ -12,7 +12,6 @@ import { primaryColors } from "../../UI/DesignSystem/colorPalette";
 import MenuDrawer from "./MenuDrawer";
 import CustomTabBarButton from "./CustomTabBarButton";
 import React, { useEffect } from "react";
-import { setActiveSubButtonGlobal } from "../../../store/slices/activeSubButtonGlobal";
 const CustomTabBar = ({
   setOpen,
   showTabBar,

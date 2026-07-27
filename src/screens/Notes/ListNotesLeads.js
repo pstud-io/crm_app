@@ -28,7 +28,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { userNavigationRef } from "@/navigation/UserNavigation";
 import { usePaginatedSearch } from "@/hooks/usePaginatedSearch";
 
-const ListNotes = ({ route }) => {
+const ListNotesLeads = ({ route }) => {
   console.log("Route in notes is", route);
   const { selectedProject, fromLeads } = route.params;
   console.log("selected project in list notes", selectedProject, fromLeads);
@@ -66,7 +66,7 @@ const ListNotes = ({ route }) => {
 
   useFocusEffect(
     useCallback(() => {
-      dispatch(setActiveSubButtonGlobal("notes"));
+      dispatch(setActiveSubButtonGlobal("leads-notes"));
     }, []),
   );
 
@@ -256,28 +256,28 @@ const ListNotes = ({ route }) => {
               No Data Available
             </Text>
           }
-          // ListEmptyComponent={
-          //   <EmptyContent
-          //     onPress={() => {
-          //       if (fromLeads) {
-          //         userNavigationRef.dispatch(
-          //           StackActions.push("Notes", {
-          //             screen: "AddNote",
-          //             params: {
-          //               project_id: project.id,
-          //               project,
-          //             },
-          //           }),
-          //         );
-          //       } else {
-          //         navigation.push("AddNote", {
-          //           project_id: project.id,
-          //           project,
-          //         });
-          //       }
-          //     }}
-          //   />
-          // }
+          //   ListEmptyComponent={
+          //     <EmptyContent
+          //       onPress={() => {
+          //         if (fromLeads) {
+          //           userNavigationRef.dispatch(
+          //             StackActions.push("Notes", {
+          //               screen: "AddNote",
+          //               params: {
+          //                 project_id: project.id,
+          //                 project,
+          //               },
+          //             }),
+          //           );
+          //         } else {
+          //           navigation.push("AddNote", {
+          //             project_id: project.id,
+          //             project,
+          //           });
+          //         }
+          //       }}
+          //     />
+          //   }
           refreshControl={
             <RefreshControl
               refreshing={notesSearch.refreshing}
@@ -324,4 +324,4 @@ const ListNotes = ({ route }) => {
   );
 };
 
-export default ListNotes;
+export default ListNotesLeads;

@@ -20,6 +20,7 @@ export const FloatingButtons = () => {
   const activeSubButtonGlobal = useSelector(
     (state: RootState) => state.activeSubButtonGlobal.activeSubButtonGlobal,
   );
+  const activeLead = useSelector((state: RootState) => state.activeLead);
   const isSheetOpen = useSelector(
     (state: RootState) => state.isSheetOpen.isSheetOpen,
   );
@@ -114,7 +115,9 @@ export const FloatingButtons = () => {
         ]}
       >
         <ExpandableFloatingButton
-          onPress={() => handleNavigation(activeSubButtonGlobal, project)}
+          onPress={() =>
+            handleNavigation(activeSubButtonGlobal, project, activeLead)
+          }
           disable={disable}
           activeSubButtonGlobal={activeSubButtonGlobal}
           expanded={expanded}

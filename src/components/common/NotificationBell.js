@@ -59,107 +59,50 @@ const NotificationBell = React.memo(({ isFocused }) => {
   }, [isFocused]);
 
   return (
-    <>
-      {unreadCount > 0 && (
-        <View
-          style={{
-            display: "flex",
-            width: unreadCount < 10 ? SH(18) : "auto",
-            height: SH(18),
-            backgroundColor: primaryColors.brand[1000],
-            borderRadius: SH(999),
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            top: SH(10),
-            right: unreadCount < 10 ? -SW(12) : -SW(8),
-            zIndex: 100,
-          }}
-        >
-          <Text
-            style={{
-              color: "#fff",
-              fontSize: SF(8),
-              fontWeight: "700",
-              fontFamily: "Inter-Regular",
-            }}
-          >
-            {unreadCount}
-          </Text>
-        </View>
-      )}
-      {unreadCount === 0 && (
-        <View
-          style={{
-            display: "flex",
-            minWidth: SH(24),
-            height: SH(12),
-            paddingHorizontal: SW(2),
-            backgroundColor: primaryColors.brand[1000],
-            borderRadius: SH(999),
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            top: SH(8),
-            right: -SW(10),
-            zIndex: 100,
-            opacity: 0,
-          }}
-        >
-          <Text
-            style={{
-              color: "#fff",
-              fontSize: SF(8),
-              fontWeight: "700",
-              textAlign: "center",
-              includeFontPadding: false,
-              textAlignVertical: "center",
-              fontFamily: "Inter-Regular",
-              flexShrink: 0,
-            }}
-            numberOfLines={1}
-          >
-            {"222"}
-          </Text>
-        </View>
-      )}
+    <View
+      style={{
+        position: "relative",
+        alignSelf: "center",
+        flexGrow: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <NotificationIcon stroke={primaryColors.brand[1000]} />
+
       {unreadCount > 0 && (
         <View
           style={{
-            display: "flex",
-            minWidth: SH(24),
-            height: SH(12),
-            paddingHorizontal: SW(2),
+            position: "absolute",
+            top: -SH(0),
+            right: -SW(4),
+
+            minWidth: SH(18),
+            height: SH(18),
+            paddingHorizontal: SW(4),
+
             backgroundColor: primaryColors.brand[1000],
             borderRadius: SH(999),
-            flexDirection: "row",
+
             alignItems: "center",
             justifyContent: "center",
-            top: SH(8),
-            right: -SW(10),
-            zIndex: 100,
-            opacity: 0,
           }}
         >
           <Text
+            numberOfLines={1}
             style={{
               color: "#fff",
               fontSize: SF(8),
               fontWeight: "700",
-              textAlign: "center",
-              includeFontPadding: false,
-              textAlignVertical: "center",
               fontFamily: "Inter-Regular",
-              flexShrink: 0,
+              includeFontPadding: false,
             }}
-            numberOfLines={1}
           >
-            {"222"}
+            {unreadCount > 99 ? "99+" : unreadCount}
           </Text>
         </View>
       )}
-    </>
+    </View>
   );
 });
 
