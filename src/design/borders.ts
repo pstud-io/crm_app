@@ -27,5 +27,6 @@ export const borderWidth = {
   md: 1,
   lg: 1.25,
   xl: 1.5,
+  xxl: 1.75,
   thick: 2,
 } as const satisfies BorderWidth;

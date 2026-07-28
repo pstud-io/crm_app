@@ -780,6 +780,347 @@ index 86bdf9d..e6b90f6 100644
      }
 -
  }
+diff --git a/node_modules/react-native-call-detection/iOS/RCTCallDetection/RCTCallDetection/CallDetectionManager.m b/node_modules/react-native-call-detection/iOS/RCTCallDetection/RCTCallDetection/CallDetectionManager.m
+index 7deb00e..263d03c 100644
+--- a/node_modules/react-native-call-detection/iOS/RCTCallDetection/RCTCallDetection/CallDetectionManager.m
++++ b/node_modules/react-native-call-detection/iOS/RCTCallDetection/RCTCallDetection/CallDetectionManager.m
+@@ -1,64 +1,311 @@
+ //
+ //  CallDetectionManager.m
+ //
+-//
+-//  Created by Pritesh Nandgaonkar on 16/06/17.
+-//  Updated by Doug Watkins for Inside Real Estate on 31/07/19
+-//  Copyright © 2017 Facebook. All rights reserved.
+-//
+ 
+ #import "CallDetectionManager.h"
++#import <UIKit/UIKit.h>
+ @import CallKit;
+ 
+ typedef void (^CallBack)();
++
+ @interface CallDetectionManager()
+ 
+ @property(strong, nonatomic) RCTResponseSenderBlock block;
+-@property(strong, nonatomic) CXCallObserver* callObserver;
++@property(strong, nonatomic) CXCallObserver *callObserver;
++
++@property(nonatomic, assign) CFAbsoluteTime connectedAt;
++@property(nonatomic, assign) UIBackgroundTaskIdentifier backgroundTask;
+ 
+ @end
++
+ @implementation CallDetectionManager
+ 
++RCT_EXPORT_MODULE()
++
++#pragma mark - React Native
++
+ - (NSArray<NSString *> *)supportedEvents {
++    NSLog(@"CustomLog supportedEvents called");
+     return @[@"PhoneCallStateUpdate"];
+ }
+ 
+ + (BOOL)requiresMainQueueSetup {
++    NSLog(@"CustomLog requiresMainQueueSetup");
+     return YES;
+ }
+ 
+-RCT_EXPORT_MODULE()
++#pragma mark - Background Task
++
++- (void)beginBackgroundTask {
++
++    if (self.backgroundTask != UIBackgroundTaskInvalid) {
++        NSLog(@"CustomLog Background task already running");
++        return;
++    }
++
++    NSLog(@"CustomLog ===============================");
++    NSLog(@"CustomLog Starting Background Task");
++
++    __weak typeof(self) weakSelf = self;
++
++    self.backgroundTask =
++    [[UIApplication sharedApplication]
++     beginBackgroundTaskWithExpirationHandler:^{
++
++        NSLog(@"CustomLog ********************************");
++        NSLog(@"CustomLog Background Task EXPIRED");
++
++        if (weakSelf.backgroundTask != UIBackgroundTaskInvalid) {
++
++            [[UIApplication sharedApplication]
++             endBackgroundTask:weakSelf.backgroundTask];
++
++            weakSelf.backgroundTask = UIBackgroundTaskInvalid;
++        }
++
++        NSLog(@"CustomLog Background Task Ended by System");
++        NSLog(@"CustomLog ********************************");
++
++    }];
++
++    NSLog(@"CustomLog Background Task Id = %lu",
++          (unsigned long)self.backgroundTask);
++
++    NSLog(@"CustomLog Background Time Remaining = %.2f",
++          [UIApplication sharedApplication].backgroundTimeRemaining);
++
++    NSLog(@"CustomLog ===============================");
++}
++
++- (void)endBackgroundTask {
++
++    if (self.backgroundTask == UIBackgroundTaskInvalid) {
++        return;
++    }
++
++    NSLog(@"CustomLog Ending Background Task");
++
++    [[UIApplication sharedApplication]
++     endBackgroundTask:self.backgroundTask];
++
++    self.backgroundTask = UIBackgroundTaskInvalid;
++
++    NSLog(@"CustomLog Background Task Ended");
++}
++
++#pragma mark - App Lifecycle
++
++- (void)appDidEnterBackground {
++
++    NSLog(@"");
++    NSLog(@"CustomLog ===================================");
++    NSLog(@"CustomLog APP ENTERED BACKGROUND");
++
++    [self beginBackgroundTask];
++
++    NSLog(@"CustomLog Background Time Remaining = %.2f",
++          [UIApplication sharedApplication].backgroundTimeRemaining);
++
++    NSLog(@"CustomLog ===================================");
++}
++
++- (void)appDidBecomeActive {
++
++    NSLog(@"");
++    NSLog(@"CustomLog ===================================");
++    NSLog(@"CustomLog APP BECAME ACTIVE");
++    NSLog(@"CustomLog ===================================");
++}
++
++#pragma mark - Public Methods
++
++RCT_EXPORT_METHOD(addCallBlock:(RCTResponseSenderBlock)block) {
++
++    NSLog(@"CustomLog addCallBlock");
+ 
+-RCT_EXPORT_METHOD(addCallBlock:(RCTResponseSenderBlock) block) {
+-    // Setup call tracking
+     self.block = block;
+     self.callObserver = [[CXCallObserver alloc] init];
++
+     __typeof(self) weakSelf = self;
+-    [self.callObserver setDelegate:weakSelf queue:nil];
++
++    [self.callObserver setDelegate:weakSelf
++                             queue:nil];
++
++    NSLog(@"CustomLog addCallBlock delegate registered");
+ }
+ 
+ RCT_EXPORT_METHOD(startListener) {
+-    // Setup call tracking
++
++    NSLog(@"CustomLog startListener");
++
++    if (self.callObserver != nil) {
++
++        NSLog(@"CustomLog callObserver already exists");
++        return;
++    }
++
++    self.connectedAt = 0;
++    self.backgroundTask = UIBackgroundTaskInvalid;
++
+     self.callObserver = [[CXCallObserver alloc] init];
+-    __typeof(self) weakSelf = self;
+-    [self.callObserver setDelegate:weakSelf queue:nil];
++
++    [self.callObserver setDelegate:self
++                             queue:dispatch_get_main_queue()];
++
++    [[NSNotificationCenter defaultCenter]
++     addObserver:self
++        selector:@selector(appDidEnterBackground)
++            name:UIApplicationDidEnterBackgroundNotification
++          object:nil];
++
++    [[NSNotificationCenter defaultCenter]
++     addObserver:self
++        selector:@selector(appDidBecomeActive)
++            name:UIApplicationDidBecomeActiveNotification
++          object:nil];
++
++    NSLog(@"CustomLog startListener delegate registered");
+ }
+ 
+ RCT_EXPORT_METHOD(stopListener) {
+-    // Setup call tracking
+-    self.callObserver = nil;
++
++    NSLog(@"CustomLog stopListener");
++
++    [[NSNotificationCenter defaultCenter]
++     removeObserver:self];
++
++    [self endBackgroundTask];
++
++    if (self.callObserver) {
++
++        [self.callObserver setDelegate:nil
++                                 queue:nil];
++
++        self.callObserver = nil;
++    }
++
++    NSLog(@"CustomLog callObserver released");
+ }
+ 
+-- (void)callObserver:(CXCallObserver *)callObserver callChanged:(CXCall *)call {
+-    if (call.hasEnded == true) {
+-      [self sendEventWithName:@"PhoneCallStateUpdate" body:@"Disconnected"];
+-    } else if (call.hasConnected == true) {
+-      [self sendEventWithName:@"PhoneCallStateUpdate" body:@"Connected"];
+-    } else if (call.isOutgoing == true) {
+-      [self sendEventWithName:@"PhoneCallStateUpdate" body:@"Dialing"];
+-    } else {
+-      [self sendEventWithName:@"PhoneCallStateUpdate" body:@"Incoming"];
++#pragma mark - CXCallObserverDelegate
++
++- (void)callObserver:(CXCallObserver *)callObserver
++         callChanged:(CXCall *)call {
++
++    NSLog(@"");
++    NSLog(@"CustomLog ----------------------------------------");
++    NSLog(@"CustomLog callChanged invoked");
++
++    NSLog(@"CustomLog hasConnected = %d", call.hasConnected);
++    NSLog(@"CustomLog hasEnded = %d", call.hasEnded);
++    NSLog(@"CustomLog isOutgoing = %d", call.isOutgoing);
++    NSLog(@"CustomLog isOnHold = %d", call.onHold);
++    NSLog(@"CustomLog UUID = %@", call.UUID.UUIDString);
++
++    NSLog(@"CustomLog Background Time Remaining = %.2f",
++          [UIApplication sharedApplication].backgroundTimeRemaining);
++
++    //
++    // Connected
++    //
++
++    if (call.hasConnected && self.connectedAt == 0) {
++
++        self.connectedAt = CFAbsoluteTimeGetCurrent();
++
++        NSLog(@"");
++        NSLog(@"CustomLog >>> CONNECTED <<<");
++
++        NSLog(@"CustomLog Connected Timestamp = %.6f",
++              self.connectedAt);
++
++        NSLog(@"CustomLog Sending Event -> Connected");
++
++        [self sendEventWithName:@"PhoneCallStateUpdate"
++                           body:@"Connected"];
++
++        NSLog(@"CustomLog Connected Event Sent");
++
++        NSLog(@"CustomLog callChanged finished");
++        NSLog(@"CustomLog ----------------------------------------");
++
++        return;
++    }
++
++    //
++    // Disconnected
++    //
++
++    if (call.hasEnded) {
++
++        NSTimeInterval duration = 0;
++
++        if (self.connectedAt > 0) {
++
++            duration =
++            CFAbsoluteTimeGetCurrent() - self.connectedAt;
++        }
++
++        NSLog(@"");
++        NSLog(@"CustomLog >>> DISCONNECTED <<<");
++
++        NSLog(@"CustomLog Connected Timestamp = %.6f",
++              self.connectedAt);
++
++        NSLog(@"CustomLog End Timestamp = %.6f",
++              CFAbsoluteTimeGetCurrent());
++
++        NSLog(@"CustomLog Native Duration = %.2f seconds",
++              duration);
++
++        self.connectedAt = 0;
++
++        [self endBackgroundTask];
++
++        NSLog(@"CustomLog Sending Event -> Disconnected");
++
++        [self sendEventWithName:@"PhoneCallStateUpdate"
++                           body:@"Disconnected"];
++
++        NSLog(@"CustomLog Disconnected Event Sent");
++
++        NSLog(@"CustomLog callChanged finished");
++        NSLog(@"CustomLog ----------------------------------------");
++
++        return;
++    }
++
++    //
++    // Dialing
++    //
++
++    if (call.isOutgoing) {
++
++        NSLog(@"");
++        NSLog(@"CustomLog >>> DIALING <<<");
++
++        NSLog(@"CustomLog Sending Event -> Dialing");
++
++        [self sendEventWithName:@"PhoneCallStateUpdate"
++                           body:@"Dialing"];
++
++        NSLog(@"CustomLog Dialing Event Sent");
+     }
++    else {
++
++        NSLog(@"");
++        NSLog(@"CustomLog >>> INCOMING <<<");
++
++        NSLog(@"CustomLog Sending Event -> Incoming");
++
++        [self sendEventWithName:@"PhoneCallStateUpdate"
++                           body:@"Incoming"];
++
++        NSLog(@"CustomLog Incoming Event Sent");
++    }
++
++    NSLog(@"CustomLog callChanged finished");
++    NSLog(@"CustomLog ----------------------------------------");
+ }
+ 
+ @end
+\ No newline at end of file
 diff --git a/node_modules/react-native-call-detection/index.d.ts b/node_modules/react-native-call-detection/index.d.ts
 index e3c9564..c9cb164 100644
 --- a/node_modules/react-native-call-detection/index.d.ts

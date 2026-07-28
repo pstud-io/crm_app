@@ -25,6 +25,7 @@ export type BorderWidthKeys =
   | "md"
   | "lg"
   | "xl"
+  | "xxl"
   | "thick";
 
 export type BorderWidth = Record<BorderWidthKeys, number>;

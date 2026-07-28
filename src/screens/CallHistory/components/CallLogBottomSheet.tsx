@@ -68,7 +68,7 @@ export default function CallLogBottomSheet({
       detached={false}
       enableContentPanningGesture={false}
       enableBlurKeyboardOnGesture={false}
-      enableHandlePanningGesture={true}
+      enableHandlePanningGesture={false}
       backdropComponent={(props) => {
         return (
           <BottomSheetBackdrop
@@ -76,6 +76,7 @@ export default function CallLogBottomSheet({
             appearsOnIndex={0} // backdrop visible when sheet index >= 0
             disappearsOnIndex={-1} // hidden when index = -1
             opacity={0.5} // dim amount
+            pressBehavior="none"
           />
         );
       }}
@@ -108,9 +109,9 @@ export default function CallLogBottomSheet({
         >
           Add Call Log - {callHistory.client_phone}
         </Text>
-        <TouchableOpacity onPress={() => closeCallLogBottomSheet()}>
+        {/* <TouchableOpacity onPress={() => closeCallLogBottomSheet()}>
           <CloseOutlineIcon fill={theme.text} width={14} height={14} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <BottomSheetScrollView
         style={{
@@ -308,7 +309,7 @@ export default function CallLogBottomSheet({
             </Text>
           </View>
         </View>
-        <Spacing
+        {/* <Spacing
           space={16}
           horizontal={false}
           backgroundColor={"transparent"}
@@ -328,13 +329,13 @@ export default function CallLogBottomSheet({
             },
           ]}
           placeholderTextColor={formElementsStyles.placeholderColor}
-        />
+        /> */}
         <Spacing
           space={16}
           horizontal={false}
           backgroundColor={"transparent"}
         />
-        <Text style={formElementsStyles.titleStyle}>Details *</Text>
+        <Text style={formElementsStyles.titleStyle}>Details</Text>
         <Spacing space={8} horizontal={false} backgroundColor={"transparent"} />
         {/* @ts-ignore */}
         <TranscriptionInput
@@ -350,14 +351,14 @@ export default function CallLogBottomSheet({
         <Spacing space={16} horizontal={true} backgroundColor={"transparent"} />
       </BottomSheetScrollView>
       <View style={formElementsStyles.bottomButtonContainer}>
-        <BottomButton
+        {/* <BottomButton
           title={"Cancel"}
           onPress={() => {
             closeCallLogBottomSheet();
           }}
           type={"outlined"}
           disabled={callHistoryLoading.postCallHistory}
-        />
+        /> */}
         <BottomButton
           title={
             callHistoryLoading.postCallHistory

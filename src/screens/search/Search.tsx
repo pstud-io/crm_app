@@ -119,6 +119,7 @@ export const Search = () => {
         extraTitle={() => ""}
       />
       <Animated.View
+        key={"animated-search"}
         style={[
           xstack,
           fullWidth,

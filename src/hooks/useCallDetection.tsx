@@ -2,13 +2,14 @@ import { setCallHistory } from "@/store/slices/callHistorySlice";
 import { RootState } from "@/store/store";
 import { universalPopoverRef } from "@/utils/universalPopover";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
-import { Platform } from "react-native";
+import { AppState, Platform } from "react-native";
 import CallDetectorManager from "react-native-call-detection";
 import { useDispatch, useSelector } from "react-redux";
+import * as Sentry from "@sentry/react-native";
 
 export function useCallDetection(
   enabled: boolean,
-  setShowPopover: Dispatch<SetStateAction<boolean>>,
+  openCallLogBottomSheet: () => void,
 ) {
   const connectedAt = useRef<number | null>(null);
   const detector = useRef<InstanceType<typeof CallDetectorManager> | null>(
@@ -40,11 +41,9 @@ export function useCallDetection(
 
     detector.current = new CallDetectorManager(
       (event, phoneNumber, duration, answered) => {
-        console.log("Call Event:", event, phoneNumber, duration, answered);
-
         switch (event) {
           case "Dialing":
-            console.log("Dialing");
+            console.log("Dailing");
             dispatch(
               setCallHistory({
                 ...callHistoryRef.current,
@@ -61,22 +60,22 @@ export function useCallDetection(
           case "Disconnected":
             console.log("Disconnected");
             const iOSDuration = getiOSDuration();
-            console.log("Answered:", answered);
-            console.log("Duration:", duration, iOSDuration);
-            console.log("The ref is", universalPopoverRef.current);
             const finalDuration =
               Platform.OS === "android" ? duration : iOSDuration;
-            console.log(
-              "Call history before dispatch ",
-              callHistoryRef.current,
-            );
+            const timeOutSeconds = Platform.OS === "android" ? 500 : 250;
+
             dispatch(
               setCallHistory({
                 ...callHistoryRef.current,
                 duration: finalDuration,
               }),
             );
-            setShowPopover(true);
+
+            // setShowPopover(true);
+            setTimeout(() => {
+              openCallLogBottomSheet();
+            }, timeOutSeconds);
+
             break;
 
           case "Incoming":

@@ -13,6 +13,7 @@ import ClipboardIcon from "@/svg/clipboard-icon";
 import PhoneIcon from "@/svg/phone";
 import { ModuleData, ModulesDataType } from "@/types/modulesDataType";
 import FileIcon from "assets/icons/FileIcon";
+import UserCheck from "assets/icons/UserCheck";
 import { useSelector } from "react-redux";
 
 export const useModulesData: (
@@ -28,7 +29,12 @@ export const useModulesData: (
     permission: "leads.view_leads",
     show: "leads_show",
     icon: (isActive) => (
-      <ChecklistOutline width={20} height={20} fill={theme.textInverse} />
+      <ChecklistOutline
+        width={20}
+        height={20}
+        stroke={theme.textInverse}
+        strokeWidth={1.25}
+      />
     ),
     onPress: async () => {
       console.log("Pressed navigation");
@@ -102,12 +108,12 @@ export const useModulesData: (
     permission: "followUps.view_followUps",
     show: "followUps_show",
     icon: (isActive) => (
-      <PhoneIcon
+      <UserCheck
         stroke={theme.textInverse}
         strokeWidth={borderWidth.lg}
         fill={"transparent"}
-        width={20}
-        height={20}
+        width={24}
+        height={24}
         style={{}}
       />
     ),

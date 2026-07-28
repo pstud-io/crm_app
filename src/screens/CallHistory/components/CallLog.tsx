@@ -42,7 +42,7 @@ export const CallLog = () => {
     requestPermissions();
   }, []);
 
-  useCallDetection(granted, setShowPopover);
+  useCallDetection(granted, openCallLogBottomSheet);
   console.log("NativeModules.CallDetectionManager");
   console.log(NativeModules.CallDetectionManager);
   console.log("Android module");

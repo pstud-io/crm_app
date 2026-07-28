@@ -4,9 +4,11 @@ import { fullWidth, xstack } from "@/design/layout";
 import { spacing } from "@/design/spacing";
 import { body } from "@/design/typography";
 import { useTheme } from "@/hooks/useTheme";
+import { RootState } from "@/store/store";
 import { formatDate, formatDuration } from "@/utils";
 import { useState } from "react";
 import { Text, View } from "react-native";
+import { useSelector } from "react-redux";
 
 export const RenderCallHistoryItem = ({
   callHistory,
@@ -15,7 +17,7 @@ export const RenderCallHistoryItem = ({
 }) => {
   const { theme } = useTheme();
   const [expanded, setExpanded] = useState(false);
-
+  const project = useSelector((state: RootState) => state.project);
   return (
     <View
       style={{
@@ -159,37 +161,39 @@ export const RenderCallHistoryItem = ({
         </Text>
       </View>
 
-      {/* <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Text
-          style={[
-            body.sm.medium,
-            {
-              color: theme.textSecondary,
-            },
-          ]}
+      {/* {project.id === "all_projects" && (
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
         >
-          Lead
-        </Text>
-        <Text
-          style={[
-            body.sm.medium,
-            {
-              color: theme.text,
-              flex: 1,
-              textAlign: "right",
-              marginLeft: spacing.md,
-            },
-          ]}
-        >
-          {callHistory.project_name || "-"}
-        </Text>
-      </View> */}
+          <Text
+            style={[
+              body.sm.medium,
+              {
+                color: theme.textSecondary,
+              },
+            ]}
+          >
+            Lead
+          </Text>
+          <Text
+            style={[
+              body.sm.medium,
+              {
+                color: theme.text,
+                flex: 1,
+                textAlign: "right",
+                marginLeft: spacing.md,
+              },
+            ]}
+          >
+            {callHistory.project_name || "-"}
+          </Text>
+        </View>
+      )} */}
 
       <View
         style={{

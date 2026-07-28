@@ -27,15 +27,11 @@ export const RenderFloatingActionItem = ({ item }: { item: any }) => {
         // setLoading(false);
       }}
     >
-      {loading ? (
-        <ActivityIndicator size={14} color={primaryColors.gray[900]} />
-      ) : (
-        item.icon
-      )}
+      {loading ? <ActivityIndicator size={14} color={theme.text} /> : item.icon}
       <Text
         style={{
           ...body.sm.medium,
-          color: theme.textInverse,
+          color: theme.text,
           flexGrow: 1,
         }}
       >

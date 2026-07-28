@@ -20,6 +20,7 @@ import PhoneIcon from "@/svg/phone";
 import { useNavigation } from "@react-navigation/native";
 import { UserNavigationProp } from "@/navigation/UserNavigation";
 import { Dispatch, SetStateAction } from "react";
+import UserCheck from "assets/icons/UserCheck";
 export const useFloatingButtonOptions = ({
   setExpanded,
 }: {
@@ -30,7 +31,14 @@ export const useFloatingButtonOptions = ({
   const project = useSelector((state: RootState) => state.project);
   const add_lead = {
     id: "add_lead",
-    icon: <ChecklistOutline width={20} height={20} fill={theme.textInverse} />,
+    icon: (
+      <ChecklistOutline
+        width={20}
+        height={20}
+        stroke={theme.text}
+        strokeWidth={1.25}
+      />
+    ),
     title: "Add Lead",
     onPress: () => {
       setExpanded((prev) => !prev);
@@ -49,7 +57,7 @@ export const useFloatingButtonOptions = ({
         width={width[20]}
         height={height[20]}
         strokeWidth={borderWidth.lg}
-        stroke={theme.textInverse}
+        stroke={theme.text}
         fill={"none"}
       />
     ),
@@ -73,7 +81,7 @@ export const useFloatingButtonOptions = ({
       <ClipboardIcon
         width={20}
         height={20}
-        stroke={theme.textInverse}
+        stroke={theme.text}
         strokeWidth={borderWidth.lg}
         style={{}}
       />
@@ -95,9 +103,9 @@ export const useFloatingButtonOptions = ({
   const add_followup = {
     id: "add_followup",
     icon: (
-      <PhoneIcon
-        stroke={theme.textInverse}
-        strokeWidth={borderWidth.lg}
+      <UserCheck
+        stroke={theme.text}
+        strokeWidth={borderWidth.xxl}
         fill={"transparent"}
         width={20}
         height={20}

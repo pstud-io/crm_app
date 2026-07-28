@@ -136,9 +136,12 @@ export const FloatingButtons = () => {
               boxShadow: theme.shadow.lg,
             },
           ]}
-          onPress={() =>
-            userNavigationRef.dispatch(StackActions.push("Search"))
-          }
+          onPress={() => {
+            setExpanded(false);
+            setTimeout(() => {
+              userNavigationRef.dispatch(StackActions.push("Search"));
+            }, 200);
+          }}
         >
           <SearchOutline
             width={24}

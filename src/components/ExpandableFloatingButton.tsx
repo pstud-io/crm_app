@@ -13,6 +13,7 @@ import {
 import { FlatList, Pressable, StyleSheet } from "react-native";
 import Animated, {
   Easing,
+  interpolateColor,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -23,6 +24,7 @@ import { primaryColors } from "@/design/colors";
 import { ItemSeparatorComponent } from "./UI/GeneralComponents/ItemSeperatorComponent";
 import { useFloatingButtonOptions } from "@/hooks/useFloatingButtonOptions";
 import { RenderFloatingActionItem } from "./FloatingActionItem";
+import { spacing } from "@/design/spacing";
 
 export const ExpandableFloatingButton = ({
   onPress,
@@ -41,10 +43,14 @@ export const ExpandableFloatingButton = ({
   const cardHeight = useSharedValue(52);
   const radius = useSharedValue(52);
   const cardWidth = useSharedValue(52);
+  const backgroundColor = useSharedValue(theme.backgroundInverse);
   const animatedStyle = useAnimatedStyle(() => ({
     height: cardHeight.value,
-    borderRadius: radius.value,
     width: cardWidth.value,
+    borderRadius: radius.value,
+  }));
+  const animatedBackground = useAnimatedStyle(() => ({
+    backgroundColor: backgroundColor.value,
   }));
   const { floatingButtonOptions } = useFloatingButtonOptions({ setExpanded });
   const onClick = () => {
@@ -63,6 +69,7 @@ export const ExpandableFloatingButton = ({
 
   useLayoutEffect(() => {
     if (expanded) {
+      backgroundColor.value = withTiming(theme.header, { duration: 300 });
       cardHeight.value = withTiming(animateToHeight, {
         duration: 300,
         easing: Easing.out(Easing.back(1)),
@@ -76,6 +83,9 @@ export const ExpandableFloatingButton = ({
         easing: Easing.out(Easing.cubic),
       });
     } else {
+      backgroundColor.value = withTiming(theme.backgroundInverse, {
+        duration: 300,
+      });
       cardHeight.value = withTiming(52, {
         duration: 300,
         easing: Easing.out(Easing.back(1)),
@@ -93,20 +103,24 @@ export const ExpandableFloatingButton = ({
 
   return (
     <AnimatedPressable
+      key={"animated-pressable"}
       style={[
         xstack,
         center,
         {
           width: 52,
           height: 52,
-          backgroundColor: disable
-            ? theme.backgroundDisabled
-            : theme.backgroundInverse,
-
-          boxShadow: theme.shadow.lg,
+          boxShadow: theme.shadow.xxl,
+          borderWidth: borderWidth.hw,
+          borderColor: theme.border,
           overflow: "hidden",
         },
         animatedStyle,
+        [
+          disable
+            ? { backgroundColor: theme.backgroundDisabled }
+            : animatedBackground,
+        ],
       ]}
       disabled={disable}
       onPress={onClick}
@@ -130,7 +144,7 @@ export const ExpandableFloatingButton = ({
           }}
           showsVerticalScrollIndicator={false}
           style={{
-            backgroundColor: theme.backgroundInverse,
+            backgroundColor: "transparent",
             height: "100%",
           }}
           contentContainerStyle={{
@@ -140,7 +154,7 @@ export const ExpandableFloatingButton = ({
           ItemSeparatorComponent={
             <ItemSeparatorComponent
               direction={"horizontal"}
-              style={{ marginVertical: 0, borderTopWidth: borderWidth.xs }}
+              style={{ marginVertical: 0, borderTopWidth: borderWidth.md }}
             />
           }
         />

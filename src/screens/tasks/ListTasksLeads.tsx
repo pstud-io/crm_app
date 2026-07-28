@@ -1,6 +1,7 @@
 import {
   ActivityIndicator,
   FlatList,
+  ScrollView,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -70,8 +71,9 @@ import { FilterChip } from "@/components/FilterChip";
 import { OverdueCustomRangeFilterPopover } from "./components/OverdueCustomRangeFilterPopover";
 import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
 import { TaskHistoryBottomSheet } from "./components/TaskHistoryBottomSheet";
+import { useTaskEndpoints } from "./hooks/useTasksEndpoints";
 
-export const ListTasksLeads = ({ route }: { route: any }) => {
+export const ListTasks = ({ route }: { route: any }) => {
   const { task_type, project, fromLeads } = route.params;
   const [contentHeight, setContentHeight] = useState(0);
   const [layoutHeight, setLayoutHeight] = useState(0);
@@ -79,6 +81,7 @@ export const ListTasksLeads = ({ route }: { route: any }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation<UserNavigationProp>();
   const [tasksData, setTasksData] = useState<Task[]>([]);
+  const { getTaskSummary } = useTaskEndpoints();
   const { getTasks, tasksLoading } = useNewTaskEndpoints();
   const [activeSubButton, setActiveSubButton] =
     useState<SubButtonId>("created");
@@ -94,10 +97,14 @@ export const ListTasksLeads = ({ route }: { route: any }) => {
   const [inProgressTasks, setInProgressTasks] = useState([]);
   const [onHoldTasks, setOnHoldTasks] = useState([]);
   const [discardedTasks, setDiscardedTasks] = useState([]);
+  const [taskCount, setTaskCount] = useState<
+    undefined | Record<string, number>
+  >(undefined);
 
   const modalRef = useRef(null);
   const [visible, setVisible] = useState<boolean>(false);
   const [showOverdueTasks, setShowOverdueTasks] = useState<boolean>(false);
+  const [showDueTodayTasks, setShowDueTodayTasks] = useState<boolean>(false);
   const [showSelfCreatedTasks, setShowSelfCreatedTasks] =
     useState<boolean>(false);
   const [showAssignedToMeTasks, setShowAssignedToMeTasks] =
@@ -184,6 +191,7 @@ export const ListTasksLeads = ({ route }: { route: any }) => {
       showOverdueTasks,
       showAssignedToMeTasks,
       showSelfCreatedTasks,
+      showDueTodayTasks,
       organization_contact_id,
       overdueOption,
       overdueFromDate,
@@ -196,6 +204,7 @@ export const ListTasksLeads = ({ route }: { route: any }) => {
     showOverdueTasks,
     showAssignedToMeTasks,
     showSelfCreatedTasks,
+    showDueTodayTasks,
     overdueOption,
     overdueFromDate,
     overdueToDate,
@@ -210,6 +219,7 @@ export const ListTasksLeads = ({ route }: { route: any }) => {
       showOverdueTasks,
       showAssignedToMeTasks,
       showSelfCreatedTasks,
+      showDueTodayTasks,
       organization_contact_id,
       overdueOption,
       overdueFromDate,
@@ -222,6 +232,7 @@ export const ListTasksLeads = ({ route }: { route: any }) => {
     showOverdueTasks,
     showAssignedToMeTasks,
     showSelfCreatedTasks,
+    showDueTodayTasks,
     overdueOption,
     overdueFromDate,
     overdueToDate,
@@ -236,6 +247,7 @@ export const ListTasksLeads = ({ route }: { route: any }) => {
       showOverdueTasks,
       showAssignedToMeTasks,
       showSelfCreatedTasks,
+      showDueTodayTasks,
       organization_contact_id,
       overdueOption,
       overdueFromDate,
@@ -248,6 +260,7 @@ export const ListTasksLeads = ({ route }: { route: any }) => {
     showOverdueTasks,
     showAssignedToMeTasks,
     showSelfCreatedTasks,
+    showDueTodayTasks,
     overdueOption,
     overdueFromDate,
     overdueToDate,
@@ -262,6 +275,7 @@ export const ListTasksLeads = ({ route }: { route: any }) => {
       showOverdueTasks,
       showAssignedToMeTasks,
       showSelfCreatedTasks,
+      showDueTodayTasks,
       organization_contact_id,
       overdueOption,
       overdueFromDate,
@@ -274,6 +288,7 @@ export const ListTasksLeads = ({ route }: { route: any }) => {
     showOverdueTasks,
     showAssignedToMeTasks,
     showSelfCreatedTasks,
+    showDueTodayTasks,
     overdueOption,
     overdueFromDate,
     overdueToDate,
@@ -288,6 +303,7 @@ export const ListTasksLeads = ({ route }: { route: any }) => {
       showOverdueTasks,
       showAssignedToMeTasks,
       showSelfCreatedTasks,
+      showDueTodayTasks,
       organization_contact_id,
       overdueOption,
       overdueFromDate,
@@ -300,6 +316,7 @@ export const ListTasksLeads = ({ route }: { route: any }) => {
     showOverdueTasks,
     showAssignedToMeTasks,
     showSelfCreatedTasks,
+    showDueTodayTasks,
     overdueOption,
     overdueFromDate,
     overdueToDate,
@@ -329,6 +346,7 @@ export const ListTasksLeads = ({ route }: { route: any }) => {
         setInitialLoad(true);
 
         await tasksSearch.onFocus();
+        await getTaskSummary(setTaskCount, selectedProject);
         setInitialLoad(false);
       };
       fetchTasks();
@@ -370,7 +388,7 @@ export const ListTasksLeads = ({ route }: { route: any }) => {
       <ListWrapper>
         <SectionHeader
           title={task_type === "followup" ? "Follow Ups" : "Task"}
-          count={tasksData.length}
+          count={taskCount?.total_count || 0}
         />
         <Spacing space={height[16]} />
         <SubTabBar
@@ -489,18 +507,21 @@ export const ListTasksLeads = ({ route }: { route: any }) => {
           )}
         </View>
         <Spacing space={height[16]} />
-        <View
-          style={[
-            xstack,
-            fullWidth,
-            {
-              justifyContent: "flex-start",
-              alignItems: "center",
-              paddingHorizontal: spacing.md,
-              height: height[24],
-              gap: spacing.xxs,
-            },
-          ]}
+        <ScrollView
+          style={{
+            height: height[40],
+            maxHeight: height[40],
+          }}
+          contentContainerStyle={{
+            maxHeight: height[40],
+            alignItems: "center",
+            paddingHorizontal: spacing.lg,
+            gap: 8,
+          }}
+          horizontal
+          directionalLockEnabled
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
         >
           <FilterChip
             setFilter={setShowOverdueTasks}
@@ -517,7 +538,12 @@ export const ListTasksLeads = ({ route }: { route: any }) => {
             filter={showAssignedToMeTasks}
             label={"Assigned to me"}
           />
-        </View>
+          <FilterChip
+            setFilter={setShowDueTodayTasks}
+            filter={showDueTodayTasks}
+            label={"Due Today"}
+          />
+        </ScrollView>
         {showOverdueTasks && (
           <>
             <Spacing space={8} />
@@ -528,7 +554,7 @@ export const ListTasksLeads = ({ route }: { route: any }) => {
                 {
                   justifyContent: "flex-start",
                   alignItems: "center",
-                  paddingHorizontal: spacing.md,
+                  paddingHorizontal: spacing.lg,
                   height: height[24],
                   gap: spacing.xxs,
                 },

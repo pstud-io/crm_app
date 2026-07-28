@@ -94,9 +94,10 @@
     "clean:apps": "npx expo prebuild --clean && npm run android && npm run ios",
     "android:release": "cd android && ./gradlew assembleRelease && cd ..",
     "build:android": "eas build --platform android",
-    "build:ios": "eas build --platform ios",
+    "build:ios": "eas build --platform ios --clear-cache",
     "submit:ios": "eas submit -p ios --latest",
-    "deploy:ios": "npm run build:ios && npm run submit:ios"
+    "deploy:ios": "npm run build:ios && npm run submit:ios",
+    "open:ios": "cd ios && open pipeline.xcworkspace && cd .. && npx expo start --dev-client"
   },
   "private": true
 }
