@@ -196,7 +196,7 @@ const ListNotes = ({ route }) => {
       </View>
       <Spacing space={SH(8)} />
 
-      {initialLoading ? (
+      {notesLoading.getNotes && notesSearch.page === 1 ? (
         <View
           style={{
             width: "100%",
