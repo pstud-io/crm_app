@@ -49,6 +49,7 @@
     "react-native-bouncy-checkbox": "^4.1.4",
     "react-native-call-detection": "github:priteshrnandgaonkar/react-native-call-detection",
     "react-native-controlled-mentions": "^3.1.0",
+    "react-native-drawer-layout": "^4.2.9",
     "react-native-element-dropdown": "^2.12.4",
     "react-native-elements": "^3.4.3",
     "react-native-gesture-handler": "~2.32.0",

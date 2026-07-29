@@ -213,7 +213,7 @@ const AdditionalFieldsForm = ({
             marginBottom: spacing.lg,
           }}
         >
-          <Text style={styles.fieldLabel}>
+          <Text style={{ ...body.sm.medium, color: theme.text }}>
             {capitalizeEachWord(field?.name)}
           </Text>
           <View style={[fullWidth]}>{renderFieldInput(item)}</View>

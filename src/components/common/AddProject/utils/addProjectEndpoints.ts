@@ -20,3 +20,34 @@ export const fetchAllAdditionalFields = async () => {
   console.log("url is", url);
   return await api.get(url);
 };
+
+export const fetchBrands = async () => {
+  const url = `/core/brands/`;
+  console.log("url is", url);
+  return await api.get(url);
+};
+export const fetchProjectTypes = async () => {
+  const url = `/customers/projecttype/`;
+  console.log("url is", url);
+  return await api.get(url);
+};
+export const fetchLeadSource = async () => {
+  const url = `/customers/leadsource/`;
+  console.log("url is", url);
+  return await api.get(url);
+};
+export const fetchClients = async () => {
+  const url = `/customers/clients/`;
+  console.log("url is", url);
+  return await api.get(url);
+};
+export const fetchStages = async () => {
+  const url = `/customers/projectstages/`;
+  console.log("url is", url);
+  return await api.get(url);
+};
+export const fetchAssignees = async () => {
+  const url = `/core/organization/contacts/lite/`;
+  console.log("url is", url);
+  return await api.get(url);
+};

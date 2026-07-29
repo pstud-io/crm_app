@@ -16,6 +16,7 @@ export const LeadAdditionalFields = ({
     <>
       {Object.entries(groupedAdditionalFields).map(([section, fields]) => (
         <RenderLeadAdditionalFieldItem
+          key={section}
           section={section}
           fields={fields}
           editProjectFunctions={editProjectFunctions}

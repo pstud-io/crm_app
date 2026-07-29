@@ -2,15 +2,30 @@ import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
 import { ProjectRecord } from "@/store/slices/projectSlice/projectSliceTypes";
 import { GetDataProps } from "@/hooks/usePaginatedSearch";
-import { fetchAllData, fetchKanban, fetchLeads } from "../utils/leadsEndpoints";
+import {
+  fetchAllData,
+  fetchKanban,
+  fetchLeads,
+  fetchTimeline,
+} from "../utils/leadsEndpoints";
 import { KanbanRequestPayload, LeadsRequestPayload } from "../types/leadsTypes";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import axios from "axios";
 import { api, apiEndpoint } from "@/api/client";
+import { groupTimelineByDate } from "../utils/leadsFunctions";
 
 export interface KanbanExtraParams extends KanbanRequestPayload {}
 export interface LeadsExtraParams extends LeadsRequestPayload {}
+
+export type KanbanFilterParams = Partial<{
+  brand: string | null;
+  project_type: string | null;
+  lead_source: string | null;
+  client: string | null;
+  stage: string | null;
+  assigned_to: string | null;
+}>;
 
 export const kanbanExtraParams: KanbanExtraParams = {
   limit: 6,
@@ -47,6 +62,10 @@ export const leadsExtraParams: LeadsExtraParams = {
   organization_contact_id: "",
 };
 
+export interface TimelineExtraParams {
+  project_id: string;
+}
+
 export const useLeadsEndpoints = () => {
   const [kanbanLoading, setKanbanLoading] = useState({
     getKanban: false,
@@ -56,6 +75,7 @@ export const useLeadsEndpoints = () => {
   const [leadsLoading, setLeadsLoading] = useState({
     getLeads: false,
     updateLead: false,
+    getTimeline: false,
   });
 
   const getKanban = async ({
@@ -226,6 +246,51 @@ export const useLeadsEndpoints = () => {
       setKanbanLoading((prev: any) => ({ ...prev, getAllData: false }));
     }
   };
+
+  const getTimeline = async ({
+    page,
+    searchTerm,
+    hasMore,
+    data,
+    setData,
+    abortSignal,
+    pageSize,
+    ...getTimelineExtraParams
+  }: GetDataProps<any> & TimelineExtraParams) => {
+    if (!hasMore && page !== 1) return;
+    console.log("before set loading");
+    setLeadsLoading((prev: any) => ({ ...prev, getTimeline: true }));
+    console.log("After set loading of timeline", getTimelineExtraParams);
+    try {
+      const response = await fetchTimeline(
+        page,
+        searchTerm,
+        pageSize,
+        abortSignal,
+        getTimelineExtraParams.project_id,
+      );
+      if (response && response.status >= 200 && response.status < 300) {
+        const allData = response.data.results;
+        const updatedData = page === 1 ? allData : [...data, ...allData];
+        setData(() => groupTimelineByDate(updatedData));
+        const hasMore = response.data.next !== null;
+        return { hasMore };
+      }
+    } catch (error: any) {
+      console.error("Error loading tasks:", error);
+
+      Toast.show({
+        type: "error",
+        text1: "Error Loading Timeline",
+        text2:
+          error.response?.data?.result ||
+          "Failed to fetch timeline data. Check your network connection.",
+      });
+    } finally {
+      setLeadsLoading((prev: any) => ({ ...prev, getTimeline: false }));
+    }
+  };
+
   return {
     getKanban,
     kanbanLoading,
@@ -233,5 +298,6 @@ export const useLeadsEndpoints = () => {
     leadsLoading,
     updateLead,
     getAllData,
+    getTimeline,
   };
 };

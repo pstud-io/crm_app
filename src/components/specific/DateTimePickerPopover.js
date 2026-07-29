@@ -29,6 +29,8 @@ const DateTimePickerPopover = ({
   onChange,
   disabled,
   isRegularization,
+  initialDate,
+  placeholder = "Select Due Date",
 }) => {
   const DateTimePickerPopoverRef = useRef(null);
   const [date, setDate] = useState(new Date());
@@ -57,7 +59,7 @@ const DateTimePickerPopover = ({
         type === "date" ? (
           <TouchableOpacity style={formElementsStyles.triggerStyle}>
             <Text style={formElementsStyles.valueStyle}>
-              {selectedDate?.toLocaleDateString() || "Select Due Date"}
+              {initialDate ? selectedDate?.toLocaleDateString() : placeholder}
             </Text>
           </TouchableOpacity>
         ) : (

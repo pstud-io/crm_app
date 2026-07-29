@@ -120,6 +120,11 @@ export function LeadsTopBar({
                 navigation.navigate(route.name, {
                   project_id: project.id,
                 });
+              } else if (route.name === "Timeline") {
+                console.log("Before navigation", route.name);
+                navigation.navigate(route.name, {
+                  project: project.id,
+                });
               } else {
                 navigation.navigate(route.name, route.params);
               }

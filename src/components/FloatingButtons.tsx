@@ -41,7 +41,7 @@ export const FloatingButtons = () => {
     "auth",
   ];
 
-  const disableOn = ["lead-info", "lead-stage", "calls"];
+  const disableOn = ["lead-info", "lead-stage", "calls", "timeline"];
 
   const disable =
     activeSubButtonGlobal && disableOn.includes(activeSubButtonGlobal);
@@ -50,8 +50,8 @@ export const FloatingButtons = () => {
     return;
   }
 
+  console.log("Is sheetopen is", isSheetOpen);
   if (isSheetOpen) {
-    console.log("Is sheetopen is", isSheetOpen);
     return;
   }
 

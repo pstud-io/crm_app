@@ -73,7 +73,7 @@ import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
 import { TaskHistoryBottomSheet } from "./components/TaskHistoryBottomSheet";
 import { useTaskEndpoints } from "./hooks/useTasksEndpoints";
 
-export const ListTasks = ({ route }: { route: any }) => {
+export const ListTasksLeads = ({ route }: { route: any }) => {
   const { task_type, project, fromLeads } = route.params;
   const [contentHeight, setContentHeight] = useState(0);
   const [layoutHeight, setLayoutHeight] = useState(0);

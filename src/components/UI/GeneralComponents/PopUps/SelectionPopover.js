@@ -171,7 +171,9 @@ const SelectionPopover = ({
                             isSelected && styles.selectedItemName,
                           ]}
                         >
-                          {item.name || item.project_name}
+                          {item.name ||
+                            item.project_name ||
+                            item.contact_details.name}
                         </Text>
                         {/* Hide checkbox for single select */}
                         {isMultiSelect && (

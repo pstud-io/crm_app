@@ -57,3 +57,14 @@ export const fetchAllData = async (
   const url = `/customers/universal-search/?page=${page}&page_size=${pageSize}&search=${searchQuery}`;
   return await api.get(url, { signal: abortSignal });
 };
+
+export const fetchTimeline = async (
+  page: number,
+  searchQuery: string = "",
+  pageSize: number = 10,
+  abortSignal: AbortSignal | undefined,
+  project_id: string,
+) => {
+  const url = `/core/timeline/?project_id=${project_id}&page=${page}&page_size=${pageSize}&search=${searchQuery}`;
+  return await api.get(url, { signal: abortSignal });
+};

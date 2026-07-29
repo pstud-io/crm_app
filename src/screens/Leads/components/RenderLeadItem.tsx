@@ -22,7 +22,6 @@ export const RenderLeadItem = ({
 }) => {
   const { theme } = useTheme();
   const navigation = useNavigation<UserNavigationProp>();
-  console.log("item in render lead item", item);
   const dispatch = useDispatch();
   return (
     <Pressable

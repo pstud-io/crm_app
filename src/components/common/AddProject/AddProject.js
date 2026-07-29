@@ -53,7 +53,7 @@ import { usePaginatedSearch } from "@/hooks/usePaginatedSearch";
 import LoadingIndicatorFooter from "@/components/LoadingIndicatorFooter";
 import AdditionalFieldsForm from "./components/AdditionalFieldsForm";
 
-function AddProject() {
+function AddProject({ onRefresh }) {
   console.log("AddProject mounted", addProjectBottomSheetRef);
   // useEffect(() => {
   //   console.log("BottomSheet ref:", addProjectBottomSheetRef.current);
@@ -446,7 +446,8 @@ function AddProject() {
         const newClient = response.data.result;
         addClientBottomSheetRef.current?.dismiss();
         await clientsSearch.onFocus();
-        setClient(newClient.id);
+        setClientDetails([newClient, ...clientDetails]);
+        setClient(newClient);
       }
     } catch (error) {
       console.error(
@@ -558,6 +559,7 @@ function AddProject() {
           context_type: "create_project",
           project_id: newProject.id,
         });
+        await onRefresh();
       }
     } catch (error) {
       if (error.response?.data.result.fk_project_stage) {
@@ -619,6 +621,7 @@ function AddProject() {
           }
           if (fromIndex === 0 && toIndex === -1) {
             setTimeout(() => {
+              console.log("Set to false from add project");
               dispatch(setIsSheetOpen(false));
             }, [250]);
           }
@@ -1387,7 +1390,7 @@ function AddProject() {
         enableDynamicSizing={false}
         enableHandlePanningGesture={true}
         enablePanDownToClose={true}
-        onClose={resetClientBottomSheet}
+        onDismiss={resetClientBottomSheet}
         stackBehavior="push"
         onChange={(index) => {
           if (index < 0) {

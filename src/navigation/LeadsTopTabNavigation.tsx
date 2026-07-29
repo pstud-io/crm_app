@@ -2,6 +2,7 @@ import { ListCallHistory } from "@/screens/CallHistory/ListCallHistory";
 import { LeadsTopBar } from "@/screens/Leads/components/LeadsTopBar";
 import { LeadInfo } from "@/screens/Leads/LeadInfo";
 import { LeadStage } from "@/screens/Leads/LeadStage";
+import { LeadTimeline } from "@/screens/Leads/LeadTimeline";
 import { ListNotes } from "@/screens/Notes";
 import ListNotesLeads from "@/screens/Notes/ListNotesLeads";
 import { ListTasks } from "@/screens/tasks/ListTasks";
@@ -56,7 +57,7 @@ export const LeadDetailsTabs = () => {
 
       <Tab.Screen
         name="Timeline"
-        component={LeadStage}
+        component={LeadTimeline}
         initialParams={{
           project: "",
         }}

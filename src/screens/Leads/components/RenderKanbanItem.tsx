@@ -7,6 +7,8 @@ import { SCREEN_WIDTH } from "@/utils";
 import { ActivityIndicator, Text, View } from "react-native";
 import { KanbanHeader } from "./KanbanHeader";
 import {
+  KanbanExtraParams,
+  KanbanFilterParams,
   leadsExtraParams,
   LeadsExtraParams,
   useLeadsEndpoints,
@@ -20,16 +22,15 @@ import { RenderLeadItem } from "./RenderLeadItem";
 export const RenderKanbanItem = ({
   item,
   uniSearch,
+  kanbanFilters,
 }: {
   item: any;
   uniSearch: string;
+  kanbanFilters: KanbanExtraParams & KanbanFilterParams;
 }) => {
   const { theme } = useTheme();
   const { leadsLoading, getLeads } = useLeadsEndpoints();
   const [leadsData, setLeadsData] = useState<any>([...item.projects]);
-  const [leadFilters, setLeadFilters] =
-    useState<LeadsExtraParams>(leadsExtraParams);
-  const [initialLoad, setInitialLoad] = useState<boolean>(false);
   const leadsSearch = usePaginatedSearch<any, LeadsExtraParams>({
     data: leadsData,
     setData: setLeadsData,
@@ -37,7 +38,7 @@ export const RenderKanbanItem = ({
     loading: leadsLoading.getLeads,
     pageSize: 6,
     extraParams: {
-      ...leadFilters,
+      ...kanbanFilters,
       substage_id: item.substage_id,
       search: uniSearch,
     },

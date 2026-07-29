@@ -6,6 +6,7 @@ import { body } from "@/design/typography";
 import { EditOutline, EditOutlineIcon } from "@/svg";
 import { capitalizeEachWord, Colors } from "@/utils";
 import PenIcon from "assets/icons/PenIcon";
+import React from "react";
 import { Pressable, Text, View } from "react-native";
 
 export const RenderLeadAdditionalFieldItem = ({
@@ -66,7 +67,7 @@ export const RenderLeadAdditionalFieldItem = ({
       >
         {fields.map((item, index) => {
           return (
-            <>
+            <React.Fragment key={item.id}>
               {index !== 0 && (
                 <ItemSeparatorComponent
                   direction={"horizontal"}
@@ -82,7 +83,7 @@ export const RenderLeadAdditionalFieldItem = ({
                 size={13}
                 leftIcon={null}
               />
-            </>
+            </React.Fragment>
           );
         })}
       </View>

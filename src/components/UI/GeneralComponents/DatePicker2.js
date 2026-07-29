@@ -29,7 +29,7 @@ export const DatePicker2 = ({
       setSelectedDate(date);
     }
   };
-
+  console.log("Selected Date is", selectedDate);
   return (
     <>
       {Platform.OS === "android" && (
@@ -46,7 +46,9 @@ export const DatePicker2 = ({
           ]}
         >
           <Text style={formElementsStyles.valueStyle}>
-            {dateValue ? new Date(dateValue).toLocaleDateString() : placeholder}
+            {selectedDate
+              ? new Date(dateValue).toLocaleDateString()
+              : placeholder}
           </Text>
 
           {/* ADD THE ICON HERE */}
@@ -66,6 +68,8 @@ export const DatePicker2 = ({
       )}
       {Platform.OS === "ios" && (
         <DateTimePickerPopover
+          placeholder={placeholder}
+          initialDate={selectedDate}
           selectedDate={dateValue}
           setSelectedDate={(date) => onChange(date)}
           type={"date"}

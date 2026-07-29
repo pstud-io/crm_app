@@ -30,7 +30,7 @@ export const LeadsStack = () => {
         name="ListLeads"
         component={ListLeads}
         options={{
-          headerShown: true,
+          headerShown: false,
           header: (props: NativeStackHeaderProps) => (
             <CommonHeader {...props} title="Leads" />
           ),
