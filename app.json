@@ -8,11 +8,12 @@
     "icon": "./assets/adaptive-icon.png",
     "userInterfaceStyle": "light",
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "ai.projectstudio.pipeline",
       "associatedDomains": ["applinks:pipeline.projectstudio.ai"],
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "LSApplicationQueriesSchemes": ["whatsapp"]
       }
     },
     "android": {

@@ -77,6 +77,7 @@ export const DatePicker = ({
         maxDate={maxDate}
         type={"date"}
         isCustomRange={isCustomRange}
+        initialDate={selectedDate}
       />
       {/* )} */}
     </>

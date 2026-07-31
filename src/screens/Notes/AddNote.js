@@ -278,9 +278,9 @@ const AddNote = ({ route }) => {
                 )
               }
             />
-            <Spacing space={SH(16)} />
           </>
         )}
+        <Spacing space={SH(16)} />
 
         <Text style={formElementsStyles.titleStyle}>Title *</Text>
         <Spacing space={SH(6)} />

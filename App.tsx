@@ -13,6 +13,7 @@ import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { KeyboardProvider } from "react-native-keyboard-controller";
+import Toast from "react-native-toast-message";
 SplashScreen.preventAutoHideAsync();
 
 SplashScreen.setOptions({
@@ -44,24 +45,26 @@ Sentry.init({
 
 export default Sentry.wrap(function App() {
   return (
-    <SafeAreaProvider style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <ActionSheetProvider>
-            <QueryProvider>
-              <KeyboardProvider enabled>
-                <Provider store={store}>
-                  <AuthProvider>
-                    <ThemeProvider>
-                      <RootNavigation />
-                    </ThemeProvider>
-                  </AuthProvider>
-                </Provider>
-              </KeyboardProvider>
-            </QueryProvider>
-          </ActionSheetProvider>
-        </GestureHandlerRootView>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <>
+      <SafeAreaProvider style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <ActionSheetProvider>
+              <QueryProvider>
+                <KeyboardProvider enabled>
+                  <Provider store={store}>
+                    <AuthProvider>
+                      <ThemeProvider>
+                        <RootNavigation />
+                      </ThemeProvider>
+                    </AuthProvider>
+                  </Provider>
+                </KeyboardProvider>
+              </QueryProvider>
+            </ActionSheetProvider>
+          </GestureHandlerRootView>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </>
   );
 });

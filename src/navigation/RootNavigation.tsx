@@ -16,6 +16,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Role } from "@/types/AuthTypes";
 import { authLinking, authNavigationRef } from "./AuthNavigation";
 import { CallLog } from "@/screens/CallHistory/components/CallLog";
+import Toast from "react-native-toast-message";
 
 function RootNavigation() {
   const { theme } = useTheme();
@@ -44,6 +45,7 @@ function RootNavigation() {
     >
       <Navigation />
       <CallLog />
+      <Toast />
     </NavigationContainer>
   );
 }

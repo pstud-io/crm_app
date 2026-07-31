@@ -66,10 +66,14 @@ const CallWhatsappPopover = ({
   const handleWhatsapp = async (phone) => {
     try {
       // Phone should include country code without +
+      let newCode = code;
       console.log("This is phone", phone);
       const cleanedPhone = phone.replace(/\D/g, "");
       console.log("This is the cleaned phone", cleanedPhone, phone);
-      const whatsappUrl = `whatsapp://send?phone=${code}${cleanedPhone}`;
+      if (!newCode) {
+        newCode = "+91";
+      }
+      const whatsappUrl = `whatsapp://send?phone=${newCode}${cleanedPhone}`;
       console.log("This is the whatsapp url", whatsappUrl);
       const supported = await Linking.canOpenURL(whatsappUrl);
 
