@@ -39,6 +39,7 @@ export const FloatingButtons = () => {
     "notifications",
     "search",
     "auth",
+    "attendance",
   ];
 
   const disableOn = ["lead-info", "lead-stage", "calls", "timeline"];

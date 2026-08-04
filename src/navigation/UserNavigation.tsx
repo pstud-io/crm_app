@@ -28,6 +28,10 @@ import {
   CallHistoryStackParamList,
 } from "./CallHistoryNavigation";
 import { FloatingButtons } from "@/components/FloatingButtons";
+import {
+  AttendanceStack,
+  AttendanceStackParamList,
+} from "./AttendanceNavigation";
 
 export type UserStackParamsList = {
   Dashboard: undefined;
@@ -39,6 +43,7 @@ export type UserStackParamsList = {
   CameraScreen: undefined;
   Profile: undefined;
   Notifications: undefined;
+  Attendance: NavigatorScreenParams<AttendanceStackParamList>;
 };
 
 declare global {
@@ -134,6 +139,13 @@ export const UserNavigation = () => {
         <Stack.Screen
           name="Calls"
           component={CallHistoryStack}
+          options={{ headerShown: false }}
+          layout={BottomSheetLayout}
+        />
+
+        <Stack.Screen
+          name="Attendance"
+          component={AttendanceStack}
           options={{ headerShown: false }}
           layout={BottomSheetLayout}
         />

@@ -10,7 +10,7 @@ import { openNewPRBottomSheet } from "../../../screens/PurchaseRequest/Utils/add
 import { openNewReimbursementBottomSheet } from "../../../screens/Reimbursement/utils/reimbursementBottomSheetService";
 import { openNewExpenseBottomSheet } from "../../../screens/Expenses/utils/expensesBottomSheetService";
 import { openQuickUpdateBottomSheet } from "../../../screens/Home/Tab/Activities/utils/activityBottomSheetService";
-import { openRequestLeaveBottomSheet } from "../../../screens/HMRS/utils/requestLeaveBottomSheetRef";
+import { openRequestLeaveBottomSheet } from "../../../screens/Attendance/utils/requestLeaveBottomSheetRef";
 import { openNewWareHouseBottomSheet } from "../../../screens/WareHouse/utils/useWareHouseBottomSheetService";
 import { openNewMRNBottomSheet } from "../../../screens/Eleganz/Utils/mrnBottomSheetService";
 import { openNewTimeSheetBottomSheet } from "../../../screens/TimeSheet/utils/timeSheetBottomSheetService";

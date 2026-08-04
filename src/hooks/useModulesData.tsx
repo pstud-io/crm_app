@@ -5,6 +5,7 @@ import { UserNavigationProp } from "@/navigation/UserNavigation";
 import { RootState } from "@/store/store";
 import {
   ActivitiesFilledIcon,
+  AttendanceOutlineIcon,
   ChecklistOutline,
   MenuDotOutline,
   MenuOutline,
@@ -150,8 +151,29 @@ export const useModulesData: (
     },
   };
 
+  const attendance: ModuleData = {
+    id: "attendance",
+    label: "Attendance",
+    name: "AttendanceStack",
+    component: null,
+    permission: "attendance.view_attendance",
+    show: "attendance_show",
+    icon: (isActive) => (
+      <AttendanceOutlineIcon width={20} height={20} fill={theme.textInverse} />
+    ),
+    onPress: async () => {
+      navigation.push("Attendance", { screen: "ListAttendance" });
+    },
+  };
+
   const pipelineData: ModuleData[] = [leads];
-  const actionsData: ModuleData[] = [tasks, notes, followUps, callHistory];
+  const actionsData: ModuleData[] = [
+    tasks,
+    notes,
+    followUps,
+    callHistory,
+    attendance,
+  ];
 
   return { pipelineData, actionsData };
 };
