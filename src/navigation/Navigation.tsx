@@ -8,6 +8,7 @@ import { borderRadius } from "@/design/borders";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { body, heading } from "@/design/typography";
 import { FloatingButtons } from "@/components/FloatingButtons";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 export const Navigation = () => {
   const { role, authLoading } = useAuth();
   const { theme } = useTheme();
@@ -19,6 +20,10 @@ export const Navigation = () => {
     case "user":
       return <UserNavigation />;
     case "guest":
-      return <AuthNavigation />;
+      return (
+        <KeyboardProvider enabled>
+          <AuthNavigation />
+        </KeyboardProvider>
+      );
   }
 };

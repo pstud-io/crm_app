@@ -50,8 +50,9 @@ export function ModuleSearchInput({
       inputStyle={[
         {
           color: theme.text,
-          minHeight: height[20],
-          maxHeight: height[20],
+          // minHeight: height[20],
+          // maxHeight: height[20],
+          paddingVertical: 0,
           ...body.sm.regular,
         },
         inputStyle,

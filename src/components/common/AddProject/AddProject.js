@@ -55,9 +55,13 @@ import AdditionalFieldsForm from "./components/AdditionalFieldsForm";
 
 function AddProject({ onRefresh }) {
   console.log("AddProject mounted", addProjectBottomSheetRef);
-  // useEffect(() => {
-  //   console.log("BottomSheet ref:", addProjectBottomSheetRef.current);
-  // }, []);
+  useEffect(() => {
+    console.log("BottomSheet ref:", addProjectBottomSheetRef.current);
+    return () => {
+      console.log("Run cleanup of add project");
+      dispatch(setIsSheetOpen(false));
+    };
+  }, []);
   const allCountries = getAllCountries();
   const defaultCountry = allCountries.find((country) => country.cioc === "IND");
   const { triggerAutomation } = useGeneralEndpoints();

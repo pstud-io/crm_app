@@ -158,6 +158,10 @@ export const ListFilters = ({
 
   const handleDismiss = () => {
     setDraftFilters(kanbanFilters);
+    setOpen(false);
+    setTimeout(() => {
+      dispatch(setIsSheetOpen(false));
+    }, 400);
   };
 
   const handleClearFilters = () => {

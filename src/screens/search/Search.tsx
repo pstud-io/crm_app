@@ -71,6 +71,7 @@ export const Search = () => {
 
     const show = Keyboard.addListener(keyboardShow, (e) => {
       const distanceToMove = Platform.OS === "android" ? 0 : insets.bottom;
+      // const distanceToMove = insets.bottom;
       translateY.value = withTiming(
         -(e.endCoordinates.height - distanceToMove),
         {

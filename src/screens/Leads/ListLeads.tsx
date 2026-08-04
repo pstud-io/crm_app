@@ -116,6 +116,7 @@ export const ListLeads = ({ route, navigation }: Props) => {
         onOpen={async () => {
           console.log("Hi");
         }}
+        swipeEnabled={false}
         onClose={() => {
           if (!open) return;
           setTimeout(() => {

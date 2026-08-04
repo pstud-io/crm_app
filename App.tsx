@@ -51,15 +51,13 @@ export default Sentry.wrap(function App() {
           <GestureHandlerRootView style={{ flex: 1 }}>
             <ActionSheetProvider>
               <QueryProvider>
-                <KeyboardProvider enabled>
-                  <Provider store={store}>
-                    <AuthProvider>
-                      <ThemeProvider>
-                        <RootNavigation />
-                      </ThemeProvider>
-                    </AuthProvider>
-                  </Provider>
-                </KeyboardProvider>
+                <Provider store={store}>
+                  <AuthProvider>
+                    <ThemeProvider>
+                      <RootNavigation />
+                    </ThemeProvider>
+                  </AuthProvider>
+                </Provider>
               </QueryProvider>
             </ActionSheetProvider>
           </GestureHandlerRootView>
