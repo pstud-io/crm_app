@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "268152241929",
+    "project_id": "ai-projectstudio-pipeline",
+    "storage_bucket": "ai-projectstudio-pipeline.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268152241929:android:e9de0dea83098d70f59dd8",
+        "android_client_info": {
+          "package_name": "ai.projectstudio.pipeline"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdbR1T2lOaxZV1D8_1SEq8b7uub1668W0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

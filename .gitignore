@@ -41,3 +41,4 @@ yarn-error.*
 /android
 
 .env.local
+ai-projectstudio-pipeline-firebase-adminsdk-fbsvc-c882f451e0.json

@@ -1,49 +1,58 @@
 import * as Sentry from "@sentry/react-native";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-import * as SplashScreen from "expo-splash-screen";
 import AuthProvider from "@/providers/AuthProvider";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import { store } from "@/store/store";
 import RootNavigation from "@/navigation/RootNavigation";
-import { useCallDetection } from "@/hooks/useCallDetection";
-import { NativeModules, PermissionsAndroid } from "react-native";
-import { useEffect, useState } from "react";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { QueryProvider } from "@/providers/QueryProvider";
-import { KeyboardProvider } from "react-native-keyboard-controller";
-import Toast from "react-native-toast-message";
-SplashScreen.preventAutoHideAsync();
+import { initializeSentry } from "@/config/sentryConfig";
+import { initializeSplashScreen } from "@/config/splashScreenConfig";
+import {
+  initializeNotifications,
+  registerForPushNotificationsAsync,
+} from "@/config/notificationConfig";
+import { useEffect, useState } from "react";
+import * as Notifications from "expo-notifications";
+import { TestComponent } from "TestComponent";
 
-SplashScreen.setOptions({
-  duration: 500,
-  fade: true,
-});
-
-Sentry.init({
-  dsn: "https://3ff2b1f1c2fe7df4cd8d16d23fc5064f@o4511659883036672.ingest.de.sentry.io/4511671023829072",
-
-  // Adds more context data to events (IP address, cookies, user, etc.)
-  // For more information, visit: https://docs.sentry.io/platforms/react-native/data-management/data-collected/
-  sendDefaultPii: true,
-
-  // Enable Logs
-  enableLogs: true,
-
-  // Configure Session Replay
-  replaysSessionSampleRate: 0.1,
-  replaysOnErrorSampleRate: 1,
-  integrations: [
-    Sentry.mobileReplayIntegration(),
-    Sentry.feedbackIntegration(),
-  ],
-
-  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
-  // spotlight: __DEV__,
-});
+initializeSplashScreen();
+initializeSentry();
+initializeNotifications();
 
 export default Sentry.wrap(function App() {
+  const [expoPushToken, setExpoPushToken] = useState("");
+  const [notification, setNotification] = useState<
+    Notifications.Notification | undefined
+  >(undefined);
+
+  useEffect(() => {
+    registerForPushNotificationsAsync()
+      .then((token) => {
+        console.log("Token from useEffect", token);
+        setExpoPushToken(token ?? "");
+      })
+      .catch((error: any) => setExpoPushToken(`${error}`));
+
+    const notificationListener = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        setNotification(notification);
+      },
+    );
+
+    const responseListener =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
+
+    return () => {
+      notificationListener.remove();
+      responseListener.remove();
+    };
+  }, []);
+
   return (
     <>
       <SafeAreaProvider style={{ flex: 1 }}>
@@ -54,6 +63,10 @@ export default Sentry.wrap(function App() {
                 <Provider store={store}>
                   <AuthProvider>
                     <ThemeProvider>
+                      <TestComponent
+                        expoPushToken={expoPushToken}
+                        notification={notification}
+                      />
                       <RootNavigation />
                     </ThemeProvider>
                   </AuthProvider>
