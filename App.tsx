@@ -63,10 +63,10 @@ export default Sentry.wrap(function App() {
                 <Provider store={store}>
                   <AuthProvider>
                     <ThemeProvider>
-                      <TestComponent
+                      {/* <TestComponent
                         expoPushToken={expoPushToken}
                         notification={notification}
-                      />
+                      /> */}
                       <RootNavigation />
                     </ThemeProvider>
                   </AuthProvider>

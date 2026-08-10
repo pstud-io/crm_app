@@ -10,10 +10,14 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "ai.projectstudio.pipeline",
-      "associatedDomains": ["applinks:pipeline.projectstudio.ai"],
+      "associatedDomains": [
+        "applinks:pipeline.projectstudio.ai"
+      ],
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
-        "LSApplicationQueriesSchemes": ["whatsapp"]
+        "LSApplicationQueriesSchemes": [
+          "whatsapp"
+        ]
       }
     },
     "android": {
@@ -35,7 +39,10 @@
               "pathPrefix": "/"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ],
       "permissions": [
@@ -93,14 +100,17 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location.",
-          "isAndroidForegroundServiceEnabled": true
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
       ],
       "expo-asset",
       "react-native-call-detection",
-      "expo-notifications"
+      "expo-notifications",
+      "expo-sharing"
     ],
-    "assetBundlePatterns": ["**/*", "assets/pdfjs/*"]
+    "assetBundlePatterns": [
+      "**/*",
+      "assets/pdfjs/*"
+    ]
   }
 }
