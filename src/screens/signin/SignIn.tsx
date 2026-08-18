@@ -77,7 +77,7 @@ export const SignIn = () => {
             fullWidth,
             animatedStyle,
             {
-              backgroundColor: theme.background,
+              backgroundColor: theme.header,
             },
           ]}
         >
@@ -147,8 +147,8 @@ export const SignIn = () => {
 
 const styles = StyleSheet.create({
   logo: {
-    width: 200,
-    height: 45,
+    width: 400,
+    height: 90,
     marginBottom: 16,
   },
 

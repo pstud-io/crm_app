@@ -390,16 +390,6 @@ const ResetPassword = ({ navigation }) => {
             alignSelf: "center",
           }}
         />
-        <Text
-          style={{
-            fontFamily: "Inter-Regular",
-            fontSize: SF(12),
-            color: Colors.dark_gray_text_color,
-            marginTop: SH(-33),
-          }}
-        >
-          Version 4.0.5
-        </Text>
       </View>
       <Modal
         visible={modal.visible}

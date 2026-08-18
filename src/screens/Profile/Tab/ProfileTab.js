@@ -456,18 +456,9 @@ const ProfileTab = () => {
           source={images.logo}
           resizeMode="contain"
           style={{
-            height: SH(28),
+            height: SH(48),
           }}
         />
-        <Text
-          style={{
-            ...body.xs.regular,
-            color: Colors.dark_gray_text_color,
-            marginTop: SH(8),
-          }}
-        >
-          Version 4.0.5
-        </Text>
       </View>
       <ConfirmationModal
         visible={modal.visible}

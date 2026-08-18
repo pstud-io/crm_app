@@ -39,7 +39,7 @@ export const ProfileStack = () => {
         options={{
           headerShown: true,
           header: (props: NativeStackHeaderProps) => (
-            <CommonHeader {...props} title="Add Note" />
+            <CommonHeader {...props} title="Reset Password" />
           ),
         }}
       />
