@@ -46,10 +46,6 @@ import { setActiveSubButtonGlobal } from "../../store/slices/activeSubButtonGlob
 import { Button } from "@/components/Button";
 
 const Attendance = ({ navigation }) => {
-  const isFocused = useIsFocused();
-  const activeTabButtonID = useSelector(
-    (state) => state.activeSubButtonGlobal.activeSubButtonGlobal,
-  );
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.selectedProject);
@@ -151,8 +147,14 @@ const Attendance = ({ navigation }) => {
 
   useFocusEffect(
     useCallback(() => {
-      dispatch(setActiveSubButtonGlobal("attendance"));
-    }, []),
+      if (activeSubButton === "attendance") {
+        dispatch(setActiveSubButtonGlobal("attendance"));
+      } else if (activeSubButton === "leaves") {
+        dispatch(setActiveSubButtonGlobal("leaves"));
+      } else if (activeSubButton === "payroll") {
+        dispatch(setActiveSubButtonGlobal("payroll"));
+      }
+    }, [activeSubButton]),
   );
 
   // useFocusEffect(
@@ -270,7 +272,7 @@ const Attendance = ({ navigation }) => {
                   value={selectedDate}
                   mode="date"
                   display={"calendar"}
-                  onChange={(event, date) => {
+                  onValueChange={(event, date) => {
                     setShowDatePicker(false);
                     if (date) {
                       setSelectedDate(date);
@@ -285,7 +287,7 @@ const Attendance = ({ navigation }) => {
             value={selectedDate}
             mode="date"
             display={"default"}
-            onChange={(event, date) => {
+            onValueChange={(event, date) => {
               if (date) {
                 setSelectedDate(date);
               }
@@ -457,7 +459,7 @@ const styles = StyleSheet.create({
   },
   floatingContainer: {
     position: "absolute",
-    bottom: SH(20),
+    bottom: SH(80),
     left: SW(12),
     right: SW(12),
     zIndex: 999,

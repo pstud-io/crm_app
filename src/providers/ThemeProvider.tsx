@@ -34,7 +34,7 @@ import { loadPermissions } from "@/store/slices/permissionSlice";
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const systemTheme = useColorScheme();
   const { setAuthLoading, setRole } = useAuth();
-  const [themeMode, setThemeMode] = useState<ThemeMode>(ThemeMode.System);
+  const [themeMode, setThemeMode] = useState<ThemeMode>(ThemeMode.Light);
   const [isReady, setIsReady] = useState<boolean>(false);
   const dispatch = useDispatch();
   useEffect(() => {

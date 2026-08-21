@@ -98,6 +98,12 @@ export const SearchModulesList = ({
         data={followups}
         setActiveSubButton={setActiveSubButton}
       />
+      <SearchModulesListItem
+        id={searchSubButtons[5].id}
+        label="Calls"
+        data={calls}
+        setActiveSubButton={setActiveSubButton}
+      />
     </ScrollView>
   );
 };

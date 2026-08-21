@@ -204,7 +204,7 @@ const AddTaskFromTasksTab = ({ route }) => {
         );
       } else {
         showActionSheetWithOptions(
-          { options, cancelButtonIndex, useModal: true },
+          { options, cancelButtonIndex, useModal: false },
           handleSelection,
         );
       }
@@ -245,7 +245,7 @@ const AddTaskFromTasksTab = ({ route }) => {
         );
       } else {
         showActionSheetWithOptions(
-          { options, cancelButtonIndex, useModal: true },
+          { options, cancelButtonIndex, useModal: false },
           handleSelection,
         );
       }

@@ -154,6 +154,7 @@ export function LeadsTopBar({
               testID={options.tabBarButtonTestID}
               onPress={onPress}
               onLongPress={onLongPress}
+              android_ripple={{ color: "transparent" }}
               style={[
                 xstack,
                 center,

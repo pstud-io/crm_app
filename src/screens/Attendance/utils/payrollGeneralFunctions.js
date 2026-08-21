@@ -93,10 +93,10 @@ export const getPayrollStatusColor = (status) => {
 export const handleDownloadPayroll = async (
   setLoading,
   payrollID,
-  organizationID
+  organizationID,
 ) => {
   setLoading((prev) => ({ ...prev, downloadingPayroll: true }));
-  
+
   const payload = {
     organization_id: organizationID,
     payroll_id: payrollID,
@@ -105,7 +105,8 @@ export const handleDownloadPayroll = async (
   try {
     const response = await axios.post(
       "https://automation.projectstudio.ai/webhook/484e082e-23cd-49b0-9808-bf955630590b",
-      payload
+      payload,
+      { timeout: 10000 },
     );
 
     // Check if response data exists and has the download_url
@@ -116,9 +117,9 @@ export const handleDownloadPayroll = async (
       if (canOpen) {
         await Linking.openURL(downloadUrl);
         Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Opening payroll document...',
+          type: "success",
+          text1: "Success",
+          text2: "Opening payroll document...",
         });
       } else {
         throw new Error("Cannot open URL");
@@ -127,13 +128,12 @@ export const handleDownloadPayroll = async (
       // Handle cases where the webhook responds but doesn't provide a link
       throw new Error("No download link provided");
     }
-
   } catch (error) {
     console.error("Download error:", error);
-    
+
     // 1. Define your friendly message
     let errorMessage = "Failed to download payroll. Please try again.";
-    
+
     // 2. Refine message based on response
     if (error.response) {
       // The request was made and the server responded with a status code
@@ -141,16 +141,15 @@ export const handleDownloadPayroll = async (
       errorMessage = "Payroll document is not available for this entry.";
     } else if (error.request) {
       // The request was made but no response was received
-      errorMessage = "Network error. Please check your connection.";
+      errorMessage = "Payroll document is not available for this entry.";
     }
 
     // 3. PASS THE STRING, NOT THE ERROR OBJECT
     Toast.show({
-      type: 'error',
-      text1: 'Download Failed',
+      type: "error",
+      text1: "Download Failed",
       text2: errorMessage, // Use the variable here
     });
-    
   } finally {
     setLoading((prev) => ({ ...prev, downloadingPayroll: false }));
   }

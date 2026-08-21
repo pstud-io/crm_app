@@ -173,7 +173,7 @@ const TaskDetails = ({ route }) => {
         );
       } else {
         showActionSheetWithOptions(
-          { options, cancelButtonIndex, useModal: true },
+          { options, cancelButtonIndex, useModal: false },
           handleSelection,
         );
       }

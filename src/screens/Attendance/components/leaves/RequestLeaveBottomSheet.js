@@ -4,6 +4,7 @@ import React, {
   useMemo,
   useImperativeHandle,
   useRef,
+  useEffect,
 } from "react";
 import {
   StyleSheet,
@@ -36,11 +37,20 @@ import { DatePicker } from "../../../../components/UI/GeneralComponents/DatePick
 import { formElementsStyles } from "../../../../components/UI/Dropdown/formElementStyles";
 import { Spacing, TranscriptionInput } from "../../../../components";
 import { RadioSelect } from "../../../../components/UI/GeneralComponents/RadioSelect";
+import { useDispatch } from "react-redux";
+import { setIsSheetOpen } from "@/store/slices/isSheetOpenSlice";
 
 export const RequestLeaveBottomSheet = ({
   onApplySuccess,
   availableBalance,
 }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    return () => {
+      console.log("Run cleanup of add leave");
+      dispatch(setIsSheetOpen(false));
+    };
+  }, []);
   const [leaveType, setLeaveType] = useState("casual");
   const [leaveDuration, setLeaveDuration] = useState("full_day");
   const [reason, setReason] = useState("");
@@ -150,6 +160,7 @@ export const RequestLeaveBottomSheet = ({
         appearsOnIndex={0}
         disappearsOnIndex={-1}
         opacity={0.5}
+        pressBehavior={"none"}
       />
     ),
     [],
@@ -166,6 +177,15 @@ export const RequestLeaveBottomSheet = ({
       enableHandlePanningGesture={true}
       enableContentPanningGesture={false}
       onAnimate={(fromIndex, toIndex) => {
+        if (fromIndex === -1 && toIndex === 0) {
+          dispatch(setIsSheetOpen(true));
+        }
+        if (fromIndex === 0 && toIndex === -1) {
+          setTimeout(() => {
+            console.log("Set to false from add leave");
+            dispatch(setIsSheetOpen(false));
+          }, [250]);
+        }
         if (availableBalance === 0) {
           closeRequestLeaveBottomSheet();
           Toast.show({

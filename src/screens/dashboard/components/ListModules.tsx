@@ -9,11 +9,40 @@ import { StatusBar } from "expo-status-bar";
 import { View, Text, ScrollView, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { UserNavigationProp } from "@/navigation/UserNavigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 export const ListModules = () => {
   const { isDark, theme } = useTheme();
   const navigation = useNavigation<UserNavigationProp>();
+  const organizationDetails = useSelector(
+    (state: RootState) => state.profile.organization_details,
+  );
+  const permissions = useSelector(
+    (state: RootState) => state.permissions.permissions,
+  );
+  const profile = useSelector((state: RootState) => state.profile);
+  const is_admin = profile.is_admin;
   const { pipelineData, actionsData } = useModulesData(navigation);
+  const callHistoryModule = actionsData[3];
+  const orgLeveFilteredModules = actionsData.filter((item) => {
+    if (item.show && organizationDetails) {
+      if (organizationDetails[item?.show] === true) {
+        return item;
+      } else {
+        return;
+      }
+    } else {
+      return item;
+    }
+  });
+  const filteredModules = is_admin
+    ? orgLeveFilteredModules
+    : orgLeveFilteredModules.filter(
+        (item) => !item.permission || permissions.includes(item.permission),
+      );
+
+  filteredModules.unshift(callHistoryModule);
   return (
     <ScrollView
       style={[
@@ -88,7 +117,7 @@ export const ListModules = () => {
         </Text>
         <FlatList
           keyExtractor={(item) => item.id}
-          data={actionsData}
+          data={filteredModules}
           scrollEnabled={false}
           style={[fullWidth, { paddingHorizontal: spacing.lg }]}
           contentContainerStyle={{ paddingVertical: spacing.lg }}

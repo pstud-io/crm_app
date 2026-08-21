@@ -153,7 +153,7 @@ export const UserNavigation = () => {
         <Stack.Screen
           name="Profile"
           component={ProfileStack}
-          options={{ headerShown: false }}
+          options={{ headerShown: false, animation: "fade" }}
           layout={BottomSheetLayout}
         />
 

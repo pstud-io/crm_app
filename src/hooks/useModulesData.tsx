@@ -21,7 +21,6 @@ export const useModulesData: (
   navigation: UserNavigationProp,
 ) => ModulesDataType = (navigation) => {
   const { theme } = useTheme();
-  const project = useSelector((state: RootState) => state.project);
   const leads: ModuleData = {
     id: "leads",
     label: "Leads",
@@ -53,8 +52,8 @@ export const useModulesData: (
     label: "Tasks",
     name: "TasksStack",
     component: null,
-    permission: "tasks.view_tasks",
-    show: "tasks_show",
+    permission: "crm.view_task",
+    show: "task_show",
     icon: (isActive) => (
       <FileIcon
         width={width[20]}
@@ -77,8 +76,8 @@ export const useModulesData: (
     label: "Notes",
     name: "NotesStack",
     component: null,
-    permission: "notes.view_notes",
-    show: "notes_show",
+    permission: "crm.view_note",
+    show: "note_show",
     icon: (isActive) => (
       <ClipboardIcon
         width={20}
@@ -106,8 +105,8 @@ export const useModulesData: (
     label: "Follow Ups",
     name: "FollowUpsStack",
     component: null,
-    permission: "followUps.view_followUps",
-    show: "followUps_show",
+    permission: "crm.view_task",
+    show: "task_show",
     icon: (isActive) => (
       <UserCheck
         stroke={theme.textInverse}
@@ -156,8 +155,8 @@ export const useModulesData: (
     label: "Attendance",
     name: "AttendanceStack",
     component: null,
-    permission: "attendance.view_attendance",
-    show: "attendance_show",
+    permission: "activity.view_hrms",
+    show: "",
     icon: (isActive) => (
       <AttendanceOutlineIcon width={20} height={20} fill={theme.textInverse} />
     ),

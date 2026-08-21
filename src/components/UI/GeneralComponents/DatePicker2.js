@@ -20,14 +20,14 @@ export const DatePicker2 = ({
     selectedDate instanceof Date ? selectedDate : new Date(),
   );
 
-  const onChange = (date) => {
-    if (Platform.OS === "android") {
-      setShowDatePicker(false);
-    }
-    if (date) {
-      setDateValue(date);
-      setSelectedDate(date);
-    }
+  const onChangeAndroid = (event, date) => {
+    setShowDatePicker(false);
+    setDateValue(date);
+    setSelectedDate(date);
+  };
+  const onChangeIOS = (date) => {
+    setDateValue(date);
+    setSelectedDate(date);
   };
   console.log("Selected Date is", selectedDate);
   return (
@@ -63,7 +63,7 @@ export const DatePicker2 = ({
           display={"default"}
           minimumDate={minDate}
           maximumDate={maxDate}
-          onValueChange={onChange}
+          onValueChange={onChangeAndroid}
         />
       )}
       {Platform.OS === "ios" && (
@@ -71,7 +71,7 @@ export const DatePicker2 = ({
           placeholder={placeholder}
           initialDate={selectedDate}
           selectedDate={dateValue}
-          setSelectedDate={(date) => onChange(date)}
+          setSelectedDate={(date) => onChangeIOS(date)}
           type={"date"}
         />
       )}

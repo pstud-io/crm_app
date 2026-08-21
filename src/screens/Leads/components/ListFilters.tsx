@@ -32,7 +32,7 @@ import { CloseOutlineIcon, DownArrowOutlineIcon } from "@/svg";
 import { capitalizeEachWord } from "@/utils";
 import { useKeyboard } from "@react-native-community/hooks";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Platform, TouchableOpacity, View } from "react-native";
 import { ScrollView, Text } from "react-native";
 import {
   kanbanExtraParams,
@@ -102,7 +102,9 @@ export const ListFilters = ({
   const [clients, setClients] = useState<any[]>([]);
   const [stages, setStages] = useState<any[]>([]);
   const [additionalFields, setAllAdditionalFields] = useState([]);
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  // const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showStartDatePicker, setShowStartDatePicker] = useState(false);
+  const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 
   const formElementsStyles = useFormElementsStyles();
   const { theme } = useTheme();
@@ -288,8 +290,10 @@ export const ListFilters = ({
                 start_date: date.toISOString(),
               } as Partial<FiltersState>)
             }
-            showDatePicker={showDatePicker}
-            setShowDatePicker={(isOpen: boolean) => setShowDatePicker(isOpen)}
+            showDatePicker={showStartDatePicker}
+            setShowDatePicker={(isOpen: boolean) =>
+              setShowStartDatePicker(isOpen)
+            }
             placeholder="Select Start Date"
             minDate={null}
             maxDate={null}
@@ -308,8 +312,10 @@ export const ListFilters = ({
                 end_date: date.toISOString(),
               } as Partial<FiltersState>)
             }
-            showDatePicker={showDatePicker}
-            setShowDatePicker={(isOpen: boolean) => setShowDatePicker(isOpen)}
+            showDatePicker={showEndDatePicker}
+            setShowDatePicker={(isOpen: boolean) =>
+              setShowEndDatePicker(isOpen)
+            }
             placeholder="Select End Date"
             minDate={null}
             maxDate={null}

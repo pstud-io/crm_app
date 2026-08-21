@@ -32,11 +32,12 @@ import { timeToSeconds } from "../../utils/attendance/attendanceGeneralFunctions
 import { Badge } from "../../../../components/UI/Badge/Badge";
 import badgeColors from "../../../../components/UI/Badge/badgeColors";
 import { InputTextStyles } from "../../../../styles/InputTextStyles";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { TranscriptionInput } from "../../../../components";
 import { useNavigation } from "@react-navigation/native";
 import { useCameraScreen } from "../../../../hooks/useCameraScreen";
 import { RenderMedia } from "../../../../components/UI/GeneralComponents/RenderMedia";
+import { setIsSheetOpen } from "@/store/slices/isSheetOpenSlice";
 
 const PunchOutBottomSheet = ({
   loading,
@@ -44,6 +45,13 @@ const PunchOutBottomSheet = ({
   onRefresh,
   latestAttendance,
 }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    return () => {
+      console.log("Run cleanup of add leave");
+      dispatch(setIsSheetOpen(false));
+    };
+  }, []);
   const [punchOutTime, setPunchOutTime] = useState("");
   const [timeDifference, setTimeDifference] = useState("");
   const [note, setNote] = useState("");
@@ -119,6 +127,15 @@ const PunchOutBottomSheet = ({
       enableDynamicSizing={false}
       onAnimate={(fromIndex, toIndex) => {
         if (fromIndex === -1 && toIndex === 0) {
+          dispatch(setIsSheetOpen(true));
+        }
+        if (fromIndex === 0 && toIndex === -1) {
+          setTimeout(() => {
+            console.log("Set to false from add leave");
+            dispatch(setIsSheetOpen(false));
+          }, [250]);
+        }
+        if (fromIndex === -1 && toIndex === 0) {
           if (organizationDetails.attendance_self_asset_show) {
             handleCaptureMedia("picture");
           }
@@ -131,6 +148,7 @@ const PunchOutBottomSheet = ({
             appearsOnIndex={0} // backdrop visible when sheet index >= 0
             disappearsOnIndex={-1} // hidden when index = -1
             opacity={0.5} // dim amount
+            pressBehavior={"none"}
           />
         );
       }}

@@ -156,6 +156,16 @@ export const SearchModules = ({
           type="followup"
         />
       )}
+      {activeSubButton === "calls" && (
+        <SearchModuleItem
+          data={calls}
+          onEndReached={onEndReached}
+          // onRefresh={onRefresh}
+          loading={loading}
+          refreshing={refreshing}
+          type="call"
+        />
+      )}
     </>
   );
 };

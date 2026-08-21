@@ -248,6 +248,7 @@ const EditProjectBottomSheet = ({
             appearsOnIndex={0} // backdrop visible when sheet index >= 0
             disappearsOnIndex={-1} // hidden when index = -1
             opacity={0.5} // dim amount
+            pressBehavior={"none"}
           />
         );
       }}

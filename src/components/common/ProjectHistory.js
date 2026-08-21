@@ -121,6 +121,7 @@ const ProjectHistory = ({ route }) => {
         alignItems: "flex-start",
         justifyContent: "flex-start",
         paddingVertical: 16,
+        paddingBottom: 80,
       }}
     >
       {initialLoading || !clientDetails ? (

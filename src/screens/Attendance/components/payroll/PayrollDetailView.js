@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   View,
   Text,
@@ -12,7 +12,10 @@ import { primaryColors } from "../../../../components/UI/DesignSystem/colorPalet
 import { body } from "../../../../components/UI/DesignSystem/typography";
 import { DownloadOutlineIcon } from "../../../../svg";
 import { handleDownloadPayroll } from "../../utils/payrollGeneralFunctions";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { lightShadows } from "@/design/shadows";
+import { useFocusEffect } from "@react-navigation/native";
+import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
 
 const PayrollDetailView = ({ route }) => {
   const { payroll } = route.params;
@@ -25,6 +28,14 @@ const PayrollDetailView = ({ route }) => {
   const [loading, setLoading] = useState({
     downloadingPayroll: false,
   });
+
+  const dispatch = useDispatch();
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(setActiveSubButtonGlobal("payroll-details"));
+    }, []),
+  );
 
   const attendance = parseFloat(payroll?.attendance_days || 0);
   const holidays = parseFloat(payroll?.holidays || 0);
@@ -249,7 +260,10 @@ const styles = StyleSheet.create({
     width: SW(48),
     height: SW(48),
     borderRadius: SW(24),
-    backgroundColor: primaryColors.gray[50],
+    backgroundColor: "white",
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: primaryColors.gray[200],
+    boxShadow: lightShadows.xs,
     justifyContent: "center",
     alignItems: "center",
   },

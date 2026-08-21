@@ -7,6 +7,7 @@ import { RenderLeadSearchItem } from "./RenderLeadSearchItem";
 import { RenderTaskSearchItem } from "./RenderTaskSearchItem";
 import { RenderNoteSearchItem } from "./RenderNoteSearchItem";
 import { RenderFollowupSearchItem } from "./RenderFollowupSearchItem";
+import { RenderCallSearchItem } from "./RenderCallSearchItem";
 
 export const RenderSearchItem = ({
   item,
@@ -27,6 +28,9 @@ export const RenderSearchItem = ({
   }
   if (type === "followup") {
     return <RenderFollowupSearchItem item={item} />;
+  }
+  if (type === "call") {
+    return <RenderCallSearchItem item={item} />;
   }
   return (
     <View

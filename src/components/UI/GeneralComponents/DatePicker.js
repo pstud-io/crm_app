@@ -38,7 +38,7 @@ export const DatePicker = ({
           display={"default"}
           minimumDate={minDate}
           maximumDate={maxDate}
-          onChange={(event, date) => {
+          onValueChange={(event, date) => {
             setShowDatePicker(false);
             if (date) {
               setSelectedDate(date);

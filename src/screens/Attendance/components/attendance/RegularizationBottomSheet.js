@@ -14,7 +14,7 @@ import {
   BottomSheetBackdrop,
   BottomSheetModal,
 } from "@gorhom/bottom-sheet";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Colors, SW, SH, formatTime12Hour } from "../../../../utils";
 import { CloseOutlineIcon } from "../../../../svg";
 import {
@@ -37,8 +37,17 @@ import badgeColors from "../../../../components/UI/Badge/badgeColors";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { TranscriptionInput } from "../../../../components";
 import { TimePicker } from "../../../../components/UI/GeneralComponents/TimePicker";
+import { useDispatch } from "react-redux";
+import { setIsSheetOpen } from "@/store/slices/isSheetOpenSlice";
 
 const RegularlizationBottomSheet = ({ onRefresh }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    return () => {
+      console.log("Run cleanup of regularization");
+      dispatch(setIsSheetOpen(false));
+    };
+  }, []);
   const [item, setSheetItem] = useState(null);
   const [isPunchOut, setSheetIsPunchOut] = useState(false);
   const [date, setSheetDate] = useState(null);
@@ -131,6 +140,7 @@ const RegularlizationBottomSheet = ({ onRefresh }) => {
         appearsOnIndex={0}
         disappearsOnIndex={-1}
         opacity={0.5}
+        pressBehavior={"none"}
       />
     ),
     [],
@@ -148,6 +158,17 @@ const RegularlizationBottomSheet = ({ onRefresh }) => {
       enableDynamicSizing={false}
       backdropComponent={renderBackdrop}
       onDismiss={resetRegularlizationBottomSheet}
+      onAnimate={(fromIndex, toIndex) => {
+        if (fromIndex === -1 && toIndex === 0) {
+          dispatch(setIsSheetOpen(true));
+        }
+        if (fromIndex === 0 && toIndex === -1) {
+          setTimeout(() => {
+            console.log("Set to false from add leave");
+            dispatch(setIsSheetOpen(false));
+          }, [250]);
+        }
+      }}
       onChange={(index) => {
         if (index === 0) {
           const data = regularizationDataRef?.current;
@@ -291,7 +312,7 @@ const RegularlizationBottomSheet = ({ onRefresh }) => {
                     value={punchInTime ? punchInTime : new Date()}
                     mode="time"
                     display="default"
-                    onChange={(event, time) => {
+                    onValueChange={(event, time) => {
                       setShowPunchInTimePicker(false);
                       if (!isPunchOutValid(time, punchOutTime)) {
                         Alert.alert(
@@ -384,7 +405,7 @@ const RegularlizationBottomSheet = ({ onRefresh }) => {
                     value={punchOutTime ?? new Date()}
                     mode="time"
                     display="default"
-                    onChange={(event, time) => {
+                    onValueChange={(event, time) => {
                       setShowPunchOutTimePicker(false);
                       if (time) {
                         const merged = mergeDateAndTime(date, time);

@@ -54,6 +54,7 @@ import LoadingIndicatorFooter from "@/components/LoadingIndicatorFooter";
 import AdditionalFieldsForm from "./components/AdditionalFieldsForm";
 
 function AddProject({ onRefresh }) {
+  const dispatch = useDispatch();
   console.log("AddProject mounted", addProjectBottomSheetRef);
   useEffect(() => {
     console.log("BottomSheet ref:", addProjectBottomSheetRef.current);
@@ -110,7 +111,6 @@ function AddProject({ onRefresh }) {
   const organization_contact_id = useSelector(
     (state) => state.profile.organization_contact_id,
   );
-  const dispatch = useDispatch();
 
   const { getClientsForDropdown, addProjectLoading, getAllAdditionalFields } =
     useAddProjectEndpoints();
@@ -650,6 +650,7 @@ function AddProject({ onRefresh }) {
               appearsOnIndex={0} // backdrop visible when sheet index >= 0
               disappearsOnIndex={-1} // hidden when index = -1
               opacity={0.5} // dim amount
+              pressBehavior={"none"}
             />
           );
         }}
@@ -1408,6 +1409,7 @@ function AddProject({ onRefresh }) {
               appearsOnIndex={0} // backdrop visible when sheet index >= 0
               disappearsOnIndex={-1} // hidden when index = -1
               opacity={0.5} // dim amount
+              pressBehavior={"none"}
             />
           );
         }}

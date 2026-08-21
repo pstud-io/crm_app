@@ -1,8 +1,26 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Define the initial state for permissions
-const initialState = {
+type PermissionCategory =
+  | "activity"
+  | "auth"
+  | "authtoken"
+  | "core"
+  | "crm"
+  | "customer"
+  | "financial"
+  | "manpower"
+  | "moodboards"
+  | "order";
+
+type CategorizedPermissions = Record<PermissionCategory, string[]>;
+
+interface PermissionsState {
+  permissions: string[];
+  categorizedPermissions: CategorizedPermissions;
+}
+
+const initialState: PermissionsState = {
   permissions: [],
   categorizedPermissions: {
     activity: [],
@@ -18,31 +36,31 @@ const initialState = {
   },
 };
 
-// Create the slice
 export const permissionsSlice = createSlice({
   name: "permissions",
   initialState,
   reducers: {
-    setPermissions: (state, action) => {
+    setPermissions: (state, action: PayloadAction<string[]>) => {
       state.permissions = action.payload;
     },
 
     categorizePermissions: (state) => {
       state.categorizedPermissions = state.permissions.reduce(
         (categories, permission) => {
-          const category = permission.split(".")[0]; // Extract the category (before the first dot)
+          const category = permission.split(".")[0] as PermissionCategory;
+
           if (state.categorizedPermissions[category]) {
             categories[category].push(permission);
           } else {
-            categories[category] = [permission];
+            (categories as Record<string, string[]>)[category] = [permission];
           }
+
           return categories;
         },
-        { ...state.categorizedPermissions },
+        { ...state.categorizedPermissions } as CategorizedPermissions,
       );
     },
 
-    // Action to remove permissions
     removePermissions: (state) => {
       state.permissions = [];
       state.categorizedPermissions = {
@@ -66,38 +84,47 @@ export const { setPermissions, categorizePermissions, removePermissions } =
 
 export default permissionsSlice.reducer;
 
-export const loadPermissions = async (dispatch) => {
+export const loadPermissions = async (
+  dispatch: (action: any) => void,
+): Promise<void> => {
   console.log("Loading Permissions from storage...");
+
   try {
-    // Assuming permissions are stored in AsyncStorage
     const permissions = await AsyncStorage.getItem("permissions");
+
     if (permissions) {
-      const parsedPermissions = JSON.parse(permissions); // Assuming the permissions are stored as a JSON string
-      dispatch(setPermissions(parsedPermissions)); // Dispatch permissions to the store
-      dispatch(categorizePermissions()); // Categorize the permissions
+      const parsedPermissions: string[] = JSON.parse(permissions);
+
+      dispatch(setPermissions(parsedPermissions));
+      dispatch(categorizePermissions());
     }
   } catch (error) {
     console.error("Error loading permissions:", error);
   }
 };
 
-export const savePermissions = async (permissions, dispatch) => {
+export const savePermissions = async (
+  permissions: string[],
+  dispatch: (action: any) => void,
+): Promise<void> => {
   try {
-    // console.log('Saving Permissions to storage:', permissions);
-    await AsyncStorage.setItem("permissions", JSON.stringify(permissions)); // Save permissions as a JSON string
-    dispatch(setPermissions(permissions)); // Dispatch to the store
-    dispatch(categorizePermissions()); // Categorize the permissions
+    await AsyncStorage.setItem("permissions", JSON.stringify(permissions));
+
+    dispatch(setPermissions(permissions));
+    dispatch(categorizePermissions());
   } catch (error) {
     console.error("Error saving permissions:", error);
   }
 };
 
-// Action to remove permissions from AsyncStorage and Redux store
-export const removePermissionsFromStorage = async (dispatch) => {
+export const removePermissionsFromStorage = async (
+  dispatch: (action: any) => void,
+): Promise<void> => {
   try {
     console.log("Removing Permissions from storage...");
-    await AsyncStorage.removeItem("permissions"); // Remove permissions from AsyncStorage
-    dispatch(removePermissions()); // Dispatch to Redux to reset the permissions
+
+    await AsyncStorage.removeItem("permissions");
+    dispatch(removePermissions());
   } catch (error) {
     console.error("Error removing permissions:", error);
   }

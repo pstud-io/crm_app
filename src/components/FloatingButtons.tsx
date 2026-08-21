@@ -32,6 +32,7 @@ export const FloatingButtons = () => {
     "add-task",
     "edit-task",
     "task-details",
+    "payroll-details",
     "signin",
     "note-details",
     "add-note",
@@ -39,13 +40,17 @@ export const FloatingButtons = () => {
     "notifications",
     "search",
     "auth",
-    "attendance",
   ];
+
+  const hideAddOn = ["attendance", "payroll"];
 
   const disableOn = ["lead-info", "lead-stage", "calls", "timeline"];
 
   const disable =
     activeSubButtonGlobal && disableOn.includes(activeSubButtonGlobal);
+
+  const isAddHidden =
+    activeSubButtonGlobal && hideAddOn.includes(activeSubButtonGlobal);
 
   if (activeSubButtonGlobal && hideOn.includes(activeSubButtonGlobal)) {
     return;
@@ -115,15 +120,17 @@ export const FloatingButtons = () => {
           },
         ]}
       >
-        <ExpandableFloatingButton
-          onPress={() =>
-            handleNavigation(activeSubButtonGlobal, project, activeLead)
-          }
-          disable={disable}
-          activeSubButtonGlobal={activeSubButtonGlobal}
-          expanded={expanded}
-          setExpanded={setExpanded}
-        />
+        {!isAddHidden && (
+          <ExpandableFloatingButton
+            onPress={() =>
+              handleNavigation(activeSubButtonGlobal, project, activeLead)
+            }
+            disable={disable}
+            activeSubButtonGlobal={activeSubButtonGlobal}
+            expanded={expanded}
+            setExpanded={setExpanded}
+          />
+        )}
         <Pressable
           style={[
             xstack,

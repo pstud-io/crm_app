@@ -3,6 +3,7 @@ import { userNavigationRef } from "@/navigation/UserNavigation";
 import { ProjectRecord } from "@/store/slices/projectSlice/projectSliceTypes";
 import { openAddProjectBottomSheet } from "@/screens/dashboard/utils/addProjectBottomSheetService";
 import { LeadRecord } from "@/store/slices/activeLeadGlobal";
+import { openRequestLeaveBottomSheet } from "@/screens/Attendance/utils/requestLeaveBottomSheetRef";
 
 export const handleNavigation = (
   activeSubButtonGlobal: string | null,
@@ -81,5 +82,8 @@ export const handleNavigation = (
   ) {
     console.log("Hitting for leads");
     openAddProjectBottomSheet();
+  } else if (activeSubButtonGlobal === "leaves") {
+    console.log("Hitting for leads");
+    openRequestLeaveBottomSheet();
   }
 };

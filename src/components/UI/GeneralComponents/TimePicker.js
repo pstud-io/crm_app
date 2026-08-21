@@ -32,7 +32,7 @@ export const TimePicker = ({
           style={formElementsStyles.triggerStyle}
           mode="time"
           display={"default"}
-          onChange={(event, time) => {
+          onValueChange={(event, time) => {
             setShowTimePicker(false);
             if (time) {
               setSelectedTime(time);

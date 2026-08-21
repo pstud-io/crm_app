@@ -12,7 +12,7 @@ import { Button, Spacing } from "../../components/common";
 import apiEndpoint from "../../config/apiConfig";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { useFocusEffect } from "@react-navigation/native";
+import { StackActions, useFocusEffect } from "@react-navigation/native";
 import images from "../../images";
 import { TouchableOpacity } from "react-native";
 import { formatDistanceToNowStrict, parseISO } from "date-fns";
@@ -32,6 +32,7 @@ import { Tab } from "../../components/UI/Tab/Tab";
 import { SecondaryButton } from "../../components/UI/GeneralComponents/SecondaryButton";
 import { SubTabChip } from "../../components/UI/GeneralComponents/SubTabChip";
 import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
+import { userNavigationRef } from "@/navigation/UserNavigation";
 
 const ListNotifications = ({ route }) => {
   const navigation = useNavigation();
@@ -297,13 +298,12 @@ const ListNotifications = ({ route }) => {
             { headers },
           );
           const task = response.data.result;
-          navigation.push("TabNavigator", {
-            screen: "MoreStack",
-            params: {
-              screen: "TasksStack",
-              params: { screen: "TaskDetails", params: { task } },
-            },
-          });
+          userNavigationRef.dispatch(
+            StackActions.push("Tasks", {
+              screen: "TaskDetails",
+              params: { task },
+            }),
+          );
         } else if (comment_context_type === "activity") {
           const response = await axios.get(
             `${apiEndpoint}/activity/projectactivity/solo/?project_activity_id=${comment_context_id}`,

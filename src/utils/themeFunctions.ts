@@ -20,7 +20,8 @@ export async function loadTheme(
 ) {
   const stored = await storage.get<string>(THEME_KEY);
   if (stored && isThemeMode(stored)) {
-    setThemeMode(stored);
+    // setThemeMode(stored);
+    setThemeMode(ThemeMode.Light);
   }
 }
 
