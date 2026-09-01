@@ -78,7 +78,8 @@ export const RenderKanbanItem = ({
           refreshing={leadsSearch.refreshing}
           onRefresh={leadsSearch.onRefresh}
           onEndReached={leadsSearch.onEndReached}
-          onEndReachedThreshold={0.9}
+          onEndReachedThreshold={0.5}
+          contentContainerStyle={{ paddingBottom: 16 }}
         />
       )}
     </View>

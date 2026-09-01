@@ -279,7 +279,9 @@ const ProjectHistory = ({ route }) => {
               </View>
             ))
           ) : (
-            <Text>No history available</Text>
+            <Text style={{ width: "100%", textAlign: "center" }}>
+              No history available
+            </Text>
           )}
         </>
       )}

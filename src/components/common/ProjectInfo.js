@@ -32,7 +32,13 @@ import { useFocusEffect } from "@react-navigation/native";
 import AddProject from "./AddProject/AddProject";
 import { LeadAdditionalFields } from "@/screens/Leads/components/LeadAdditionalFields";
 import { LeadAssignees } from "@/screens/Leads/components/LeadAssignees";
-const ProjectInfo = ({ route, editProjectFunctions }) => {
+import EditProjectBottomSheet from "@/screens/Leads/components/EditProjectBottomSheet";
+const ProjectInfo = ({
+  route,
+  editProjectFunctions,
+  editProjectDataRef,
+  editProjectBottomSheetRef,
+}) => {
   const { project } = route.params;
   console.log("Add instance of project info", project);
   const [initialLoading, setInitialLoading] = useState(false);
@@ -60,23 +66,11 @@ const ProjectInfo = ({ route, editProjectFunctions }) => {
   const { getStagesForDropdown, getClientDetails, updateStage } =
     useGeneralEndpoints();
 
-  const hasLoadedForProject = useRef(null);
-
   const fetchData = async (index) => {
     if (index < 0) {
       Keyboard.dismiss();
       return;
     }
-
-    // Replace selectedProject?.id with whatever uniquely identifies your project
-    const projectId = project?.id;
-
-    if (hasLoadedForProject.current === projectId) {
-      return;
-    }
-
-    hasLoadedForProject.current = projectId;
-
     setInitialLoading(true);
     setAllProjectStages([]);
     setProjectStage("");
@@ -408,6 +402,12 @@ const ProjectInfo = ({ route, editProjectFunctions }) => {
           </>
         )}
       </ScrollView>
+      <EditProjectBottomSheet
+        onRefresh={fetchData}
+        editProjectBottomSheetRef={editProjectBottomSheetRef}
+        editProjectDataRef={editProjectDataRef}
+        editProjectFunctions={editProjectFunctions}
+      />
     </>
   );
 };

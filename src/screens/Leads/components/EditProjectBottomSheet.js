@@ -16,7 +16,7 @@ import {
   BottomSheetModal,
   BottomSheetTextInput,
 } from "@gorhom/bottom-sheet";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Colors,
   SW,
@@ -37,6 +37,8 @@ import Toast from "react-native-toast-message";
 import { useLeadsEndpoints } from "../hooks/useLeadsEndpoints";
 import { DatePicker2 } from "@/components/UI/GeneralComponents/DatePicker2";
 import SelectionPopover from "@/components/UI/GeneralComponents/PopUps/SelectionPopover";
+import { setIsSheetOpen } from "@/store/slices/isSheetOpenSlice";
+import { useDispatch } from "react-redux";
 
 const EditProjectBottomSheet = ({
   onRefresh,
@@ -44,12 +46,19 @@ const EditProjectBottomSheet = ({
   editProjectFunctions,
   editProjectDataRef,
 }) => {
+  const dispatch = useDispatch();
   const [section, setSection] = useState("");
   const [fields, setfields] = useState([]);
   const [allFields, setAllFields] = useState([]);
   const [values, setValues] = useState({});
   const [openPickerId, setOpenPickerId] = useState(null);
-
+  useEffect(() => {
+    console.log("BottomSheet ref:", editProjectBottomSheetRef.current);
+    return () => {
+      console.log("Run cleanup of edit project");
+      dispatch(setIsSheetOpen(false));
+    };
+  }, []);
   const { updateLead, leadsLoading } = useLeadsEndpoints();
   const isKeyboardVisible = useKeyboardStatus();
   const keyboard = useKeyboard();
@@ -260,6 +269,13 @@ const EditProjectBottomSheet = ({
           setfields(editProjectDataRef.current.fields);
           setAllFields(editProjectDataRef.current.allFields);
           populateValues(editProjectDataRef.current.fields);
+          dispatch(setIsSheetOpen(true));
+        }
+        if (fromIndex === 0 && toIndex === -1) {
+          setTimeout(() => {
+            console.log("Set to false from add project");
+            dispatch(setIsSheetOpen(false));
+          }, [250]);
         }
       }}
     >

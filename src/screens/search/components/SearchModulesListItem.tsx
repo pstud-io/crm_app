@@ -33,6 +33,7 @@ export const SearchModulesListItem = ({
   if (data.data.length === 0) return;
   const navigation = useNavigation<UserNavigationProp>();
   const handleNavigation = (type: string, item: any) => {
+    console.log("The type is", type);
     if (type === "leads") {
       navigation.push("Leads", {
         screen: "LeadDetails",

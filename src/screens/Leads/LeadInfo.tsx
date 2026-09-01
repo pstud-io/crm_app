@@ -33,9 +33,8 @@ export const LeadInfo = ({ route }: { route: any }) => {
 
   return (
     <>
-      <ProjectInfo route={route} editProjectFunctions={editProjectFunctions} />
-      <EditProjectBottomSheet
-        onRefresh={() => {}}
+      <ProjectInfo
+        route={route}
         editProjectBottomSheetRef={editProjectRef}
         editProjectDataRef={editProjectDataRef}
         editProjectFunctions={editProjectFunctions}

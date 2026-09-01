@@ -11,7 +11,7 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 
 export const LeadAssignees = ({ data }: { data: any[] }) => {
   return (
-    <View style={{ gap: 16 }}>
+    <View style={{ gap: 16, width: "100%" }}>
       <View
         style={[
           xstack,
@@ -40,6 +40,9 @@ export const LeadAssignees = ({ data }: { data: any[] }) => {
           data={data}
           keyExtractor={(item) => item.id.toString()}
           scrollEnabled={false}
+          ListEmptyComponent={() => {
+            return <Text style={{ textAlign: "center" }}>NA</Text>;
+          }}
           ItemSeparatorComponent={() => (
             <ItemSeparatorComponent
               direction="horizontal"

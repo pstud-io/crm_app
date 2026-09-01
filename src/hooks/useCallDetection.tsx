@@ -1,4 +1,7 @@
-import { setCallHistory } from "@/store/slices/callHistorySlice";
+import {
+  callHistoryInitialState,
+  setCallHistory,
+} from "@/store/slices/callHistorySlice";
 import { RootState } from "@/store/store";
 import { universalPopoverRef } from "@/utils/universalPopover";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
@@ -73,7 +76,11 @@ export function useCallDetection(
 
             // setShowPopover(true);
             setTimeout(() => {
-              openCallLogBottomSheet();
+              if (callHistoryRef.current.project_id !== "") {
+                openCallLogBottomSheet();
+              } else {
+                dispatch(setCallHistory(callHistoryInitialState));
+              }
             }, timeOutSeconds);
 
             break;

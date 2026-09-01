@@ -368,7 +368,9 @@ const RegularlizationBottomSheet = ({ onRefresh }) => {
                         "Punch out time cannot be before punch in time.",
                       );
                       const merged = mergeDateAndTime(date, new Date());
-                      setPunchInTime(merged);
+                      if (!isPunchOut) {
+                        setPunchInTime(merged);
+                      }
                       setPunchOutTime(merged);
                       return;
                     }

@@ -31,14 +31,7 @@ export const RenderCallSearchItem = ({ item }: { item: any }) => {
         },
       ]}
       key={item.id}
-      onPress={() =>
-        navigation.push("Tasks", {
-          screen: "TaskDetails",
-          params: {
-            task: item,
-          } as any,
-        })
-      }
+      onPress={() => {}}
     >
       <View
         style={[
