@@ -19,7 +19,6 @@ import { body } from "../../components/UI/DesignSystem/typography";
 import { useLeaveEndpoints } from "./hooks/useLeavesEndpoints";
 import { useFocusEffect } from "@react-navigation/native";
 import { formElementsStyles } from "../../components/UI/Dropdown/formElementStyles";
-import { openRequestLeaveBottomSheet } from "./utils/requestLeaveBottomSheetRef";
 import { LoadingIndicatorFooter } from "../../components/UI/GeneralComponents";
 
 export const Leaves = () => {

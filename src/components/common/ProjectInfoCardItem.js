@@ -4,10 +4,10 @@ import { formElementsStyles } from "../UI/Dropdown/formElementStyles";
 export const ProjectInfoCardItem = ({
   label,
   value,
-  color,
-  size,
+  color = Colors.black_text_color,
+  size = SF(13),
   location = false,
-  leftIcon,
+  leftIcon = null,
 }) => {
   const handleOpenInChrome = async () => {
     console.log("Location is pressed", value, supported);

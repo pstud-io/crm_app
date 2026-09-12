@@ -21,6 +21,7 @@ import { useNavigation } from "@react-navigation/native";
 import { UserNavigationProp } from "@/navigation/UserNavigation";
 import { Dispatch, SetStateAction } from "react";
 import UserCheck from "assets/icons/UserCheck";
+import LeaveIcon from "assets/icons/LeaveIcon";
 export const useFloatingButtonOptions = ({
   setExpanded,
 }: {
@@ -127,6 +128,38 @@ export const useFloatingButtonOptions = ({
       }, 200);
     },
   };
-  const floatingButtonOptions = [add_lead, add_task, add_note, add_followup];
+  const add_leave = {
+    id: "add_leave",
+    icon: (
+      <LeaveIcon
+        stroke={theme.text}
+        strokeWidth={borderWidth.xxl}
+        fill={theme.text}
+        width={20}
+        height={20}
+        style={{}}
+      />
+    ),
+    title: "Add Leave",
+    onPress: () => {
+      setExpanded((prev) => !prev);
+      setTimeout(() => {
+        navigation.navigate("Attendance", {
+          screen: "ListAttendance",
+          params: {
+            initialActiveSubButton: "leaves",
+            autoOpenLeaveBottomSheet: true,
+          },
+        });
+      }, 200);
+    },
+  };
+  const floatingButtonOptions = [
+    add_lead,
+    add_task,
+    add_note,
+    add_followup,
+    add_leave,
+  ];
   return { floatingButtonOptions };
 };

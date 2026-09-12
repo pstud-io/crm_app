@@ -11,7 +11,10 @@ import Attendance from "@/screens/Attendance/Attendance";
 import PayrollDetailView from "@/screens/Attendance/components/payroll/PayrollDetailView";
 
 export type AttendanceStackParamList = {
-  ListAttendance: undefined;
+  ListAttendance: {
+    initialActiveSubButton?: string;
+    autoOpenLeaveBottomSheet?: boolean;
+  };
   PayrollDetailView: { payroll: any };
 };
 

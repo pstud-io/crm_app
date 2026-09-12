@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useRef,
   useMemo,
+  useLayoutEffect,
 } from "react";
 import {
   Text,
@@ -18,8 +19,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { Shadow } from "react-native-shadow-2";
-import DateTimePicker from "@react-native-community/datetimepicker";
-
 import {
   Colors,
   SH,
@@ -44,8 +43,13 @@ import { SubTabChip } from "../../components/UI/GeneralComponents/SubTabChip";
 // import { setCustomAddButton } from "../../store/slices/customAddButtonSlice";
 import { setActiveSubButtonGlobal } from "../../store/slices/activeSubButtonGlobal";
 import { Button } from "@/components/Button";
+import { openRequestLeaveBottomSheet } from "./utils/requestLeaveBottomSheetRef";
+import MonthYearPicker from "./components/attendance/MonthYearPicker";
+import { CalendarOutline } from "@/svg";
 
-const Attendance = ({ navigation }) => {
+const Attendance = ({ navigation, route }) => {
+  console.log("This is the route", route);
+  const { initialActiveSubButton, autoOpenLeaveBottomSheet } = route?.params;
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.selectedProject);
@@ -66,7 +70,18 @@ const Attendance = ({ navigation }) => {
     return buttons;
   }, [organizationDetails]);
 
-  const [activeSubButton, setActiveSubButton] = useState("attendance");
+  useEffect(() => {
+    if (autoOpenLeaveBottomSheet) {
+      console.log("IN use effect of auto open");
+      setTimeout(() => {
+        openRequestLeaveBottomSheet();
+      }, 300);
+    }
+  }, [autoOpenLeaveBottomSheet]);
+
+  const [activeSubButton, setActiveSubButton] = useState(
+    initialActiveSubButton ? initialActiveSubButton : "attendance",
+  );
   const [refreshing, setRefreshing] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -150,6 +165,7 @@ const Attendance = ({ navigation }) => {
       if (activeSubButton === "attendance") {
         dispatch(setActiveSubButtonGlobal("attendance"));
       } else if (activeSubButton === "leaves") {
+        console.log("IN correct setactive button");
         dispatch(setActiveSubButtonGlobal("leaves"));
       } else if (activeSubButton === "payroll") {
         dispatch(setActiveSubButtonGlobal("payroll"));
@@ -239,71 +255,17 @@ const Attendance = ({ navigation }) => {
   return (
     <View style={styles.mainContainer}>
       <Spacing space={SH(8)} />
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>
-          {getHeaderTitle(activeSubButton)}
-        </Text>
-        {Platform.OS === "android" &&
-          activeSubButton === "attendance" &&
-          false && (
-            <TouchableOpacity
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                padding: SW(8),
-                backgroundColor: "#EFEFF0",
-                borderRadius: 8,
-                gap: SW(6),
-              }}
-              onPress={() => setShowDatePicker(true)}
-            >
-              <Text
-                style={{
-                  ...typography.md.medium,
-                  color: primaryColors.gray[900],
-                }}
-              >
-                {formatDateWithoutTime(selectedDate)}
-              </Text>
-              {showDatePicker && (
-                <DateTimePicker
-                  value={selectedDate}
-                  mode="date"
-                  display={"calendar"}
-                  onValueChange={(event, date) => {
-                    setShowDatePicker(false);
-                    if (date) {
-                      setSelectedDate(date);
-                    }
-                  }}
-                />
-              )}
-            </TouchableOpacity>
-          )}
-        {Platform.OS === "ios" && activeSubButton === "attendance" && false && (
-          <DateTimePicker
-            value={selectedDate}
-            mode="date"
-            display={"default"}
-            onValueChange={(event, date) => {
-              if (date) {
-                setSelectedDate(date);
-              }
-            }}
-          />
-        )}
-      </View>
-
       <View style={styles.content}>
         <FlatList
           horizontal={true}
           data={subButtons}
           contentContainerStyle={{
-            height: SH(40),
+            height: "100%",
           }}
-          style={{ maxHeight: SH(40), minHeight: SH(40) }}
+          style={{
+            maxHeight: SH(40),
+            minHeight: SH(40),
+          }}
           keyExtractor={(item) => item.id}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item, index }) => {
@@ -320,7 +282,28 @@ const Attendance = ({ navigation }) => {
             );
           }}
         />
-        <Spacing space={SH(12)} />
+        {activeSubButton === "attendance" && (
+          <TouchableOpacity
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              height: "100%",
+            }}
+            onPress={() => setShowDatePicker(true)}
+          >
+            <CalendarOutline width={24} height={24} />
+            {showDatePicker && (
+              <MonthYearPicker
+                visible={showDatePicker}
+                value={selectedDate}
+                onChange={setSelectedDate}
+                onClose={() => setShowDatePicker(false)}
+              />
+            )}
+          </TouchableOpacity>
+        )}
       </View>
       {activeSubButton === "attendance" && (
         <ListAttendance
@@ -410,6 +393,7 @@ const styles = StyleSheet.create({
   mainContainer: { flex: 1, backgroundColor: primaryColors.gray[50] },
   header: {
     paddingHorizontal: SW(12),
+    backgroundColor: "#fff000",
     height: SH(36),
     flexDirection: "row",
     alignItems: "center",
@@ -436,8 +420,12 @@ const styles = StyleSheet.create({
   },
   content: {
     width: "100%",
+    display: "flex",
+    flexDirection: "row",
     alignItems: "flex-start",
+    justifyContent: "center",
     paddingHorizontal: SW(12),
+    paddingVertical: SH(8),
   },
   tabBar: {
     flexDirection: "row",

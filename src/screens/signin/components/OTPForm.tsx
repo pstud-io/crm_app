@@ -249,11 +249,10 @@ export const OTPForm = () => {
             ystack,
             fullWidth,
             {
-              backgroundColor: theme.header,
-              padding: spacing.md,
+              backgroundColor: "transparent",
               borderRadius: borderRadius.lg,
               gap: spacing.sm,
-              boxShadow: theme.shadow.xs,
+              marginBottom: spacing.md,
             },
           ]}
         >

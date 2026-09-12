@@ -1,4 +1,4 @@
-import { useState, useRef, forwardRef } from "react";
+import { useState, useRef, forwardRef, useEffect } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import Carousel from "react-native-snap-carousel";
 import { ChevronUp, CloseOutlineIcon } from "../../svg";
@@ -13,6 +13,8 @@ import {
   BottomSheetModal,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import { useDispatch } from "react-redux";
+import { setIsSheetOpen } from "@/store/slices/isSheetOpenSlice";
 
 const MediaCarousel = forwardRef(
   ({ mediaFiles, onClose, initialIndex = 0 }, ref) => {
@@ -23,6 +25,7 @@ const MediaCarousel = forwardRef(
       type: "image/jpeg",
       url: "...",
     };
+    const dispatch = useDispatch();
     const patchedMediaFiles = [EMPTY_MEDIA, ...mediaFiles];
     const [currentIndex, setCurrentIndex] = useState(initialIndex + 1);
     const [showActionButtonsNCS, setShowActionButtonsNCS] = useState(true);
@@ -44,6 +47,13 @@ const MediaCarousel = forwardRef(
         carouselRef.current?.snapToNext();
       }
     };
+
+    useEffect(() => {
+      dispatch(setIsSheetOpen(true));
+      return () => {
+        dispatch(setIsSheetOpen(false));
+      };
+    }, []);
 
     return (
       <>

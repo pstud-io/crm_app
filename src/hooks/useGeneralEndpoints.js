@@ -343,6 +343,43 @@ export const useGeneralEndpoints = () => {
     }
   };
 
+  const getProjectDocuments = async (
+    setLoading,
+    setProjectDocuments,
+    project,
+  ) => {
+    setLoading((prev) => ({ ...prev, getProjectDocuments: true }));
+    console.log("project in get client details", project);
+    if (!selectedProject?.id) return;
+    const projectToFetchFor = project ?? selectedProject;
+    try {
+      const response = await axios.get(
+        `${apiEndpoint}/customers/projectdocuments/?project_id=${projectToFetchFor?.id}`,
+        {
+          headers: {
+            Authorization: `token ${token}`,
+            "X-OrganizationID": organization_id,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      if (response.status >= 200 && response.status < 300) {
+        setProjectDocuments(response.data.result);
+      }
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: error.response?.data?.result
+          ? `${error.response?.data?.result} in get clients`
+          : "Failed to fetch client details. Check your network connection.",
+      });
+    } finally {
+      setLoading((prev) => ({ ...prev, getProjectDocuments: false }));
+    }
+  };
+
   const updateStage = async (setLoading, item, project_id) => {
     setLoading((prev) => ({ ...prev, updatingStage: true }));
     console.log("item in update stage", item);
@@ -1397,5 +1434,6 @@ export const useGeneralEndpoints = () => {
     getOrganizationDetails,
     getModuleCreatorsForFilter,
     getPendingApprovals,
+    getProjectDocuments,
   };
 };

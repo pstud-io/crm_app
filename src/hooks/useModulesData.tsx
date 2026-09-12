@@ -161,7 +161,7 @@ export const useModulesData: (
       <AttendanceOutlineIcon width={20} height={20} fill={theme.textInverse} />
     ),
     onPress: async () => {
-      navigation.push("Attendance", { screen: "ListAttendance" });
+      navigation.push("Attendance", { screen: "ListAttendance", params: {} });
     },
   };
 

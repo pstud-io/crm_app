@@ -33,6 +33,11 @@ import AddProject from "./AddProject/AddProject";
 import { LeadAdditionalFields } from "@/screens/Leads/components/LeadAdditionalFields";
 import { LeadAssignees } from "@/screens/Leads/components/LeadAssignees";
 import EditProjectBottomSheet from "@/screens/Leads/components/EditProjectBottomSheet";
+import { ProjectAddressInfo } from "./ProjectAddressInfo";
+import { ProjectExtraInfo } from "./ProjectExtraInfo";
+import { ProjectClientInfo } from "./ProjectClientInfo";
+import { ProjectOtherInfo } from "./ProjectOtherInfo";
+import { ProjectDocumentsInfo } from "./ProjectDocumentsInfo";
 const ProjectInfo = ({
   route,
   editProjectFunctions,
@@ -46,10 +51,12 @@ const ProjectInfo = ({
     getStagesForDropdown: false,
     getClientDetails: false,
     updatingStage: false,
+    getProjectDocuments: false,
   });
   const [allProjectStages, setAllProjectStages] = useState([]);
   const [projectStage, setProjectStage] = useState("");
   const [clientDetails, setClientDetails] = useState(null);
+  const [projectDocuments, setProjectDocuments] = useState([]);
   console.log("Client details are", clientDetails);
   const stageDropdownRef = useRef(null);
 
@@ -63,8 +70,12 @@ const ProjectInfo = ({
     profile.is_admin ||
     permissions.customer.includes("customer.can_edit_project_stage");
 
-  const { getStagesForDropdown, getClientDetails, updateStage } =
-    useGeneralEndpoints();
+  const {
+    getStagesForDropdown,
+    getClientDetails,
+    updateStage,
+    getProjectDocuments,
+  } = useGeneralEndpoints();
 
   const fetchData = async (index) => {
     if (index < 0) {
@@ -85,6 +96,7 @@ const ProjectInfo = ({
           setProjectStage,
           project,
         ),
+        getProjectDocuments(setLoading, setProjectDocuments, project),
       ]);
     } catch (e) {
       console.log("Lead info error", e);
@@ -93,17 +105,15 @@ const ProjectInfo = ({
     }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      const loadData = async () => {
-        setInitialLoading(true);
-        await fetchData();
-        setInitialLoading(false);
-      };
+  useEffect(() => {
+    const loadData = async () => {
+      setInitialLoading(true);
+      await fetchData();
+      setInitialLoading(false);
+    };
 
-      loadData();
-    }, [project]),
-  );
+    loadData();
+  }, []);
 
   return (
     <>
@@ -266,130 +276,27 @@ const ProjectInfo = ({
                 />
               </View>
             </View>
-            <Text
-              style={[body.sm.semiBold, { color: primaryColors.gray[900] }]}
-            >
-              Client Details
-            </Text>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-start",
-                alignItems: "flex-start",
-                borderRadius: SW(16),
-                borderWidth: 1,
-                borderColor: primaryColors.gray[200],
-                padding: 16,
-                gap: SH(14),
-                width: "100%",
-                backgroundColor: "white",
-              }}
-            >
-              <ProjectInfoCardItem
-                label={"Client Name"}
-                value={
-                  clientDetails?.client_details?.contact_details?.name || "NA"
-                }
-              />
-              <View
-                style={{
-                  borderTopWidth: SW(1),
-                  borderTopColor: primaryColors.gray[200],
-                  width: "100%",
-                }}
-              />
-              <CallWhatsappPopover
-                value={
-                  clientDetails?.client_details?.contact_details?.phone || "NA"
-                }
-                code={
-                  clientDetails?.client_details?.contact_details
-                    ?.country_code || "NA"
-                }
-                fromInfo={true}
-                project_id={clientDetails?.id}
-                project_name={clientDetails?.project_name}
-                client_name={
-                  clientDetails?.client_details?.contact_details?.name
-                }
-                task_id={""}
-                task_name={""}
-              />
-              <View
-                style={{
-                  borderTopWidth: SW(1),
-                  borderTopColor: primaryColors.gray[200],
-                  width: "100%",
-                }}
-              />
-              <ProjectInfoCardItem
-                label={"Email"}
-                value={
-                  clientDetails?.client_details?.contact_details?.email || "NA"
-                }
-              />
-              <View
-                style={{
-                  borderTopWidth: SW(1),
-                  borderTopColor: primaryColors.gray[200],
-                  width: "100%",
-                }}
-              />
-              <ProjectInfoCardItem
-                label={"Address"}
-                value={
-                  clientDetails?.address_details?.address_line_1 +
-                    " " +
-                    clientDetails?.address_details?.address_line_2 || "NA"
-                }
-              />
-              <View
-                style={{
-                  borderTopWidth: SW(1),
-                  borderTopColor: primaryColors.gray[200],
-                  width: "100%",
-                }}
-              />
-              <ProjectInfoCardItem
-                label={"City"}
-                value={clientDetails?.address_details?.city || "NA"}
-              />
-              <View
-                style={{
-                  borderTopWidth: SW(1),
-                  borderTopColor: primaryColors.gray[200],
-                  width: "100%",
-                }}
-              />
-              <ProjectInfoCardItem
-                label={"State"}
-                value={clientDetails?.address_details?.state || "NA"}
-              />
-              <View
-                style={{
-                  borderTopWidth: SW(1),
-                  borderTopColor: primaryColors.gray[200],
-                  width: "100%",
-                }}
-              />
-              <ProjectInfoCardItem
-                label={"PIN Code"}
-                value={clientDetails?.address_details?.pincode || "NA"}
-              />
-              <View
-                style={{
-                  borderTopWidth: SW(1),
-                  borderTopColor: primaryColors.gray[200],
-                  width: "100%",
-                }}
-              />
-              <ProjectInfoCardItem
-                label={"Location"}
-                value={clientDetails?.address_details?.location || "NA"}
-                location={true}
-              />
-            </View>
+            <ProjectExtraInfo
+              clientDetails={clientDetails}
+              onRefresh={fetchData}
+            />
+            <ProjectClientInfo
+              clientDetails={clientDetails}
+              onRefresh={fetchData}
+            />
+            <ProjectAddressInfo
+              clientDetails={clientDetails}
+              onRefresh={fetchData}
+            />
+            <ProjectOtherInfo
+              clientDetails={clientDetails}
+              onRefresh={fetchData}
+            />
+            <ProjectDocumentsInfo
+              projectDocuments={projectDocuments}
+              onRefresh={fetchData}
+              clientDetails={clientDetails}
+            />
             <LeadAdditionalFields
               additionalFields={clientDetails.additional_field_items}
               editProjectFunctions={editProjectFunctions}
