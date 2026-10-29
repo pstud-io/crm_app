@@ -18,15 +18,20 @@ import { usePaginatedSearch } from "@/hooks/usePaginatedSearch";
 import { ActivityIndicatorWrapper } from "@/components/ActivityIndicatorWrapper";
 import { CustomLegendList } from "@/components/CustomLegendList";
 import { RenderLeadItem } from "./RenderLeadItem";
+import { VisibleFieldsState } from "@/store/slices/visibleFields";
 
 export const RenderKanbanItem = ({
   item,
   uniSearch,
   kanbanFilters,
+  preferences,
+  fieldsToggle,
 }: {
   item: any;
   uniSearch: string;
   kanbanFilters: KanbanExtraParams & KanbanFilterParams;
+  preferences: string[];
+  fieldsToggle: VisibleFieldsState;
 }) => {
   const { theme } = useTheme();
   const { leadsLoading, getLeads } = useLeadsEndpoints();
@@ -72,7 +77,12 @@ export const RenderKanbanItem = ({
           data={leadsData}
           keyExtractor={(item, index) => `${index}`}
           renderItem={({ item, index }) => (
-            <RenderLeadItem item={item} index={index} />
+            <RenderLeadItem
+              item={item}
+              index={index}
+              preferences={preferences}
+              fieldsToggle={fieldsToggle}
+            />
           )}
           loading={leadsLoading.getLeads}
           refreshing={leadsSearch.refreshing}

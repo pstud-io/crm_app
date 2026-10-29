@@ -11,6 +11,7 @@ import { CommonHeaderWithProject } from "@/components/CommonHeaderWithProject";
 export type CallHistoryStackParamList = {
   ListCallHistory: {
     project_id: string | null;
+    autoOpenCallLogBottomSheet?: boolean;
   };
   CallHistoryDetails: undefined;
 };

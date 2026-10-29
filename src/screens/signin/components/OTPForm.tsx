@@ -148,7 +148,9 @@ export const OTPForm = () => {
           render={({ field: { onChange, onBlur, value } }) => (
             <PhoneInput
               value={value}
-              onChangePhoneNumber={onChange}
+              onChangePhoneNumber={(phone) => {
+                onChange(phone.replace(/\D/g, ""));
+              }}
               onBlur={onBlur}
               country={country}
               onChangeCountry={setCountry}
@@ -160,7 +162,7 @@ export const OTPForm = () => {
                 { color: theme.text, backgroundColor: theme.background },
               ]}
               modalType="popup"
-              maxLength={11}
+              maxLength={10}
               defaultCountry="IN"
               phoneInputStyles={{
                 callingCode: { ...body.sm.regular, color: theme.text },

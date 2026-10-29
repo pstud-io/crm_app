@@ -36,7 +36,7 @@ export const ViewPendingApprovals = ({ type }) => {
     Dimensions.get("window");
 
   const viewPendingApprovalsRef = useRef(null);
-
+  const [key, setKey] = useState(0);
   const [pendingApprovals, setPendingApprovals] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [refreshing, setRefreshing] = useState(false);
@@ -61,6 +61,12 @@ export const ViewPendingApprovals = ({ type }) => {
 
   return (
     <Popover
+      onOpenComplete={() => {
+        setKey((prev) => prev + 1);
+      }}
+      onCloseComplete={() => {
+        setKey(0);
+      }}
       key={`view-pending-approvals-for-${type}`}
       placement={"center"}
       mode="rn-modal"
@@ -143,6 +149,7 @@ export const ViewPendingApprovals = ({ type }) => {
         )}
         {!loading.getPendingApprovals && (
           <FlatList
+            key={key}
             horizontal={false}
             nestedScrollEnabled={true}
             data={searchedData}

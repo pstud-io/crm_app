@@ -11,18 +11,56 @@ import { UserNavigationProp } from "@/navigation/UserNavigation";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CallWhatsappPopover from "@/components/specific/CallWhatsappPopover";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setActiveLead } from "@/store/slices/activeLeadGlobal";
+import { VisibleFieldsState } from "@/store/slices/visibleFields";
+import { formatDate, formatDateWithoutTime } from "@/utils";
 export const RenderLeadItem = ({
   item,
   index,
+  preferences,
+  fieldsToggle,
 }: {
   item: any;
   index: number;
+  preferences: string[];
+  fieldsToggle: VisibleFieldsState;
 }) => {
   const { theme } = useTheme();
   const navigation = useNavigation<UserNavigationProp>();
   const dispatch = useDispatch();
+
+  const displayFields = preferences
+    .map((id) => {
+      const field = fieldsToggle[id];
+      if (!field) return null;
+
+      let value: any = "";
+
+      if (field.type === "standard") {
+        value =
+          field.name === "Assignee"
+            ? item?.additional_fields?.[id][0]?.name
+            : (item?.additional_fields?.[id] ?? "");
+      } else {
+        value =
+          item?.all_custom_fields?.find(
+            (customField: any) => customField.id === id,
+          )?.value ?? "";
+      }
+
+      return {
+        name: field.name,
+        value:
+          value == null || value === ""
+            ? "NA"
+            : field.name === "Created On"
+              ? formatDateWithoutTime(value)
+              : String(value),
+      };
+    })
+    .filter((field) => field !== null);
+
   return (
     <Pressable
       style={[
@@ -135,15 +173,178 @@ export const RenderLeadItem = ({
             task_id={""}
             task_name={""}
           />
-          {/* <Text
-            style={[body.sm.semiBold, { color: theme.text, flexShrink: 1 }]}
-            numberOfLines={1}
-            ellipsizeMode="middle"
-          >
-            {item?.client_details?.phone}
-          </Text> */}
         </View>
       </View>
+      {displayFields && displayFields.length > 0 && (
+        <>
+          <ItemSeparator
+            direction="horizontal"
+            opacity={1}
+            style={{
+              marginVertical: spacing.md,
+              borderTopWidth: borderWidth.xs,
+            }}
+          />
+          <View
+            style={[
+              xstack,
+              fullWidth,
+              center,
+              { justifyContent: "space-between" },
+            ]}
+          >
+            <View
+              style={[
+                ystack,
+                {
+                  flexGrow: 1,
+                  maxWidth: "48%",
+                  minWidth: "48%",
+                  gap: spacing.tiny,
+                },
+              ]}
+            >
+              <Text
+                style={[body.xs.regular, { color: theme.text, flexShrink: 1 }]}
+                numberOfLines={1}
+                ellipsizeMode="middle"
+              >
+                {displayFields[0]?.name}
+              </Text>
+              <Text
+                style={[body.sm.semiBold, { color: theme.text, flexShrink: 1 }]}
+                numberOfLines={1}
+                ellipsizeMode="middle"
+              >
+                {displayFields[0]?.value}
+              </Text>
+            </View>
+
+            {displayFields.length > 1 && (
+              <View
+                style={[
+                  ystack,
+                  {
+                    flexGrow: 1,
+                    maxWidth: "48%",
+                    minWidth: "48%",
+                    gap: spacing.tiny,
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    body.xs.regular,
+                    { color: theme.text, flexShrink: 1 },
+                  ]}
+                  numberOfLines={1}
+                  ellipsizeMode="middle"
+                >
+                  {displayFields[1]?.name}
+                </Text>
+                <Text
+                  style={[
+                    body.sm.semiBold,
+                    { color: theme.text, flexShrink: 1 },
+                  ]}
+                  numberOfLines={1}
+                  ellipsizeMode="middle"
+                >
+                  {displayFields[1]?.value}
+                </Text>
+              </View>
+            )}
+          </View>
+          {displayFields.length > 2 && (
+            <>
+              <ItemSeparator
+                direction="horizontal"
+                opacity={1}
+                style={{
+                  marginVertical: spacing.md,
+                  borderTopWidth: borderWidth.xs,
+                }}
+              />
+              <View
+                style={[
+                  xstack,
+                  fullWidth,
+                  center,
+                  { justifyContent: "space-between" },
+                ]}
+              >
+                <View
+                  style={[
+                    ystack,
+                    {
+                      flexGrow: 1,
+                      maxWidth: "48%",
+                      minWidth: "48%",
+                      gap: spacing.tiny,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      body.xs.regular,
+                      { color: theme.text, flexShrink: 1 },
+                    ]}
+                    numberOfLines={1}
+                    ellipsizeMode="middle"
+                  >
+                    {displayFields[2]?.name}
+                  </Text>
+                  <Text
+                    style={[
+                      body.sm.semiBold,
+                      { color: theme.text, flexShrink: 1 },
+                    ]}
+                    numberOfLines={1}
+                    ellipsizeMode="middle"
+                  >
+                    {displayFields[2]?.value}
+                  </Text>
+                </View>
+
+                {displayFields.length > 3 && (
+                  <View
+                    style={[
+                      ystack,
+                      {
+                        flexGrow: 1,
+                        maxWidth: "48%",
+                        minWidth: "48%",
+                        gap: spacing.tiny,
+                      },
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        body.xs.regular,
+                        { color: theme.text, flexShrink: 1 },
+                      ]}
+                      numberOfLines={1}
+                      ellipsizeMode="middle"
+                    >
+                      {displayFields[3]?.name}
+                    </Text>
+                    <Text
+                      style={[
+                        body.sm.semiBold,
+                        { color: theme.text, flexShrink: 1 },
+                      ]}
+                      numberOfLines={1}
+                      ellipsizeMode="middle"
+                    >
+                      {displayFields[3]?.value}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </>
+          )}
+        </>
+      )}
     </Pressable>
   );
 };

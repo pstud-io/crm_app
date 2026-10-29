@@ -60,9 +60,17 @@ const MaterialMultiSelectPopup = ({
     onClose();
   };
 
+  const [key, setKey] = useState(0);
+
   return (
     <Popover
       isVisible={visible}
+      onOpenComplete={() => {
+        setKey((prev) => prev + 1);
+      }}
+      onCloseComplete={() => {
+        setKey(0);
+      }}
       onRequestClose={onClose}
       animationConfig={{ duration: 250, useNativeDriver: true }}
       backgroundStyle={styles.backdrop}
@@ -100,6 +108,7 @@ const MaterialMultiSelectPopup = ({
         <View style={styles.listContainer}>
           <FlatList
             data={filteredData}
+            key={key}
             keyExtractor={(item) => item.id.toString()}
             showsVerticalScrollIndicator={true}
             renderItem={({ item }) => {

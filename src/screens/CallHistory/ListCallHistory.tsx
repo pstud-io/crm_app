@@ -19,6 +19,9 @@ import { CustomLegendList } from "@/components/CustomLegendList";
 import { RenderCallHistoryItem } from "./components/RenderCallHistoryItem";
 import { MaterialTopTabScreenProps } from "@react-navigation/material-top-tabs";
 import { LeadDetailsTabParamList } from "@/navigation/LeadsTopTabNavigation";
+import CallLogBottomSheetManual, {
+  openCallLogBottomSheetManual,
+} from "./components/CallLogBottomSheetManual";
 
 type Props =
   | NativeStackScreenProps<CallHistoryStackParamList, "ListCallHistory">
@@ -26,6 +29,8 @@ type Props =
 
 export const ListCallHistory = ({ route, navigation }: Props) => {
   const project_id = route.params.project_id;
+  // @ts-ignore
+  const autoOpenCallLogBottomSheet = route?.params.autoOpenCallLogBottomSheet;
   const project = useSelector((state: RootState) => state.project);
   const projectID = project_id ? project_id : project.id;
   const { callHistoryLoading, getCallHistory } = useCallHistoryEndpoints();
@@ -33,6 +38,16 @@ export const ListCallHistory = ({ route, navigation }: Props) => {
   const [initialLoad, setInitialLoad] = useState<boolean | undefined>(
     undefined,
   );
+
+  useEffect(() => {
+    if (autoOpenCallLogBottomSheet) {
+      console.log("IN use effect of auto open");
+      setTimeout(() => {
+        openCallLogBottomSheetManual();
+      }, 300);
+    }
+  }, [autoOpenCallLogBottomSheet]);
+
   console.log("call history Data", callHistoryData);
   const dispatch = useDispatch();
   const callHistorySearch = usePaginatedSearch<any, CallHistoryExtraParams>({
@@ -47,16 +62,16 @@ export const ListCallHistory = ({ route, navigation }: Props) => {
     } satisfies CallHistoryExtraParams,
   });
 
+  const fetchCallHistory = async () => {
+    setInitialLoad(true);
+    console.log("Changed initial load");
+    await callHistorySearch.onFocus();
+    setInitialLoad(false);
+  };
+
   useFocusEffect(
     useCallback(() => {
-      const fetchCallHistory = async () => {
-        setInitialLoad(true);
-        console.log("Changed initial load");
-        await callHistorySearch.onFocus();
-        setInitialLoad(false);
-      };
       fetchCallHistory();
-
       return () => {
         setInitialLoad(undefined);
       };
@@ -116,6 +131,7 @@ export const ListCallHistory = ({ route, navigation }: Props) => {
           }
         />
       )}
+      <CallLogBottomSheetManual onRefresh={fetchCallHistory} />
     </ListWrapper>
   );
 };

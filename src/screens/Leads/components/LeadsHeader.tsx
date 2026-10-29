@@ -46,12 +46,14 @@ import {
   KanbanFilterParams,
 } from "../hooks/useLeadsEndpoints";
 import { primaryColors } from "@/design/colors";
+import { SettingsOutlineIcon } from "@/svg";
 export type LeadsHeaderProps = {
   navigation: NativeStackNavigationProp<LeadsStackParamList, "ListLeads">;
   route: RouteProp<LeadsStackParamList, "ListLeads">;
   title: string;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   kanbanFilters: KanbanExtraParams & KanbanFilterParams;
+  setOpenSettings: Dispatch<SetStateAction<boolean>>;
 };
 
 export const LeadsHeader = ({
@@ -60,6 +62,7 @@ export const LeadsHeader = ({
   title,
   setOpen,
   kanbanFilters,
+  setOpenSettings,
 }: LeadsHeaderProps) => {
   const selectedProject = useSelector((state: RootState) => state.project);
   console.log("Selected Lead in tasks header", selectedProject);
@@ -180,7 +183,43 @@ export const LeadsHeader = ({
 
       <TouchableOpacity
         activeOpacity={0.7}
-        onPress={() => setOpen((prev) => !prev)}
+        onPress={() => {
+          setOpenSettings(false);
+          setOpen((prev) => !prev);
+        }}
+        style={[
+          {
+            display: "flex",
+            height: height[40],
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: borderRadius.xs,
+            borderColor: theme.border,
+            backgroundColor: "transparent",
+            position: "relative",
+            width: width[24],
+            marginRight: 8,
+          },
+        ]}
+      >
+        {(filterCount ?? 0) > 0 && (
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>{filterCount}</Text>
+          </View>
+        )}
+        <FilterIcon
+          width={width[20]}
+          height={height[20]}
+          stroke={theme.text}
+          strokeWidth={2}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => {
+          setOpenSettings(true);
+          setOpen((prev) => !prev);
+        }}
         style={[
           {
             display: "flex",
@@ -195,16 +234,12 @@ export const LeadsHeader = ({
           },
         ]}
       >
-        {(filterCount ?? 0) > 0 && (
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>{filterCount}</Text>
-          </View>
-        )}
-        <FilterIcon
+        <SettingsOutlineIcon
           width={width[20]}
           height={height[20]}
           stroke={theme.text}
           strokeWidth={2}
+          color={theme.text}
         />
       </TouchableOpacity>
     </View>

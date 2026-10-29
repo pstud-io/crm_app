@@ -372,7 +372,7 @@ export default function CallLogBottomSheet({
               duration: callHistory.duration,
               context_value: note,
               subject: subject,
-              contacted_on: callHistory.contacted_on,
+              contact_on: callHistory.contacted_on,
             };
             await postCallHistory(payload);
             closeCallLogBottomSheet();

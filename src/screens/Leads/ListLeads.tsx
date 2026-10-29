@@ -14,7 +14,7 @@ import {
   useState,
 } from "react";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
 import { ListWrapper } from "@/components/ListWrapper";
 import SectionHeader from "@/components/ModuleListHeader";
@@ -41,6 +41,13 @@ import { ListFilters } from "./components/ListFilters";
 import { useAddProjectEndpoints } from "@/components/common/AddProject/hooks/useAddProjectEndpoints";
 import useKeyboardStatus from "@/hooks/useKeyboardStatus";
 import { useKeyboard } from "@react-native-community/hooks";
+import { ListVisibleFields } from "./components/ListVisibleFields";
+import { useGeneralEndpoints } from "@/hooks/useGeneralEndpoints";
+import {
+  initialVisibleState,
+  setVisibleFields,
+  VisibleFieldsState,
+} from "@/store/slices/visibleFields";
 type Props = NativeStackScreenProps<LeadsStackParamList, "ListLeads">;
 
 export const ListLeads = ({ route, navigation }: Props) => {
@@ -49,9 +56,13 @@ export const ListLeads = ({ route, navigation }: Props) => {
   const { theme } = useTheme();
   const { kanbanLoading, getKanban } = useLeadsEndpoints();
   const [open, setOpen] = useState<boolean>(false);
+  const [openSettings, setOpenSettings] = useState<boolean>(false);
   const [kanbanData, setKanbanData] = useState<any>([]);
   const [uniSearch, setUniSearch] = useState<string>("");
-
+  const [preferences, setPreferences] = useState<string[]>([]);
+  const [fieldsToggle, setFieldsToggle] = useState<VisibleFieldsState>({
+    ...initialVisibleState,
+  });
   const [kanbanFilters, setKanbanFilters] = useState<
     KanbanExtraParams & KanbanFilterParams
   >(kanbanExtraParams);
@@ -59,6 +70,10 @@ export const ListLeads = ({ route, navigation }: Props) => {
     undefined,
   );
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const { generalLoading, getAdditionalFields, getPreferences } =
+    useGeneralEndpoints();
+
+  const beforeOpenRef = useRef<VisibleFieldsState | null>(null);
   console.log("Kanban Data", kanbanData);
   const dispatch = useDispatch();
   const kanbanSearch = usePaginatedSearch<any, KanbanExtraParams>({
@@ -70,12 +85,20 @@ export const ListLeads = ({ route, navigation }: Props) => {
     extraParams: kanbanFilters,
   });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await getPreferences(setPreferences);
+      await getAdditionalFields(setFieldsToggle);
+    };
+    fetchData();
+  }, []);
+
   useFocusEffect(
     useCallback(() => {
       const fetchKanban = async () => {
         setInitialLoad(true);
         console.log("Changed initial load");
-        await kanbanSearch.onFocus();
+        await Promise.all([kanbanSearch.onFocus()]);
         setInitialLoad(false);
       };
       fetchKanban();
@@ -113,9 +136,7 @@ export const ListLeads = ({ route, navigation }: Props) => {
     <ListWrapper style={{ paddingTop: 0 }}>
       <Drawer
         open={open}
-        onOpen={async () => {
-          console.log("Hi");
-        }}
+        onOpen={async () => {}}
         swipeEnabled={false}
         onClose={() => {
           if (!open) return;
@@ -130,12 +151,25 @@ export const ListLeads = ({ route, navigation }: Props) => {
         drawerType="slide"
         renderDrawerContent={() => {
           return isFocused ? (
-            <ListFilters
-              open={open}
-              kanbanFilters={kanbanFilters}
-              setKanbanFilters={setKanbanFilters}
-              setOpen={setOpen}
-            />
+            openSettings ? (
+              <ListVisibleFields
+                setOpen={setOpen}
+                loading={generalLoading?.getAdditionalFields}
+                onRefresh={kanbanSearch.onRefresh}
+                beforeOpenRef={beforeOpenRef}
+                fieldsToggle={fieldsToggle}
+                preferences={preferences}
+                setPreferences={setPreferences}
+                resetKey={open}
+              />
+            ) : (
+              <ListFilters
+                open={open}
+                kanbanFilters={kanbanFilters}
+                setKanbanFilters={setKanbanFilters}
+                setOpen={setOpen}
+              />
+            )
           ) : (
             <></>
           );
@@ -152,6 +186,7 @@ export const ListLeads = ({ route, navigation }: Props) => {
           navigation={navigation}
           route={route}
           kanbanFilters={kanbanFilters}
+          setOpenSettings={setOpenSettings}
         />
 
         <View
@@ -201,6 +236,8 @@ export const ListLeads = ({ route, navigation }: Props) => {
                   item={item}
                   uniSearch={uniSearch}
                   kanbanFilters={kanbanFilters}
+                  preferences={preferences}
+                  fieldsToggle={fieldsToggle}
                 />
               );
             }}

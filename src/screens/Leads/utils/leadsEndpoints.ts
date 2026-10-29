@@ -20,7 +20,7 @@ export const fetchKanban = async (
     page: 1,
     organization_contact_id: profile.organization_contact_id,
   };
-  const url = `/customers/kanban/initial/?page=${page}&page_size=${pageSize}&search=${searchQuery}`;
+  const url = `/customers/kanban/initial/?page=${page}&page_size=${pageSize}&search=${searchQuery}&sale_stage=${true}`;
   console.log("url is", url);
 
   return await api.post(url, finalPayload, { signal: abortSignal });
@@ -43,7 +43,7 @@ export const fetchLeads = async (
     page: 1,
     organization_contact_id: profile.organization_contact_id,
   };
-  const url = `/customers/kanban/substage/scroll/?page=${page}&page_size=${pageSize}&search=${searchQuery}`;
+  const url = `/customers/kanban/substage/scroll/?page=${page}&page_size=${pageSize}&search=${searchQuery}&sale_stage=${true}`;
 
   return await api.post(url, finalPayload, { signal: abortSignal });
 };

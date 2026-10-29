@@ -21,7 +21,7 @@ import Popover from "react-native-popover-view";
 import badgeColors from "../../Badge/badgeColors";
 import { Badge } from "../../Badge/Badge";
 import { ItemSeparatorComponent } from "../ItemSeperatorComponent";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { CloseOutlineIcon } from "../../../../svg";
 import images from "../../../../images";
 
@@ -30,6 +30,7 @@ export const ViewApproversPopover = ({
   approvalHierarchy,
   canApproveReject,
 }) => {
+  const [key, setKey] = useState(0);
   const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } =
     Dimensions.get("window");
   const viewApproversPopoverRef = useRef(null);
@@ -49,6 +50,12 @@ export const ViewApproversPopover = ({
   return (
     <Popover
       key={uniqueKey}
+      onOpenComplete={() => {
+        setKey((prev) => prev + 1);
+      }}
+      onCloseComplete={() => {
+        setKey(0);
+      }}
       placement={"center"}
       ref={viewApproversPopoverRef}
       popoverStyle={{ borderRadius: SW(12) }}
@@ -110,6 +117,7 @@ export const ViewApproversPopover = ({
         </View>
         <FlatList
           horizontal={false}
+          key={key}
           data={approvalHierarchy}
           scrollEnabled={true}
           showsVerticalScrollIndicator={false}

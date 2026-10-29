@@ -10,6 +10,7 @@ import { permissionsSlice } from "./slices/permissionSlice";
 import { isSheetButtonOpenSlice } from "./slices/isSheetOpenSlice";
 import { callHistorySlice } from "./slices/callHistorySlice";
 import { activeLeadSlice } from "./slices/activeLeadGlobal";
+import { visibleFieldsSlice } from "./slices/visibleFields";
 export const store = configureStore({
   reducer: {
     profile: profileSlice.reducer,
@@ -23,6 +24,7 @@ export const store = configureStore({
     isSheetOpen: isSheetButtonOpenSlice.reducer,
     callHistory: callHistorySlice.reducer,
     activeLead: activeLeadSlice.reducer,
+    visibleFields: visibleFieldsSlice.reducer,
   },
 });
 

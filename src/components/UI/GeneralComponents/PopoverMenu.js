@@ -7,6 +7,7 @@ import { MenuDotOutline, DownloadOutlineIcon } from "../../../svg";
 import { ItemSeparatorComponent } from "./ItemSeperatorComponent";
 import { Shadow } from "react-native-shadow-2";
 import { RenderPopoverMenuOption } from "./RenderPopoverMenuOption";
+import { useState } from "react";
 export const PopoverMenu = ({
   options,
   id,
@@ -14,6 +15,7 @@ export const PopoverMenu = ({
   placement = "auto",
   popoverMenuRef,
 }) => {
+  const [key, setKey] = useState(0);
   return (
     <Popover
       backgroundStyle={{
@@ -25,6 +27,12 @@ export const PopoverMenu = ({
       }}
       animationConfig={{
         duration: 150,
+      }}
+      onOpenComplete={() => {
+        setKey((prev) => prev + 1);
+      }}
+      onCloseComplete={() => {
+        setKey(0);
       }}
       ref={popoverMenuRef}
       placement={placement}
@@ -50,6 +58,7 @@ export const PopoverMenu = ({
         offset={[SW(2), SH(4)]}
       >
         <FlatList
+          key={key}
           keyExtractor={(item, index) => item.id + index}
           data={options}
           scrollEnabled={true}

@@ -3,7 +3,7 @@
     "name": "Pipeline",
     "slug": "pipeline",
     "scheme": "pipeline",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./assets/ios-icon.png",
     "userInterfaceStyle": "light",
@@ -99,7 +99,15 @@
       "expo-asset",
       "react-native-call-detection",
       "expo-notifications",
-      "expo-sharing"
+      "expo-sharing",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "enableSceneSupport": true
+          }
+        }
+      ]
     ],
     "assetBundlePatterns": ["**/*", "assets/pdfjs/*"]
   }

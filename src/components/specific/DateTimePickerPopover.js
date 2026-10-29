@@ -35,6 +35,7 @@ const DateTimePickerPopover = ({
   const DateTimePickerPopoverRef = useRef(null);
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
+  const [key, setKey] = useState(0);
   return (
     <Popover
       backgroundStyle={{
@@ -51,7 +52,11 @@ const DateTimePickerPopover = ({
       placement={isCustomRange ? "floating" : "floating"}
       arrowSize={{ width: 0, height: 0 }}
       offset={8}
+      onCloseComplete={() => setKey(0)}
       onOpenStart={() => {
+        setKey((prev) => prev + 1);
+      }}
+      onOpenComplete={() => {
         setDate(selectedDate);
         setTime(selectedTime);
       }}
@@ -101,6 +106,7 @@ const DateTimePickerPopover = ({
         {type === "date" && (
           <DateTimePicker
             value={date}
+            key={key}
             mode="date"
             display={"inline"}
             minimumDate={minDate}
@@ -115,6 +121,7 @@ const DateTimePickerPopover = ({
         {type === "time" && (
           <DateTimePicker
             value={time}
+            key={key}
             mode="time"
             style={{
               alignSelf: "flex-start",

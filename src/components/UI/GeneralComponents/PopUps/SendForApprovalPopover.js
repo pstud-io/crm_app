@@ -15,7 +15,7 @@ import Popover from "react-native-popover-view";
 import badgeColors from "../../Badge/badgeColors";
 import { Badge } from "../../Badge/Badge";
 import { ItemSeparatorComponent } from "../ItemSeperatorComponent";
-import React, { useRef, useState } from "react";
+import React, { use, useRef, useState } from "react";
 import {
   ArrowRight,
   CloseOutlineIcon,
@@ -35,6 +35,7 @@ export const SendForApprovalPopover = ({
 }) => {
   const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } =
     Dimensions.get("window");
+  const [key, setKey] = useState(0);
   const [loading, setLoading] = useState({
     fetchingApprovalHierarchy: false,
     fetchingProjectDetails: false,
@@ -56,6 +57,7 @@ export const SendForApprovalPopover = ({
     <Popover
       key={uniqueKey}
       onOpenComplete={async () => {
+        setKey((prev) => prev + 1);
         const projectDetails = await getSingleProjectDetails(
           loading,
           setLoading,
@@ -74,6 +76,7 @@ export const SendForApprovalPopover = ({
         );
       }}
       onCloseComplete={() => {
+        setKey(0);
         setApprovalHierarchy([]);
         setLoading({
           fetchingApprovalHierarchy: false,
@@ -148,6 +151,7 @@ export const SendForApprovalPopover = ({
           <ActivityIndicator size={16} color={primaryColors.button.active} />
         ) : (
           <FlatList
+            key={key}
             horizontal={false}
             data={approvalHierarchy}
             scrollEnabled={true}

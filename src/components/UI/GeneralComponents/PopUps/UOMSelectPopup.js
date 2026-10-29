@@ -29,7 +29,7 @@ const UOMSelectPopup = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [tempSelectedId, setTempSelectedId] = useState(null);
-
+  const [key, setKey] = useState(0);
   useEffect(() => {
     if (visible) {
       setTempSelectedId(selectedId);
@@ -53,6 +53,12 @@ const UOMSelectPopup = ({
   return (
     <Popover
       isVisible={visible}
+      onOpenComplete={() => {
+        setKey((prev) => prev + 1);
+      }}
+      onCloseComplete={() => {
+        setKey(0);
+      }}
       onRequestClose={onClose}
       animationConfig={{ duration: 250, useNativeDriver: true }}
       backgroundStyle={styles.backdrop}
@@ -99,6 +105,7 @@ const UOMSelectPopup = ({
             </View>
           ) : (
             <FlatList
+              key={key}
               data={filteredData}
               keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={true}

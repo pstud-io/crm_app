@@ -7,6 +7,12 @@ import { generateTimestampString } from "../utils";
 import * as FileSystem from "expo-file-system/legacy";
 import { useNavigation } from "@react-navigation/native";
 import { api } from "@/api/client";
+import {
+  initialVisibleFields,
+  setAdditionalFields,
+  setVisibleFields,
+} from "@/store/slices/visibleFields";
+import { useState } from "react";
 
 export const useGeneralEndpoints = () => {
   const token = useSelector((state) => state.auth.token);
@@ -14,6 +20,10 @@ export const useGeneralEndpoints = () => {
   const selectedProject = useSelector((state) => state.project);
   const profile = useSelector((state) => state.profile);
   const navigation = useNavigation();
+  const [generalLoading, setGeneralLoading] = useState({
+    getAdditionalFields: false,
+    setPreferences: false,
+  });
   const organization_contact_id = useSelector(
     (state) => state.profile.organization_contact_id,
   );
@@ -1231,6 +1241,134 @@ export const useGeneralEndpoints = () => {
     }
   };
 
+  const getAdditionalFields = async (setFieldsToggle) => {
+    setGeneralLoading((prev) => ({ ...prev, getAdditionalFields: true }));
+
+    try {
+      const response = await axios.get(
+        `${apiEndpoint}/customers/additional-fields/`,
+        {
+          headers: {
+            Authorization: `token ${token}`,
+            "X-OrganizationID": organization_id,
+          },
+        },
+      );
+
+      if (response.status >= 200 && response.status < 300) {
+        console.log("response of get additional fields:", response.data.result);
+        const additionalFields = response.data.result;
+        setFieldsToggle((prev) => ({
+          ...prev,
+          ...Object.fromEntries(
+            additionalFields.map((field) => [
+              field.id,
+              {
+                name: field.name,
+                value: false,
+                type: "additional",
+              },
+            ]),
+          ),
+        }));
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Response error:", error.response.data);
+      } else if (error.request) {
+        console.error("Network error:", error.request);
+      } else {
+        console.error("Request error:", error.message);
+      }
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2:
+          error.response?.data?.result ||
+          "Failed to fetch additional fields data. Check your network connection.",
+      });
+    } finally {
+      setGeneralLoading((prev) => ({ ...prev, getAdditionalFields: false }));
+    }
+  };
+
+  const addPreferences = async (selectedFields) => {
+    setGeneralLoading((prev) => ({ ...prev, setPreferences: true }));
+
+    try {
+      const response = await axios.put(
+        `${apiEndpoint}/customers/kanban/preferences/`,
+        { selected_fields: selectedFields },
+        {
+          headers: {
+            Authorization: `token ${token}`,
+            "X-OrganizationID": organization_id,
+          },
+        },
+      );
+
+      if (response.status >= 200 && response.status < 300) {
+        console.log("response of set preferences:", response.data.result);
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Response error:", error.response.data);
+      } else if (error.request) {
+        console.error("Network error:", error.request);
+      } else {
+        console.error("Request error:", error.message);
+      }
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2:
+          error.response?.data?.result ||
+          "Failed to set preferences. Check your network connection.",
+      });
+    } finally {
+      setGeneralLoading((prev) => ({ ...prev, setPreferences: false }));
+    }
+  };
+
+  const getPreferences = async (setPreferences) => {
+    setGeneralLoading((prev) => ({ ...prev, getPreferences: true }));
+
+    try {
+      const response = await axios.get(
+        `${apiEndpoint}/customers/kanban/preferences/`,
+        {
+          headers: {
+            Authorization: `token ${token}`,
+            "X-OrganizationID": organization_id,
+          },
+        },
+      );
+
+      if (response.status >= 200 && response.status < 300) {
+        console.log("response of get preferences:", response.data.result);
+        const preferences = response.data.result.selected_fields;
+        setPreferences(preferences);
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Response error:", error.response.data);
+      } else if (error.request) {
+        console.error("Network error:", error.request);
+      } else {
+        console.error("Request error:", error.message);
+      }
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2:
+          error.response?.data?.result ||
+          "Failed to get preferences. Check your network connection.",
+      });
+    } finally {
+      setGeneralLoading((prev) => ({ ...prev, getPreferences: false }));
+    }
+  };
+
   const handleApproveRejectApprovals = async (
     setLoading,
     actionType,
@@ -1435,5 +1573,9 @@ export const useGeneralEndpoints = () => {
     getModuleCreatorsForFilter,
     getPendingApprovals,
     getProjectDocuments,
+    getAdditionalFields,
+    getPreferences,
+    addPreferences,
+    generalLoading,
   };
 };

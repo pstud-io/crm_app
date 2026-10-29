@@ -1,4 +1,4 @@
-import React, { createRef } from "react";
+import React, { createRef, useState } from "react";
 import {
   View,
   Text,
@@ -43,10 +43,17 @@ export const RenderPopoverExtraData = ({
   const getNestedValue = (obj, path) => {
     return path.split(".").reduce((acc, key) => acc?.[key], obj);
   };
+  const [key, setKey] = useState(0);
 
   return (
     <Popover
       key={uniqueKey}
+      onOpenComplete={() => {
+        setKey((prev) => prev + 1);
+      }}
+      onCloseComplete={() => {
+        setKey(0);
+      }}
       ref={ref}
       // Section: Animation Config
       animationConfig={{ duration: 300, useNativeDriver: true }}
@@ -96,6 +103,7 @@ export const RenderPopoverExtraData = ({
         {/* Section: List Content */}
         <FlatList
           data={extraData}
+          key={key}
           keyExtractor={(item, index) => `${item.id}-${index}`}
           showsVerticalScrollIndicator={false}
           style={styles.listStyle}

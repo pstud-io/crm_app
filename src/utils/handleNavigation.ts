@@ -4,6 +4,7 @@ import { ProjectRecord } from "@/store/slices/projectSlice/projectSliceTypes";
 import { openAddProjectBottomSheet } from "@/screens/dashboard/utils/addProjectBottomSheetService";
 import { LeadRecord } from "@/store/slices/activeLeadGlobal";
 import { openRequestLeaveBottomSheet } from "@/screens/Attendance/utils/requestLeaveBottomSheetRef";
+import { openCallLogBottomSheetManual } from "@/screens/CallHistory/components/CallLogBottomSheetManual";
 
 export const handleNavigation = (
   activeSubButtonGlobal: string | null,
@@ -85,5 +86,8 @@ export const handleNavigation = (
   } else if (activeSubButtonGlobal === "leaves") {
     console.log("Hitting for leads");
     openRequestLeaveBottomSheet();
+  } else if (activeSubButtonGlobal === "calls") {
+    console.log("Hitting for calls");
+    openCallLogBottomSheetManual();
   }
 };

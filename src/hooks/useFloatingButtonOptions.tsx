@@ -154,12 +154,39 @@ export const useFloatingButtonOptions = ({
       }, 200);
     },
   };
+  const add_call = {
+    id: "add_call",
+    icon: (
+      <PhoneIcon
+        stroke={theme.text}
+        strokeWidth={borderWidth.xxl}
+        fill={"transparent"}
+        width={20}
+        height={20}
+        style={{}}
+      />
+    ),
+    title: "Add Call",
+    onPress: () => {
+      setExpanded((prev) => !prev);
+      setTimeout(() => {
+        navigation.navigate("Calls", {
+          screen: "ListCallHistory",
+          params: {
+            project_id: project.id,
+            autoOpenCallLogBottomSheet: true,
+          },
+        });
+      }, 200);
+    },
+  };
   const floatingButtonOptions = [
     add_lead,
     add_task,
     add_note,
     add_followup,
     add_leave,
+    add_call,
   ];
   return { floatingButtonOptions };
 };

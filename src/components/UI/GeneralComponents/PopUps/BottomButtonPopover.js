@@ -24,7 +24,7 @@ export const BottomButtonPopover = ({
   onMainPress,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
-
+  const [key, setKey] = useState(0);
   const RenderPopoverMenuOption = ({ item }) => {
     return (
       <TouchableOpacity
@@ -56,6 +56,12 @@ export const BottomButtonPopover = ({
   return (
     <Popover
       isVisible={showMenu}
+      onOpenComplete={() => {
+        setKey((prev) => prev + 1);
+      }}
+      onCloseComplete={() => {
+        setKey(0);
+      }}
       onRequestClose={() => setShowMenu(false)}
       backgroundStyle={{ backgroundColor: "transparent" }}
       popoverStyle={styles.popoverContainer}
@@ -97,6 +103,7 @@ export const BottomButtonPopover = ({
       >
         <View style={styles.menuWrapper}>
           <FlatList
+            key={key}
             data={options}
             keyExtractor={(item, index) => index.toString()}
             scrollEnabled={false}

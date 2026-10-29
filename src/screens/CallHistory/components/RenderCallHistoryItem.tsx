@@ -126,8 +126,8 @@ export const RenderCallHistoryItem = ({
             },
           ]}
         >
-          {callHistory.contacted_on
-            ? formatDate(callHistory.contacted_on)
+          {callHistory.contact_on
+            ? formatDate(callHistory.contact_on)
             : formatDate(callHistory.created_on)}
         </Text>
       </View>

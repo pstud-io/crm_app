@@ -44,7 +44,7 @@ export const FloatingButtons = () => {
 
   const hideAddOn = ["attendance", "payroll"];
 
-  const disableOn = ["lead-info", "lead-stage", "calls", "timeline"];
+  const disableOn = ["lead-info", "lead-stage", "timeline"];
 
   const disable =
     activeSubButtonGlobal && disableOn.includes(activeSubButtonGlobal);

@@ -298,7 +298,7 @@ function AddProject({ onRefresh }) {
   };
 
   function handlePhoneInputValue(phoneNumber) {
-    setPhoneInputValue(phoneNumber);
+    setPhoneInputValue(phoneNumber.replace(/\D/g, ""));
   }
 
   function handleSelectedCountry(country) {
@@ -627,7 +627,7 @@ function AddProject({ onRefresh }) {
             setTimeout(() => {
               console.log("Set to false from add project");
               dispatch(setIsSheetOpen(false));
-            }, [250]);
+            }, 250);
           }
         }}
         onChange={async (index) => {
@@ -1545,7 +1545,7 @@ function AddProject({ onRefresh }) {
                       ...formElementsStyles.valueStyle,
                     }}
                     modalType="popup"
-                    maxLength={11}
+                    maxLength={10}
                     defaultCountry="IN"
                     phoneInputStyles={{
                       callingCode: formElementsStyles.titleStyle,
