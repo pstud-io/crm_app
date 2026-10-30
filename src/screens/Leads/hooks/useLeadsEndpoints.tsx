@@ -110,7 +110,7 @@ export const useLeadsEndpoints = () => {
         return { hasMore };
       }
     } catch (error: any) {
-      console.error("Error loading tasks:", error);
+      console.error("Error loading Kanban:", error);
 
       Toast.show({
         type: "error",
@@ -233,14 +233,14 @@ export const useLeadsEndpoints = () => {
         return { hasMore };
       }
     } catch (error: any) {
-      console.error("Error loading tasks:", error);
+      console.error("Error fetching all data:", error);
 
       Toast.show({
         type: "error",
-        text1: "Error Loading Kanban",
+        text1: "Error Loading Data",
         text2:
           error.response?.data?.result ||
-          "Failed to fetch tasks data. Check your network connection.",
+          "Failed to fetch all data. Check your network connection.",
       });
     } finally {
       setKanbanLoading((prev: any) => ({ ...prev, getAllData: false }));
@@ -277,7 +277,7 @@ export const useLeadsEndpoints = () => {
         return { hasMore };
       }
     } catch (error: any) {
-      console.error("Error loading tasks:", error);
+      console.error("Error loading timeline:", error);
 
       Toast.show({
         type: "error",

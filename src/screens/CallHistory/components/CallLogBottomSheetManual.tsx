@@ -67,7 +67,7 @@ export default function CallLogBottomSheetManual({
   const { postCallHistory, callHistoryLoading } = useCallHistoryEndpoints();
   const selectedProject = useSelector((state: RootState) => state.project);
   const keyboardVisible = useKeyboardStatus();
-  const snapPoints = keyboardVisible ? ["100%"] : ["70%"];
+  const snapPoints = keyboardVisible ? ["100%"] : ["80%"];
   const [project, setProject] = useState<string>("");
   const [note, setNote] = useState<string>("");
   const [subject, setSubject] = useState<string>("");
@@ -656,7 +656,7 @@ export default function CallLogBottomSheetManual({
             />
           </View>
         </View>
-        <Spacing
+        {/* <Spacing
           space={16}
           horizontal={false}
           backgroundColor={"transparent"}
@@ -676,7 +676,7 @@ export default function CallLogBottomSheetManual({
             },
           ]}
           placeholderTextColor={formElementsStyles.placeholderColor}
-        />
+        /> */}
         <Spacing
           space={16}
           horizontal={false}

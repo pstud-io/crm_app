@@ -235,14 +235,17 @@ export const useTaskEndpoints = () => {
       }
 
       console.error("Error loading tasks:", error);
-
-      Toast.show({
-        type: "error",
-        text1: "Error Loading Tasks",
-        text2:
-          error.response?.data?.result ||
-          "Failed to fetch tasks data. Check your network connection.",
-      });
+      if (error.response?.data?.result === "Invalid page.") {
+        return { hasMore: false };
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "Error Loading Tasks",
+          text2:
+            error.response?.data?.result ||
+            "Failed to fetch tasks data. Check your network connection.",
+        });
+      }
     } finally {
       if (newPage === 1) {
         setShowLoading(false);

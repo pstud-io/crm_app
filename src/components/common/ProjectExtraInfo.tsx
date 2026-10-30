@@ -95,7 +95,7 @@ export const ProjectExtraInfo = ({
         />
         <ProjectInfoCardItem
           label={"Brand"}
-          value={clientDetails?.fk_brand_name || "NA"}
+          value={clientDetails?.brand_name || "NA"}
         />
         <View
           style={{
@@ -106,7 +106,7 @@ export const ProjectExtraInfo = ({
         />
         <ProjectInfoCardItem
           label={"Lead Source"}
-          value={clientDetails?.fk_lead_source_name || "NA"}
+          value={clientDetails?.lead_source_name || "NA"}
         />
         <View
           style={{
@@ -117,7 +117,7 @@ export const ProjectExtraInfo = ({
         />
         <ProjectInfoCardItem
           label={"Project Type"}
-          value={clientDetails?.fk_project_type_name || "NA"}
+          value={clientDetails?.project_type_name || "NA"}
         />
         <View
           style={{

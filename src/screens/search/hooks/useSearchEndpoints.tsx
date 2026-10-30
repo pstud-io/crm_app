@@ -87,16 +87,16 @@ export const useSearchEndpoints = () => {
         return { hasMore };
       }
     } catch (error: any) {
-      console.error("Error loading tasks:", error);
+      console.error("Error loading all data:", error);
       if (error.response?.data?.result === "Invalid page.") {
         return { hasMore: false };
       } else {
         Toast.show({
           type: "error",
-          text1: "Error Loading Kanban",
+          text1: "Error Loading Data",
           text2:
             error.response?.data?.result ||
-            "Failed to fetch tasks data. Check your network connection.",
+            "Failed to fetch all data. Check your network connection.",
         });
       }
     } finally {
