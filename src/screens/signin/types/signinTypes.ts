@@ -6,7 +6,7 @@ export const SignInFormSchemaPassword = z.object({
 });
 
 export const SignInFormSchemaOTP = z.object({
-  username: z.string().trim().min(11, "Phone Number is required"),
+  username: z.string().trim().min(10, "Phone Number is required"),
   otp: z
     .string()
     .min(4, "OTP must be at least 4 characters")

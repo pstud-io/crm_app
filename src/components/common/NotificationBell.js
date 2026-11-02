@@ -21,7 +21,7 @@ const NotificationBell = React.memo(({ isFocused }) => {
   const organization_id = useSelector((state) => state.profile.organization_id);
 
   const fetchUnreadCount = async () => {
-    console.log("In fetch unread count");
+    console.log("In fetch unread count", token);
     try {
       const response = await axios.get(
         `${apiEndpoint}/core/notifications/unread-count/`,
