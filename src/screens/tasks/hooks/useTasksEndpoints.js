@@ -54,7 +54,7 @@ export const useTaskEndpoints = () => {
     }
   };
 
-  const getTaskSummary = async (setTaskCount, project) => {
+  const getTaskSummary = async (setTaskCount, project, params) => {
     console.log("IN get single task");
     const queryParams = new URLSearchParams();
 
@@ -63,9 +63,30 @@ export const useTaskEndpoints = () => {
     } else {
       queryParams.append("project_id", project?.id);
     }
+    queryParams.append("organization_contact_id", organization_contact_id);
+
+    const formatDate = (date) => {
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+
+      return `${day}/${month}/${year}`;
+    };
+    Object.entries(params).forEach(([key, value]) => {
+      const paramValue =
+        value instanceof Date
+          ? formatDate(value)
+          : value == null
+            ? "null"
+            : String(value);
+
+      queryParams.append(key, paramValue);
+    });
+
+    const queryString = queryParams.toString().replace(/%2F/gi, "/");
     try {
       const response = await axios.get(
-        `${apiEndpoint}/crm/tasks/summary/?${queryParams}`,
+        `${apiEndpoint}/crm/tasks/summary/?${queryString}`,
         {
           headers: {
             Authorization: `token ${token}`,

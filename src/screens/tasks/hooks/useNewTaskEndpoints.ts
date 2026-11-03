@@ -12,6 +12,11 @@ export type TasksExtraParams = {
   setDiscardedTasks: React.Dispatch<React.SetStateAction<any>>;
   project: ProjectRecord;
   task_type: string;
+  showAssignedToMeTasks: boolean;
+  showSelfCreatedTasks: boolean;
+  activeSubButton: string;
+  showOverdueTasks: boolean;
+  showDueTodayTasks: boolean;
 };
 
 export const useNewTaskEndpoints = () => {
@@ -28,7 +33,6 @@ export const useNewTaskEndpoints = () => {
     setData,
     abortSignal,
     pageSize,
-
     setCompletedTasks,
     setCreatedTasks,
     setInProgressTasks,
@@ -36,6 +40,11 @@ export const useNewTaskEndpoints = () => {
     setDiscardedTasks,
     project,
     task_type,
+    showAssignedToMeTasks,
+    showOverdueTasks,
+    activeSubButton,
+    showSelfCreatedTasks,
+    showDueTodayTasks,
   }: GetDataProps<any> & TasksExtraParams) => {
     if (!hasMore && page !== 1) return;
 
@@ -48,6 +57,11 @@ export const useNewTaskEndpoints = () => {
         abortSignal,
         project,
         task_type,
+        showAssignedToMeTasks,
+        showOverdueTasks,
+        activeSubButton,
+        showSelfCreatedTasks,
+        showDueTodayTasks,
       );
       if (response && response.status >= 200 && response.status < 300) {
         const allTasks = response.data.results;

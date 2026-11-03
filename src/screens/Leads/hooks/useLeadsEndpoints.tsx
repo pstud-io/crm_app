@@ -170,7 +170,11 @@ export const useLeadsEndpoints = () => {
     }
   };
 
-  const updateLead = async (payload: any, onRefresh: () => Promise<void>) => {
+  const updateLead = async (
+    payload: any,
+    onRefresh: () => Promise<void>,
+    editProjectFunctions: () => void,
+  ) => {
     setLeadsLoading((prev) => ({ ...prev, updateLead: true }));
     console.log("Lead details in updte lead", payload);
     try {
@@ -187,6 +191,8 @@ export const useLeadsEndpoints = () => {
           visibilityTime: 1000,
           autoHide: true,
         });
+        // @ts-ignore
+        editProjectFunctions.close();
         await onRefresh();
       }
     } catch (error: any) {

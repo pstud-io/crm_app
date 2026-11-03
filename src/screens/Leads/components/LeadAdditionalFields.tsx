@@ -5,12 +5,20 @@ import { RenderLeadAdditionalFieldItem } from "./RenderLeadAdditionalFieldItem";
 export const LeadAdditionalFields = ({
   additionalFields,
   editProjectFunctions,
+  additionalFieldsWithValue,
+  leadDetails,
 }: {
   additionalFields: any[];
   editProjectFunctions: any;
+  additionalFieldsWithValue: any[];
+  leadDetails: Record<string, any>;
 }) => {
   const groupedAdditionalFields =
     groupAdditionalFieldsBySection(additionalFields);
+  console.log(
+    "These are the grouped additional fields",
+    groupedAdditionalFields,
+  );
 
   return (
     <>
@@ -21,6 +29,8 @@ export const LeadAdditionalFields = ({
           fields={fields}
           editProjectFunctions={editProjectFunctions}
           allFields={additionalFields}
+          additionalFieldsWithValue={additionalFieldsWithValue}
+          leadDetails={leadDetails}
         />
       ))}
     </>

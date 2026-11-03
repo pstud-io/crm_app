@@ -14,11 +14,15 @@ export const RenderLeadAdditionalFieldItem = ({
   fields,
   editProjectFunctions,
   allFields,
+  additionalFieldsWithValue,
+  leadDetails,
 }: {
   section: any;
   fields: any[];
   editProjectFunctions: any;
   allFields: any[];
+  additionalFieldsWithValue: any[];
+  leadDetails: Record<string, any>;
 }) => {
   console.log("Edit project functions is", editProjectFunctions);
   return (
@@ -38,7 +42,13 @@ export const RenderLeadAdditionalFieldItem = ({
         </Text>
         <Pressable
           onPress={() =>
-            editProjectFunctions.open({ section, fields, allFields })
+            editProjectFunctions.open({
+              section,
+              fields,
+              allFields,
+              additionalFieldsWithValue,
+              leadDetails,
+            })
           }
         >
           <PenIcon
@@ -66,6 +76,11 @@ export const RenderLeadAdditionalFieldItem = ({
         }}
       >
         {fields.map((item, index) => {
+          const value =
+            additionalFieldsWithValue?.find(
+              (customFieldDetail) =>
+                customFieldDetail.additional_field.id === item.id,
+            )?.value || "NA";
           return (
             <React.Fragment key={item.id}>
               {index !== 0 && (
@@ -76,8 +91,8 @@ export const RenderLeadAdditionalFieldItem = ({
               )}
               <ProjectInfoCardItem
                 key={item.id}
-                label={capitalizeEachWord(item.additional_field.name)}
-                value={item.value || "NA"}
+                label={capitalizeEachWord(item.name)}
+                value={value}
                 location={true}
                 color={Colors.black_text_color}
                 size={13}

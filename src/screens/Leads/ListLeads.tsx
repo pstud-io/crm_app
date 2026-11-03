@@ -88,7 +88,7 @@ export const ListLeads = ({ route, navigation }: Props) => {
   useEffect(() => {
     const fetchData = async () => {
       await getPreferences(setPreferences);
-      await getAdditionalFields(setFieldsToggle);
+      await getAdditionalFields(setFieldsToggle, true);
     };
     fetchData();
   }, []);

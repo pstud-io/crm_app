@@ -49,7 +49,11 @@ const EditProjectBottomSheet = ({
   const dispatch = useDispatch();
   const [section, setSection] = useState("");
   const [fields, setfields] = useState([]);
+  const [leadDetails, setLeadDetails] = useState(null);
   const [allFields, setAllFields] = useState([]);
+  const [additionalFieldsWithValue, setAdditionalFieldsWithValue] = useState(
+    [],
+  );
   const [values, setValues] = useState({});
   const [openPickerId, setOpenPickerId] = useState(null);
   useEffect(() => {
@@ -81,7 +85,7 @@ const EditProjectBottomSheet = ({
   }, []);
 
   const renderFieldInput = (item) => {
-    const field = item?.additional_field;
+    const field = item;
     const value = values[item?.id]?.value;
 
     switch (field?.type) {
@@ -198,7 +202,7 @@ const EditProjectBottomSheet = ({
 
   const renderFirstFields = (items) => {
     return items.map((item) => {
-      const field = item.additional_field;
+      const field = item;
       console.log("This is the item", item);
       return (
         <View
@@ -222,21 +226,24 @@ const EditProjectBottomSheet = ({
     const initialValues = {};
 
     fields.forEach((item) => {
-      initialValues[item.id] = {
+      initialValues[item.additional_field.id] = {
         value: item.value ?? "",
       };
     });
-
+    console.log("Setting values", initialValues);
     setValues(initialValues);
   }, []);
 
   const createPayload = (fields, values) => {
     return fields.map((field) => ({
-      id: field.id,
-      fk_project_additional_field: field.fk_project_additional_field,
-      fk_project: field.fk_project,
+      id:
+        additionalFieldsWithValue.find(
+          (add_field) => add_field?.additional_field?.id === field?.id,
+        )?.id || null,
+      fk_project_additional_field: field.id,
+      fk_project: leadDetails.id,
       value: values[field.id]?.value ?? "",
-      is_active: field.is_active,
+      is_active: true,
     }));
   };
 
@@ -265,10 +272,14 @@ const EditProjectBottomSheet = ({
       onAnimate={async (fromIndex, toIndex) => {
         if (fromIndex === -1 && toIndex === 0) {
           console.log("This is editprojectdataref", editProjectDataRef);
+          setLeadDetails(editProjectDataRef.current.leadDetails);
           setSection(editProjectDataRef.current.section);
           setfields(editProjectDataRef.current.fields);
           setAllFields(editProjectDataRef.current.allFields);
-          populateValues(editProjectDataRef.current.fields);
+          setAdditionalFieldsWithValue(
+            editProjectDataRef.current.additionalFieldsWithValue,
+          );
+          populateValues(editProjectDataRef.current.additionalFieldsWithValue);
           dispatch(setIsSheetOpen(true));
         }
         if (fromIndex === 0 && toIndex === -1) {
@@ -361,8 +372,7 @@ const EditProjectBottomSheet = ({
           onPress={async () => {
             console.log("These are the values", values);
             const payload = createPayload(allFields, values);
-            await updateLead(payload, onRefresh);
-            editProjectFunctions.close();
+            await updateLead(payload, onRefresh, editProjectFunctions);
           }}
           type={"default"}
         />

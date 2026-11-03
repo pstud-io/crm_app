@@ -56,6 +56,7 @@ const ProjectInfo = ({
   const [allProjectStages, setAllProjectStages] = useState([]);
   const [projectStage, setProjectStage] = useState("");
   const [clientDetails, setClientDetails] = useState(null);
+  const [additionalFields, setAdditionalFields] = useState([]);
   const [projectDocuments, setProjectDocuments] = useState([]);
   console.log("Client details are", clientDetails);
   const stageDropdownRef = useRef(null);
@@ -75,6 +76,8 @@ const ProjectInfo = ({
     getClientDetails,
     updateStage,
     getProjectDocuments,
+    getAdditionalFields,
+    generalLoading,
   } = useGeneralEndpoints();
 
   const fetchData = async (index) => {
@@ -97,6 +100,7 @@ const ProjectInfo = ({
           project,
         ),
         getProjectDocuments(setLoading, setProjectDocuments, project),
+        getAdditionalFields(setAdditionalFields),
       ]);
     } catch (e) {
       console.log("Lead info error", e);
@@ -129,7 +133,9 @@ const ProjectInfo = ({
           paddingVertical: 32,
         }}
       >
-        {initialLoading || !clientDetails ? (
+        {initialLoading ||
+        generalLoading.getAdditionalFields ||
+        !clientDetails ? (
           <View
             style={{
               width: "100%",
@@ -298,8 +304,10 @@ const ProjectInfo = ({
               clientDetails={clientDetails}
             />
             <LeadAdditionalFields
-              additionalFields={clientDetails.additional_field_items}
+              additionalFields={additionalFields}
               editProjectFunctions={editProjectFunctions}
+              additionalFieldsWithValue={clientDetails.additional_field_items}
+              leadDetails={clientDetails}
             />
             <LeadAssignees data={clientDetails.organization_contacts} />
             <ItemSeparatorComponent

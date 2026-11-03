@@ -20,7 +20,12 @@ export const LeadInfo = ({ route }: { route: any }) => {
   const editProjectRef = useRef<BottomSheetModal>(null);
   const editProjectDataRef = useRef<any>(null);
   const editProjectFunctions = {
-    open: (data: { section: string; fields: any[]; allFields: any[] }) => {
+    open: (data: {
+      section: string;
+      fields: any[];
+      allFields: any[];
+      additionalFieldsWithValue: any[];
+    }) => {
       console.log("Hit edit project functions", data);
       editProjectDataRef.current = data;
       editProjectRef.current?.present();

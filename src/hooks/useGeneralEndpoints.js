@@ -1241,7 +1241,7 @@ export const useGeneralEndpoints = () => {
     }
   };
 
-  const getAdditionalFields = async (setFieldsToggle) => {
+  const getAdditionalFields = async (setData, isForSettings = false) => {
     setGeneralLoading((prev) => ({ ...prev, getAdditionalFields: true }));
 
     try {
@@ -1258,7 +1258,11 @@ export const useGeneralEndpoints = () => {
       if (response.status >= 200 && response.status < 300) {
         console.log("response of get additional fields:", response.data.result);
         const additionalFields = response.data.result;
-        setFieldsToggle((prev) => ({
+        if (!isForSettings) {
+          setData(additionalFields);
+          return additionalFields;
+        }
+        setData((prev) => ({
           ...prev,
           ...Object.fromEntries(
             additionalFields.map((field) => [
@@ -1271,6 +1275,7 @@ export const useGeneralEndpoints = () => {
             ]),
           ),
         }));
+        return additionalFields;
       }
     } catch (error) {
       if (error.response) {
