@@ -46,6 +46,8 @@ import { Button } from "@/components/Button";
 import { openRequestLeaveBottomSheet } from "./utils/requestLeaveBottomSheetRef";
 import MonthYearPicker from "./components/attendance/MonthYearPicker";
 import { CalendarOutline } from "@/svg";
+import AfterPunchInBottomSheet from "./components/attendance/AfterPunchInBottomSheet";
+import { openPunchInBottomSheet } from "./utils/attendance/punchoutBottomSheetService";
 
 const Attendance = ({ navigation, route }) => {
   console.log("This is the route", route);
@@ -119,6 +121,7 @@ const Attendance = ({ navigation, route }) => {
     loadingText: "",
     getRequests: false,
     getCustomWeekends: false,
+    savingPunchInRemarks: false,
   });
 
   const [initialLoading, setInitialLoading] = useState({
@@ -244,8 +247,17 @@ const Attendance = ({ navigation, route }) => {
         setSelectedMedia(async (prev) => {
           const updated = [...prev, ...mediaArray];
 
-          await handlePunchInPress(setLoading, updated, refreshCurrentData);
-
+          const punchInResponse = await handlePunchInPress(
+            setLoading,
+            updated,
+            refreshCurrentData,
+          );
+          if (
+            organizationDetails?.punch_in_remarks_show &&
+            punchInResponse?.id
+          ) {
+            openPunchInBottomSheet(punchInResponse?.id);
+          }
           return updated;
         });
       },
@@ -364,11 +376,18 @@ const Attendance = ({ navigation, route }) => {
                       return;
                     }
                     if (!loading.markingAttendance) {
-                      await handlePunchInPress(
+                      const punchInResponse = await handlePunchInPress(
                         setLoading,
                         selectedMedia,
                         refreshCurrentData,
                       );
+                      if (
+                        organizationDetails?.punch_in_remarks_show &&
+                        punchInResponse?.id
+                      ) {
+                        console.log("before open punch in bottom sheet ");
+                        openPunchInBottomSheet(punchInResponse?.id);
+                      }
                       return;
                     }
                   }}
@@ -383,6 +402,11 @@ const Attendance = ({ navigation, route }) => {
         setLoading={setLoading}
         onRefresh={refreshCurrentData}
         latestAttendance={latestAttendance}
+      />
+      <AfterPunchInBottomSheet
+        loading={loading}
+        setLoading={setLoading}
+        onRefresh={refreshCurrentData}
       />
       <RegularlizationBottomSheet onRefresh={refreshCurrentData} />
     </View>

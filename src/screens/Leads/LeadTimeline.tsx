@@ -19,6 +19,7 @@ import { CustomLegendList } from "@/components/CustomLegendList";
 import { RenderTimelineItem } from "./components/RenderTimelineItem";
 import { spacing } from "@/design/spacing";
 import { borderRadius, borderWidth } from "@/design/borders";
+import { groupTimelineByDate } from "./utils/leadsFunctions";
 type Props = MaterialTopTabScreenProps<LeadDetailsTabParamList, "Timeline">;
 
 export const LeadTimeline = ({ route, navigation }: Props) => {
@@ -62,6 +63,9 @@ export const LeadTimeline = ({ route, navigation }: Props) => {
       dispatch(setActiveSubButtonGlobal("timeline"));
     }, []),
   );
+
+  const finalData = groupTimelineByDate(timelineData);
+
   return (
     <ListWrapper style={{ padding: spacing.lg }}>
       <></>
@@ -71,10 +75,10 @@ export const LeadTimeline = ({ route, navigation }: Props) => {
         </ActivityIndicatorWrapper>
       ) : (
         <CustomLegendList<any>
-          data={timelineData}
+          data={finalData}
           keyExtractor={(item) => item.date}
           renderItem={({ item, index }) => {
-            const isLast = index === timelineData.length - 1;
+            const isLast = index === finalData.length - 1;
             return (
               <RenderTimelineItem
                 index={index}

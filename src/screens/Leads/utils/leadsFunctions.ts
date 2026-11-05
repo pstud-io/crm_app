@@ -42,7 +42,7 @@ export const groupTimelineByDate = <T extends { created_on: string }>(
   const groups = new Map<string, T[]>();
 
   for (const item of data) {
-    const date = item.created_on.slice(0, 10); // YYYY-MM-DD
+    const date = item?.created_on?.slice(0, 10); // YYYY-MM-DD
 
     if (!groups.has(date)) {
       groups.set(date, []);

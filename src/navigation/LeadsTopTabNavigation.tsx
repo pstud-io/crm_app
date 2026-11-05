@@ -1,4 +1,5 @@
 import { ListCallHistory } from "@/screens/CallHistory/ListCallHistory";
+import { ListCallHistoryLeads } from "@/screens/CallHistory/ListCallHistoryLeads";
 import { LeadsTopBar } from "@/screens/Leads/components/LeadsTopBar";
 import { LeadInfo } from "@/screens/Leads/LeadInfo";
 import { LeadStage } from "@/screens/Leads/LeadStage";
@@ -45,6 +46,7 @@ export const LeadDetailsTabs = () => {
       tabBar={(props) => <LeadsTopBar {...props} />}
       screenOptions={{
         swipeEnabled: false,
+        lazy: true,
       }}
     >
       <Tab.Screen
@@ -100,7 +102,7 @@ export const LeadDetailsTabs = () => {
 
       <Tab.Screen
         name="Call History"
-        component={ListCallHistory}
+        component={ListCallHistoryLeads}
         initialParams={{
           project_id: "",
         }}

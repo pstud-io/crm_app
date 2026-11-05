@@ -131,6 +131,7 @@ const ProjectInfo = ({
           justifyContent: "flex-start",
           gap: SH(16),
           paddingVertical: 32,
+          paddingBottom: 100,
         }}
       >
         {initialLoading ||

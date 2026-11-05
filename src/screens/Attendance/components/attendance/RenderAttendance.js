@@ -35,8 +35,12 @@ import {
   regularizationBottomSheetRef,
 } from "../../utils/attendance/punchoutBottomSheetService";
 import { RenderAssets } from "../../../../components/UI/GeneralComponents/RenderAssets";
+import { useSelector } from "react-redux";
 
 export const RenderAttendance = ({ item, weekendsData }) => {
+  const organizationDetails = useSelector(
+    (state) => state.profile.organization_details,
+  );
   const hasNotPunchedIn = item.punch_in_time === null;
   const hasNotPunchedOut = item.punch_out_time === null;
   const hasRequestedRegularization =
@@ -49,6 +53,28 @@ export const RenderAttendance = ({ item, weekendsData }) => {
   const leaves = ["company leave", "casual leave", "sick leave"];
   const isPastDate = !ispresentDate;
   const forgotToPunchOut = !hasNotPunchedIn && hasNotPunchedOut && isPastDate;
+
+  const punchInAssets = [];
+  const hasPunchInRemarkAssetPermission =
+    organizationDetails?.punch_in_remarks_show;
+  const selfAssetDetails = item?.punch_in_self_asset_details;
+
+  if (
+    selfAssetDetails &&
+    typeof selfAssetDetails === "object" &&
+    !Array.isArray(selfAssetDetails) &&
+    Object.keys(selfAssetDetails).length > 0
+  ) {
+    console.log("This is the self asset details", selfAssetDetails);
+    punchInAssets.push(selfAssetDetails);
+  }
+
+  if (item?.punch_in_assets?.length > 0 && hasPunchInRemarkAssetPermission) {
+    console.log("These are the punch in assets", item?.punch_in_assets);
+    punchInAssets.push(...item.punch_in_assets);
+  }
+
+  console.log("This is the final punchInAssets", punchInAssets);
 
   const openSheet = (item, isPunchOut) => {
     openRegularizationBottomSheet({
@@ -180,17 +206,40 @@ export const RenderAttendance = ({ item, weekendsData }) => {
                     <Text style={styles.valueMedium}>Location Unavailable</Text>
                   )}
                 </TouchableOpacity>
-                {item?.punch_in_self_asset_details &&
-                  Object.keys(item.punch_in_self_asset_details).length > 0 &&
+                {punchInAssets.length > 0 &&
                   item?.punch_in_location?.latitude && (
                     <RenderAssets
                       imageSize={SH(24)}
-                      assets={[item.punch_in_self_asset_details]}
+                      assets={punchInAssets}
+                      marginRight={6}
                     />
                   )}
               </View>
             </View>
           </View>
+
+          {item?.punch_in_remarks &&
+            item?.punch_in_remarks !== "" &&
+            hasPunchInRemarkAssetPermission && (
+              <>
+                <ItemSeparatorComponent direction={"horizontal"} />
+                <View
+                  style={{
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    width: "100%",
+                  }}
+                >
+                  <View style={[styles.infoColumn, { width: "100%" }]}>
+                    <Text style={styles.labelMedium}>Punch In Remarks</Text>
+                    <Text style={[styles.valueMedium]}>
+                      {item?.punch_in_remarks}
+                    </Text>
+                  </View>
+                </View>
+              </>
+            )}
 
           <ItemSeparatorComponent direction={"horizontal"} />
 

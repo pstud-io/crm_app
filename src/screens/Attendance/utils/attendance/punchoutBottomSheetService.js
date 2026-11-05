@@ -14,6 +14,21 @@ export const closePunchOutBottomSheet = () => {
   punchOutBottomSheetRef.current?.dismiss();
 };
 
+export const punchInBottomSheetRef = createRef();
+export const punchInBottomSheetExtraDataRef = createRef();
+export const dateRefForRegularizationPunchIn = createRef();
+
+export const openPunchInBottomSheet = (attendance_id) => {
+  punchInBottomSheetExtraDataRef.current = attendance_id;
+  console.log("before presenting", attendance_id);
+  punchInBottomSheetRef.current?.present();
+};
+
+export const closePunchInBottomSheet = () => {
+  Keyboard.dismiss();
+  punchInBottomSheetRef.current?.dismiss();
+};
+
 export const regularizationBottomSheetRef = createRef();
 export const regularizationDataRef = createRef();
 export const openRegularizationBottomSheet = (item) => {

@@ -22,11 +22,15 @@ import {
   CloseOutlineIcon,
   Checkbox,
   DownArrowOutlineIcon,
+  UploadCloudOutline,
 } from "../../../../svg";
 import SelectionPopover from "./SelectionPopover";
 import { formElementsStyles } from "../../Dropdown/formElementStyles";
 import Toast from "react-native-toast-message";
 import { DatePicker2 } from "../DatePicker2";
+import { useCameraScreen } from "@/hooks/useCameraScreen";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { RenderMediaWithoutBottomSheet } from "../RenderMediaWithoutBottomSheet";
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -38,7 +42,12 @@ export const UserCustomFieldsModal = ({
   loading,
 }) => {
   const [values, setValues] = useState({});
+  const [selectedMedia, setSelectedMedia] = useState([]);
   const [openPickerId, setOpenPickerId] = useState(null);
+  const { handleSelectMedia, handleDeleteMedia } = useCameraScreen({
+    setSelectedMedia,
+    useDeviceCamera: false,
+  });
   useEffect(() => {
     const fetchData = async () => {
       if (!visible) {
@@ -85,6 +94,33 @@ export const UserCustomFieldsModal = ({
     const value = values[item.id]?.value;
 
     switch (field.type) {
+      case "file":
+        return (
+          <>
+            <TouchableOpacity
+              style={formElementsStyles.attachFilesTriggerStyle}
+              onPress={handleSelectMedia}
+            >
+              <UploadCloudOutline
+                width={SW(24)}
+                height={SH(24)}
+                stroke={primaryColors.brand[1000]}
+              />
+              <Text style={styles.uploadText}>Click here to upload</Text>
+            </TouchableOpacity>
+            <Spacing space={SH(16)} />
+            <BottomSheetModalProvider>
+              <RenderMediaWithoutBottomSheet
+                selectedMedia={selectedMedia}
+                handleDeleteMedia={handleDeleteMedia}
+                onChange={(value) =>
+                  handleUpdate(item.id, value, is_parent, item)
+                }
+              />
+            </BottomSheetModalProvider>
+          </>
+        );
+
       case "text":
       case "number":
         return (
@@ -414,7 +450,7 @@ export const UserCustomFieldsModal = ({
           </View>
         </View>
       </View>
-      {/* <Toast /> */}
+      <Toast />
     </Modal>
   );
 };

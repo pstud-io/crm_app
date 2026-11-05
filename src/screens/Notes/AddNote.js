@@ -84,6 +84,7 @@ const AddNote = ({ route }) => {
   // } = useRecorder({ shouldTranscribeFormat: true });
 
   const [ccData, setCCData] = useState([]);
+  const [audioID, setAudioID] = useState(undefined);
   const [cc, setCC] = useState([]);
   const [loading, setLoading] = useState({
     AddNote: false,
@@ -197,6 +198,7 @@ const AddNote = ({ route }) => {
       cc,
       selectedMedia,
       setLoading,
+      audioID,
     };
     console.log("This is the external payload", externalPayload);
     // let networkCheck = null;
@@ -306,6 +308,7 @@ const AddNote = ({ route }) => {
           onTranscriptionEnd={(formattedText) =>
             console.log("Transcription finished")
           }
+          setAudioID={setAudioID}
           // showMicIcon={!(isSlow || networkCheckGlobal?.isSlow)}
         />
 

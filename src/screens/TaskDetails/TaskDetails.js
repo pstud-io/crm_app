@@ -35,6 +35,8 @@ import { RenderTaskItem } from "../tasks/components/RenderTaskItem";
 import { TaskHistoryBottomSheet } from "../tasks/components/TaskHistoryBottomSheet";
 import { setActiveSubButtonGlobal } from "@/store/slices/activeSubButtonGlobal";
 import { TaskCallHistory } from "./components/TaskCallHistory";
+import { FollowUpCompletModal } from "@/components/UI/GeneralComponents/PopUps/FollowUpCompleteModal";
+import { usePostComment } from "@/hooks/usePostComment";
 const TaskDetails = ({ route }) => {
   const navigation = useNavigation();
   const { autoOpenComments, fromLeads } = route.params || {};
@@ -43,6 +45,7 @@ const TaskDetails = ({ route }) => {
   console.log("This is the task", route.params);
   const taskId = task?.id;
   const completedStages = ["completed", "approved", "rejected", "discarded"];
+  const [comment, setComment] = useState("");
   const profile = useSelector((state) => state.profile);
   const canEdit =
     profile.is_admin || profile.name === task?.creator_contact_details.name;
@@ -53,6 +56,11 @@ const TaskDetails = ({ route }) => {
     visible: false,
     fields: [],
     pendingAction: null,
+  });
+  const [followupCompleteModal, setFollowupCompleteModal] = useState({
+    visible: false,
+    pendingAction: null,
+    task: null,
   });
   const [submitting, setIsSubmitting] = useState(false);
 
@@ -118,8 +126,20 @@ const TaskDetails = ({ route }) => {
     setCommentsData,
     commentGetURL,
   });
-
   const { getSingleTask, updateCustomFieldInPopup } = useTaskEndpoints();
+
+  const { postComment } = usePostComment({
+    loading,
+    setLoading,
+    commentPostURL,
+    comment,
+    selectedMedia: [],
+    fk_project: null,
+    mentions: null,
+    onPost: () => {},
+    project_asset_group_id: null,
+    project_asset_id: null,
+  });
 
   useFocusEffect(
     useCallback(() => {
@@ -138,8 +158,19 @@ const TaskDetails = ({ route }) => {
 
   const { taskUpdateOptions } = useTaskUpdateOptions({
     task,
-    onShowUserFields: (fields, action) =>
-      setUserFieldsModal({ visible: true, fields, pendingAction: action }),
+    onShowUserFields: (fields, action) => {
+      console.log("OPEN MODAL");
+      setUserFieldsModal({ visible: true, fields, pendingAction: action });
+    },
+    onShowFolloupComplete: (task, action) => {
+      console.log("Open modal");
+      setFollowupCompleteModal({
+        visible: true,
+        task,
+        pendingAction: action,
+      });
+    },
+    popoverMenuRef: undefined,
     onRefresh,
   });
 
@@ -208,6 +239,58 @@ const TaskDetails = ({ route }) => {
         text1: "Success",
         text2: "Task status updated.",
       });
+    } catch (e) {
+      console.error(e);
+      Toast.show({ type: "error", text1: "Error", text2: "Update failed." });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSaveFollowUp = async (createNewFollowUp) => {
+    setIsSubmitting(true);
+    try {
+      await postComment();
+      if (followupCompleteModal.pendingAction) {
+        await followupCompleteModal.pendingAction();
+      }
+      console.log("Run close from handle user fields submit");
+      // 3. Clear UI
+      setFollowupCompleteModal({
+        visible: false,
+        task: [],
+        pendingAction: null,
+      });
+
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Follow Up status updated.",
+      });
+
+      if (createNewFollowUp) {
+        if (fromLeads) {
+          userNavigationRef.dispatch(
+            StackActions.push("Tasks", {
+              screen: "AddTask",
+              params: {
+                voiceInput: false,
+                onRefresh: () => {},
+                task_type: "followup",
+                lead_id: task.project_details.id,
+              },
+            }),
+          );
+        }
+        if (!fromLeads) {
+          navigation.push("AddTask", {
+            voiceInput: false,
+            onRefresh: () => {},
+            task_type: "followup",
+            lead_id: task.project_details.id,
+          });
+        }
+      }
     } catch (e) {
       console.error(e);
       Toast.show({ type: "error", text1: "Error", text2: "Update failed." });
@@ -362,6 +445,21 @@ const TaskDetails = ({ route }) => {
         }
         onConfirm={handleUserFieldsSubmit}
         loading={submitting}
+      />
+      <FollowUpCompletModal
+        visible={followupCompleteModal.visible}
+        tasks={followupCompleteModal.task}
+        onClose={() => {
+          console.log("MODAL ON CLOSE");
+          setFollowupCompleteModal({
+            visible: false,
+            task: null,
+            pendingAction: null,
+          });
+        }}
+        onConfirm={handleSaveFollowUp}
+        loading={submitting}
+        setComment={setComment}
       />
       <TaskHistoryBottomSheet />
     </View>

@@ -165,7 +165,7 @@ function AddProject({ onRefresh }) {
       if (response.status >= 200 && response.status < 300) {
         // console.log("City details", response.data.result);
         setAllCities([...response.data.result]);
-        setSelectedCity(response.data.result[0].id);
+        setSelectedCity(response.data.result[0]?.id ?? "");
       }
     } catch (error) {
       console.error(
@@ -319,8 +319,9 @@ function AddProject({ onRefresh }) {
       {
         address_line_1: addressLine1,
         address_line_2: addressLine2,
-        city: allCities.find((city) => city.id === selectedCity).name,
-        state: allStates.find((state) => state.id === selectedState).name,
+        city: allCities.find((city) => city.id === selectedCity)?.name || "",
+        state:
+          allStates.find((state) => state.id === selectedState)?.name || "",
         pincode: pinCode,
         location: location,
       },
@@ -465,6 +466,7 @@ function AddProject({ onRefresh }) {
   };
 
   const handleAddProject = async () => {
+    console.log("In handle add project");
     setLoading((prev) => ({ ...prev, addingProject: true }));
     const address = await addAddress();
     if (address === false) {
@@ -473,7 +475,7 @@ function AddProject({ onRefresh }) {
     }
 
     const payload = {
-      fk_address: address[0].id,
+      fk_address: address[0]?.id,
       fk_project_stage: projectStage,
       budget: budget,
       description: note,

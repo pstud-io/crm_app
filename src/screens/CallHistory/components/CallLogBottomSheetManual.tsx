@@ -50,7 +50,9 @@ import { RenderDataForDropdown } from "@/components/UI/GeneralComponents/RenderD
 import Toast from "react-native-toast-message";
 
 export const callLogBottomSheetManualRef = createRef<BottomSheetModal>();
-export const openCallLogBottomSheetManual = () => {
+export const callLogDataRef = createRef<string>();
+export const openCallLogBottomSheetManual = (data: string) => {
+  callLogDataRef.current = data;
   callLogBottomSheetManualRef.current?.present();
 };
 export const closeCallLogBottomSheetManual = () => {
@@ -138,13 +140,20 @@ export default function CallLogBottomSheetManual({
       }}
       onAnimate={async (fromIndex, toIndex) => {
         if (fromIndex === -1 && toIndex === 0) {
+          console.log("This is call log data ref", callLogDataRef);
           dispatch(setIsSheetOpen(true));
-          if (selectedProject?.id !== "all_projects") {
-            setProject(selectedProject?.id!);
+          if (callLogDataRef.current && callLogDataRef.current !== "") {
+            setProject(callLogDataRef.current);
+          } else {
+            if (selectedProject?.id !== "all_projects") {
+              setProject(selectedProject?.id!);
+            } else {
+            }
           }
           await getAllProjects(setLoading, setAllProjects);
         }
         if (fromIndex === 0 && toIndex === -1) {
+          callLogDataRef.current = "";
           setTimeout(() => {
             console.log("Set to false from add project");
             dispatch(setIsSheetOpen(false));

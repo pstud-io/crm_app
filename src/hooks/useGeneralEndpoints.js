@@ -1556,6 +1556,120 @@ export const useGeneralEndpoints = () => {
     }
   };
 
+  const getUserDetails = async (setLoading, setUserDetails) => {
+    setLoading((prev) => ({ ...prev, getUserDetails: true }));
+
+    try {
+      const response = await axios.get(
+        `${apiEndpoint}/core/userdetail/?username=${profile?.phone}`,
+        {
+          headers: {
+            Authorization: `token ${token}`,
+            "X-OrganizationID": organization_id,
+          },
+        },
+      );
+      if (response.status >= 200 && response.status < 300) {
+        console.log("response of get pending results", response.data.result);
+        setUserDetails(response?.data?.result);
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Response error:", error.response.data);
+      } else if (error.request) {
+        console.error("Network error:", error.request);
+      } else {
+        console.error("Request error:", error.message);
+      }
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2:
+          error.response?.data?.result ||
+          "Failed to fetch user details. Check your network connection.",
+      });
+    } finally {
+      setLoading((prev) => ({ ...prev, getUserDetails: false }));
+    }
+  };
+
+  const getUserSummary = async (setLoading, setUserSummary) => {
+    setLoading((prev) => ({ ...prev, getUserSummary: true }));
+
+    try {
+      const response = await axios.get(
+        `${apiEndpoint}/core/usersummary/?username=${profile?.phone}`,
+        {
+          headers: {
+            Authorization: `token ${token}`,
+            "X-OrganizationID": organization_id,
+          },
+        },
+      );
+      if (response.status >= 200 && response.status < 300) {
+        console.log("response of get pending results", response.data.result);
+        setUserSummary(response?.data?.result);
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Response error:", error.response.data);
+      } else if (error.request) {
+        console.error("Network error:", error.request);
+      } else {
+        console.error("Request error:", error.message);
+      }
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2:
+          error.response?.data?.result ||
+          "Failed to fetch user summary. Check your network connection.",
+      });
+    } finally {
+      setLoading((prev) => ({ ...prev, getUserSummary: false }));
+    }
+  };
+
+  const getUserAdditionalDetails = async (
+    setLoading,
+    setUserAdditionalDetails,
+  ) => {
+    setLoading((prev) => ({ ...prev, getUserAdditionalDetails: true }));
+
+    try {
+      const response = await axios.get(
+        `${apiEndpoint}/customers/custom-fields/?context_type=userdetail`,
+        {
+          headers: {
+            Authorization: `token ${token}`,
+            "X-OrganizationID": organization_id,
+          },
+        },
+      );
+      if (response.status >= 200 && response.status < 300) {
+        console.log("response of get pending results", response.data.result);
+        setUserAdditionalDetails(response?.data?.result);
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Response error:", error.response.data);
+      } else if (error.request) {
+        console.error("Network error:", error.request);
+      } else {
+        console.error("Request error:", error.message);
+      }
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2:
+          error.response?.data?.result ||
+          "Failed to fetch user additional details. Check your network connection.",
+      });
+    } finally {
+      setLoading((prev) => ({ ...prev, getUserAdditionalDetails: false }));
+    }
+  };
+
   return {
     fetchProjectContacts,
     uploadMedia,
@@ -1582,5 +1696,8 @@ export const useGeneralEndpoints = () => {
     getPreferences,
     addPreferences,
     generalLoading,
+    getUserDetails,
+    getUserSummary,
+    getUserAdditionalDetails,
   };
 };

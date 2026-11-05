@@ -256,28 +256,6 @@ const ListNotesLeads = ({ route }) => {
               No Data Available
             </Text>
           }
-          //   ListEmptyComponent={
-          //     <EmptyContent
-          //       onPress={() => {
-          //         if (fromLeads) {
-          //           userNavigationRef.dispatch(
-          //             StackActions.push("Notes", {
-          //               screen: "AddNote",
-          //               params: {
-          //                 project_id: project.id,
-          //                 project,
-          //               },
-          //             }),
-          //           );
-          //         } else {
-          //           navigation.push("AddNote", {
-          //             project_id: project.id,
-          //             project,
-          //           });
-          //         }
-          //       }}
-          //     />
-          //   }
           refreshControl={
             <RefreshControl
               refreshing={notesSearch.refreshing}
@@ -296,30 +274,6 @@ const ListNotesLeads = ({ route }) => {
           }
         />
       )}
-
-      {/* {project?.id !== "all_projects" && (
-        <View style={styles.floatingButtonContainer}>
-          <Shadow
-            style={{ borderRadius: SW(12) }}
-            distance={SW(9)}
-            startColor="#E5E7EB"
-            offset={[SW(2), SW(2)]}
-          >
-            <Button
-              title={"Add Note"}
-              buttonStyle={formElementsStyles.floatingButton}
-              color={primaryColors.button.active}
-              titleStyle={{ ...body.md.semiBold }}
-              onPress={() =>
-                navigation.navigate("AddNote", {
-                  project_id: project.id,
-                  project,
-                })
-              }
-            />
-          </Shadow>
-        </View>
-      )} */}
     </View>
   );
 };

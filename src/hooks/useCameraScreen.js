@@ -8,6 +8,8 @@ import { userNavigationRef } from "@/navigation/UserNavigation";
 export const useCameraScreen = ({
   setSelectedMedia,
   maxMediaLength = undefined,
+  replace = false,
+  useDeviceCamera = true,
 }) => {
   const { showActionSheetWithOptions } = useActionSheet();
   const navigation = useNavigation();
@@ -15,9 +17,9 @@ export const useCameraScreen = ({
     console.log("Hit hadnle select media");
     try {
       const options = [
-        "Cancel",
-        "Take Photo",
-        "Record Video",
+        ...(useDeviceCamera
+          ? ["Cancel", "Take Photo", "Record Video"]
+          : ["Cancel"]),
         "Select from Memory",
         "Select from Gallery",
         "Record Audio",
@@ -25,16 +27,28 @@ export const useCameraScreen = ({
       const cancelButtonIndex = 0;
 
       const handleSelection = async (buttonIndex) => {
-        if (buttonIndex === 1) {
-          await handleCaptureMedia("picture");
-        } else if (buttonIndex === 2) {
-          await handleCaptureMedia("video");
-        } else if (buttonIndex === 3) {
-          await handlePickFromMemory();
-        } else if (buttonIndex === 4) {
-          await handlePickFromGallery(); // 👈 implement this
-        } else if (buttonIndex === 5) {
-          await handleRecordAudio();
+        const selectedOption = options[buttonIndex];
+
+        switch (selectedOption) {
+          case "Take Photo":
+            await handleCaptureMedia("picture");
+            break;
+
+          case "Record Video":
+            await handleCaptureMedia("video");
+            break;
+
+          case "Select from Memory":
+            await handlePickFromMemory();
+            break;
+
+          case "Select from Gallery":
+            await handlePickFromGallery();
+            break;
+
+          case "Record Audio":
+            await handleRecordAudio();
+            break;
         }
       };
 
@@ -88,6 +102,11 @@ export const useCameraScreen = ({
           type: file.mimeType || "application/octet-stream",
         }));
 
+        if (replace) {
+          setSelectedMedia(selectedFiles.slice(0, maxMediaLength));
+          return;
+        }
+
         setSelectedMedia((prevMedia) => {
           const newMedia = selectedFiles.filter(
             (file) => !prevMedia.some((media) => media.uri === file.uri),
@@ -120,7 +139,10 @@ export const useCameraScreen = ({
     userNavigationRef.dispatch(
       StackActions.push("CameraScreen", {
         onSave: (mediaArray) => {
-          console.log("Run on save from handle capture media");
+          if (replace) {
+            setSelectedMedia([...mediaArray]);
+            return;
+          }
           setSelectedMedia((prev) => [...prev, ...mediaArray]);
         },
         mode,
@@ -159,6 +181,17 @@ export const useCameraScreen = ({
             const uri = recorder.uri;
 
             if (uri) {
+              if (replace) {
+                setSelectedMedia([
+                  {
+                    uri,
+                    name: `AUDIO_${Date.now()}.m4a`,
+                    type: "audio/m4a",
+                    size: null,
+                  },
+                ]);
+                return;
+              }
               setSelectedMedia((prev) => [
                 ...prev,
                 {
@@ -192,6 +225,11 @@ export const useCameraScreen = ({
         size: file.size,
         type: file.mimeType || "application/octet-stream",
       }));
+
+      if (replace) {
+        setSelectedMedia(selectedFiles);
+        return;
+      }
 
       setSelectedMedia((prevMedia) => {
         const newMedia = selectedFiles.filter(

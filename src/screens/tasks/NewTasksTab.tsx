@@ -423,7 +423,13 @@ export const NewTaskstab = ({ route }: { route: any }) => {
     ]),
   );
 
-  const setButton = task_type === "followup" ? "followups" : "tasks";
+  const setButton = fromLeads
+    ? task_type === "followup"
+      ? "lead-followups"
+      : "lead-tasks"
+    : task_type === "followup"
+      ? "followup"
+      : "tasks";
 
   useFocusEffect(
     useCallback(() => {
@@ -599,23 +605,27 @@ export const NewTaskstab = ({ route }: { route: any }) => {
               setFilter={setShowOverdueTasks}
               filter={showOverdueTasks}
               label={"Overdue"}
+              loading={initialLoad || tasksLoading.getTasks}
             />
           )}
           <FilterChip
             setFilter={setShowSelfCreatedTasks}
             filter={showSelfCreatedTasks}
             label={"Created by me"}
+            loading={initialLoad || tasksLoading.getTasks}
           />
           <FilterChip
             setFilter={setShowAssignedToMeTasks}
             filter={showAssignedToMeTasks}
             label={"Assigned to me"}
+            loading={initialLoad || tasksLoading.getTasks}
           />
           {!showOverdueTasks && (
             <FilterChip
               setFilter={setShowDueTodayTasks}
               filter={showDueTodayTasks}
               label={"Due Today"}
+              loading={initialLoad || tasksLoading.getTasks}
             />
           )}
         </ScrollView>

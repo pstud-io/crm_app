@@ -7,13 +7,15 @@ export const FilterChip = ({
   filter,
   setFilter,
   label,
+  loading,
 }: {
   filter: boolean;
   setFilter: Dispatch<SetStateAction<boolean>>;
   label: string;
+  loading: boolean;
 }) => {
   return (
-    <TouchableOpacity onPress={() => setFilter(!filter)}>
+    <TouchableOpacity onPress={() => setFilter(!filter)} disabled={loading}>
       <Badge
         size={"md"}
         color={filter ? badgeColors.blueGray : badgeColors.outline}

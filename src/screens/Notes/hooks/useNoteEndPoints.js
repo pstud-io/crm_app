@@ -31,6 +31,7 @@ export const useNoteEndpoints = () => {
       cc,
       selectedMedia,
       setLoading,
+      audioID,
       showToast = true,
     } = externalPayload;
     setLoading((prev) => ({ ...prev, AddNote: true }));
@@ -55,7 +56,7 @@ export const useNoteEndpoints = () => {
       if (
         response.status >= 200 &&
         response.status < 300 &&
-        selectedMedia.length > 0
+        (selectedMedia.length > 0 || audioID)
       ) {
         const note_id = response.data.result.id;
         const assetResponse = await uploadMedia(selectedMedia, project_id);
@@ -64,6 +65,12 @@ export const useNoteEndpoints = () => {
           fk_asset: asset.id,
           fk_note: note_id,
         }));
+
+        if (audioID) {
+          console.log("In if audioID", audioID);
+          folderAssetsPayload.push({ fk_asset: audioID, fk_note: note_id });
+          console.log("after if audioID", folderAssetsPayload);
+        }
 
         await axios.post(
           `${apiEndpoint}/crm/multinoteassets/?note_id=${note_id}`,

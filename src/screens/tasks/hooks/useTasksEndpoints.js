@@ -8,7 +8,7 @@ export const useTaskEndpoints = () => {
   const token = useSelector((state) => state.auth.token);
   const organization_id = useSelector((state) => state.profile.organization_id);
   const project = useSelector((state) => state.project);
-  const { triggerAutomation } = useGeneralEndpoints();
+  const { triggerAutomation, uploadMedia } = useGeneralEndpoints();
   const navigation = useNavigation();
   const organization_contact_id = useSelector(
     (state) => state.profile.organization_contact_id,
@@ -563,9 +563,22 @@ export const useTaskEndpoints = () => {
     const urlForOthers = `${apiEndpoint}/customers/custom-field-items/?custom_field_id=${id}`;
 
     try {
+      let payloadValue = value;
+      let payloadKey = "value";
+
+      if (Array.isArray(value)) {
+        const assetResponse = await uploadMedia(value, project.id);
+
+        if (assetResponse.status >= 200 && assetResponse.status < 300) {
+          const fk_assets = assetResponse.data.result.map((media) => media.id);
+          payloadValue = fk_assets;
+          payloadKey = "fk_assets";
+        }
+      }
+
       const payload = {
-        context_id: context_id,
-        value: value,
+        context_id,
+        [payloadKey]: payloadValue,
       };
 
       let response;

@@ -43,7 +43,7 @@ export const ListCallHistory = ({ route, navigation }: Props) => {
     if (autoOpenCallLogBottomSheet) {
       console.log("IN use effect of auto open");
       setTimeout(() => {
-        openCallLogBottomSheetManual();
+        openCallLogBottomSheetManual("");
       }, 300);
     }
   }, [autoOpenCallLogBottomSheet]);

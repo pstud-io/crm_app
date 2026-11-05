@@ -2,13 +2,15 @@ import { View, Text, StyleSheet } from "react-native";
 import { formatDateWithoutTime, SH, SW } from "../../../utils";
 import { body, body as typography } from "../DesignSystem/typography";
 import { primaryColors } from "../DesignSystem/colorPalette";
+import { RenderAssets } from "./RenderAssets";
 
 export const CustomFieldDetailView = ({ customFieldItemDetails = [] }) => {
   if (!customFieldItemDetails?.length) return null;
 
   if (
-    customFieldItemDetails?.[0]?.value === "" ||
-    customFieldItemDetails?.[0]?.value === null
+    (customFieldItemDetails?.[0]?.value === "" ||
+      customFieldItemDetails?.[0]?.value === null) &&
+    customFieldItemDetails?.[0]?.fk_assets_details.length === 0
   ) {
     return (
       <View
@@ -64,7 +66,12 @@ export const CustomFieldDetailView = ({ customFieldItemDetails = [] }) => {
 
             <Text style={styles.fieldValue}>{childItem.value || "-"}</Text>
           </View>
-
+          {childItem?.fk_assets_details.length > 0 && (
+            <RenderAssets
+              imageSize={20}
+              assets={childItem?.fk_assets_details}
+            />
+          )}
           {renderSubFields(childItem.custom_field_details, childItem.value)}
         </View>
       );
@@ -98,6 +105,14 @@ export const CustomFieldDetailView = ({ customFieldItemDetails = [] }) => {
                 : item?.value || "-"}
             </Text>
           </View>
+          {item?.fk_assets_details.length > 0 && (
+            <RenderAssets
+              imageSize={32}
+              assets={item?.fk_assets_details}
+              isCircular={false}
+              style={{ marginTop: 8 }}
+            />
+          )}
           {console.log("This is the item", item)}
           {renderSubFields(item.custom_field_details, item.value)}
         </View>

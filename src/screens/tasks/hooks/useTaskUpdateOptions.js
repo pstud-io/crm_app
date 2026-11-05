@@ -37,16 +37,23 @@ export const useTaskUpdateOptions = ({
       (item) => item.custom_field_details?.input_type === "user",
       // && (!item.value || item.value.trim() === ""),
     );
-
+    console.log("These are the emptyUserFields", emptyUserFields);
     if (emptyUserFields?.length > 0 && onShowUserFields) {
-      await popoverMenuRef.current.requestClose();
+      console.log("In second if");
+      if (popoverMenuRef) {
+        await popoverMenuRef.current.requestClose();
+      }
+      console.log("after third if");
       setTimeout(async () => {
+        console.log("Hit onshowuserfields");
         await onShowUserFields(emptyUserFields, originalOnPress);
       }, 250);
     } else {
       if (task.task_type === "followup") {
         console.log("In followup if");
-        await popoverMenuRef.current.requestClose();
+        if (popoverMenuRef) {
+          await popoverMenuRef.current.requestClose();
+        }
         setTimeout(async () => {
           await onShowFolloupComplete(task, originalOnPress);
         }, 250);

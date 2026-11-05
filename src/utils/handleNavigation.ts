@@ -11,7 +11,12 @@ export const handleNavigation = (
   project: ProjectRecord,
   activeLead: LeadRecord,
 ) => {
-  console.log("Hit handle navigation", project);
+  console.log(
+    "Hit handle navigation",
+    project,
+    activeSubButtonGlobal,
+    activeLead,
+  );
   if (activeSubButtonGlobal === "tasks") {
     userNavigationRef.dispatch(
       StackActions.push("Tasks", {
@@ -88,6 +93,9 @@ export const handleNavigation = (
     openRequestLeaveBottomSheet();
   } else if (activeSubButtonGlobal === "calls") {
     console.log("Hitting for calls");
-    openCallLogBottomSheetManual();
+    openCallLogBottomSheetManual("");
+  } else if (activeSubButtonGlobal === "leads-calls") {
+    console.log("Hitting for calls");
+    openCallLogBottomSheetManual(activeLead.id!);
   }
 };

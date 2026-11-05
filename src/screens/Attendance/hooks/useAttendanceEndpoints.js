@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import * as Location from "expo-location";
 import {
+  closePunchInBottomSheet,
   closePunchOutBottomSheet,
   closeRegularizationBottomSheet,
 } from "../utils/attendance/punchoutBottomSheetService";
@@ -13,7 +14,7 @@ import { useGeneralEndpoints } from "../../../hooks/useGeneralEndpoints";
 
 export const useAttendanceEndpoints = () => {
   const token = useSelector((state) => state.auth.token);
-  const project = useSelector((state) => state.project.selectedProject);
+  const project = useSelector((state) => state.project);
   const organization_id = useSelector((state) => state.profile.organization_id);
   const organization_contact_id = useSelector(
     (state) => state.profile.organization_contact_id,
@@ -210,7 +211,7 @@ export const useAttendanceEndpoints = () => {
     if (!locationStatus.granted) {
       console.log("Punch In canceled due to denied location permission.");
       setLoading((prev) => ({ ...prev, markingAttendance: false }));
-      return; // Exit if location permission is denied
+      return null; // Exit if location permission is denied
     }
     console.log("After location fetched");
     const { coords } = locationStatus;
@@ -219,7 +220,7 @@ export const useAttendanceEndpoints = () => {
       console.error("Location coordinates are null.");
       setLoading((prev) => ({ ...prev, loadingText: "" }));
       setLoading((prev) => ({ ...prev, markingAttendance: false }));
-      return;
+      return null;
     }
 
     console.log("Current Location:", coords);
@@ -245,7 +246,7 @@ export const useAttendanceEndpoints = () => {
           autoHide: true,
         });
         setLoading((prev) => ({ ...prev, loadingText: "" }));
-        return;
+        return null;
       }
     }
     const payload = {
@@ -278,7 +279,8 @@ export const useAttendanceEndpoints = () => {
           autoHide: true,
           position: "top",
         });
-        await refreshAttendanceData();
+        refreshAttendanceData();
+        return response.data.result[0];
       }
     } catch (error) {
       if (error.response) {
@@ -301,6 +303,7 @@ export const useAttendanceEndpoints = () => {
         text1Style: { color: Colors.red },
         text2Style: { fontSize: 14, color: Colors.black_text_color },
       });
+      return null;
     } finally {
       setLoading((prev) => ({ ...prev, loadingText: "" }));
       setLoading((prev) => ({ ...prev, markingAttendance: false }));
@@ -442,6 +445,60 @@ export const useAttendanceEndpoints = () => {
       });
     } finally {
       setLoading((prev) => ({ ...prev, markingAttendance: false }));
+    }
+  };
+
+  const savePunchInRemarks = async (
+    setLoading,
+    refreshAttendanceData,
+    remarks,
+    selectedMedia,
+    attendance_id,
+  ) => {
+    try {
+      setLoading((prev) => ({ ...prev, savingPunchInRemarks: true }));
+      const assetResponse = await uploadMedia(selectedMedia, project?.id);
+      console.log("This is the asset response", assetResponse);
+      const assetIDs = assetResponse.data.result.map((asset) => asset?.id);
+      const payload = {
+        remarks: remarks,
+        assets: assetIDs,
+      };
+      console.log("Payload in save punch in remarks", payload);
+      const response = await axios.put(
+        `${apiEndpoint}/manpower/organizationmanpower/?organization_manpower_id=${attendance_id}`,
+        payload,
+        {
+          headers: {
+            Authorization: `token ${token}`,
+            "Content-Type": "application/json",
+            "X-OrganizationID": organization_id,
+          },
+        },
+      );
+
+      if (response.status >= 200 && response.status < 300) {
+        closePunchInBottomSheet();
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Remarks saved successfully",
+          visibilityTime: 1000,
+          autoHide: true,
+        });
+        await refreshAttendanceData();
+      }
+    } catch (error) {
+      console.error("Rename API Error:", error.response?.data || error.message);
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Failed to send request",
+        visibilityTime: 1000,
+        autoHide: true,
+      });
+    } finally {
+      setLoading((prev) => ({ ...prev, savingPunchInRemarks: true }));
     }
   };
 
@@ -596,5 +653,6 @@ export const useAttendanceEndpoints = () => {
     getRequests,
     fetchLocation,
     getCustomWeekends,
+    savePunchInRemarks,
   };
 };

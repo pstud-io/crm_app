@@ -36,13 +36,15 @@ const TranscriptionInputFormatted = ({
   inputStyle,
   microphoneButtonStyle,
   transcriptionApiUrlNew = "https://api.projectstudio.ai/core/transcribe/new/",
-  transcriptionApiUrl = "https://api.projectstudio.ai/core/transcribe/formatted/",
+  transcriptionApiUrl = "https://api.projectstudio.ai/core/transcribe/",
+  transcriptionApiUrlFormatted = "https://api.projectstudio.ai/core/transcribe/formatted/new/",
   onTranscriptionStart,
   onTranscriptionEnd,
   onTranscriptionError,
   rightIcon,
   showMicIcon = true,
   mentions = [],
+  setAudioID,
 }) => {
   const [isRecording, setIsRecording] = useState(false);
   const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
@@ -59,6 +61,36 @@ const TranscriptionInputFormatted = ({
   const isUserNearBottomRef = useRef(true);
   const token = useSelector((state) => state.auth.token);
   const organization_id = useSelector((state) => state.profile.organization_id);
+
+  const recordingStartTimeRef = useRef(null);
+
+  useEffect(() => {
+    if (isRecording) {
+      recordingStartTimeRef.current = Date.now();
+
+      timerRef.current = setInterval(() => {
+        const elapsed = Math.floor(
+          (Date.now() - recordingStartTimeRef.current) / 1000,
+        );
+
+        setRecordTime(elapsed);
+      }, 250);
+    } else {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+
+      recordingStartTimeRef.current = null;
+    }
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [isRecording]);
 
   const isNearBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
     return (
@@ -125,7 +157,7 @@ const TranscriptionInputFormatted = ({
   const stopRecording = async () => {
     try {
       setIsRecording(false);
-
+      setRecordTime(0);
       await recorder.stop();
 
       await setAudioModeAsync({
@@ -133,7 +165,12 @@ const TranscriptionInputFormatted = ({
       });
 
       if (recorder.uri) {
-        await transcribeAudio(recorder.uri);
+        const openAIResponse = getOpenAIResponse();
+        if (openAIResponse) {
+          await transcribeAudio(recorder.uri);
+        } else {
+          await transcribeAudioNew(recorder.uri);
+        }
       }
     } catch (err) {
       console.error(err);
@@ -194,7 +231,7 @@ const TranscriptionInputFormatted = ({
     }
   };
 
-  const getOpenAIResponse = async (text) => {
+  const getOpenAIResponse = async () => {
     try {
       const response = await axios.get(`${apiEndpoint}/crm/openai-switch/`, {
         headers: {
@@ -207,8 +244,6 @@ const TranscriptionInputFormatted = ({
     } catch (error) {
       onTranscriptionError?.(error.message);
       Alert.alert("Error", "Note from Transcription failed");
-    } finally {
-      setIsTranscribing(false);
     }
   };
 
@@ -224,6 +259,7 @@ const TranscriptionInputFormatted = ({
           },
         },
       );
+      setAudioID(assetID);
       console.log("Response of saveAudio", response);
     } catch (error) {
       Alert.alert("Error", "Transcription failed");
@@ -286,8 +322,6 @@ const TranscriptionInputFormatted = ({
     } catch (error) {
       onTranscriptionError?.(error.message);
       Alert.alert("Error", "Transcription failed");
-    } finally {
-      setIsTranscribing(false);
     }
   };
 
@@ -296,6 +330,7 @@ const TranscriptionInputFormatted = ({
       setIsTranscribing(true);
       onTranscriptionStart?.();
       const formData = new FormData();
+      const name = `AUDIO_${new Date().getTime()}.m4a`;
       formData.append("file", {
         uri,
         type: "audio/m4a",
@@ -314,15 +349,28 @@ const TranscriptionInputFormatted = ({
         const newValue = value?.trim()
           ? value + "\n\n" + response.data.text
           : response.data.text;
-        onChangeText(newValue);
-        onTranscriptionEnd?.(response.data.text);
+        const transcribedText = await getNoteFromTranscription?.(newValue);
+        onChangeText(transcribedText);
         setIsPreview(true);
+        const assetResponse = await uploadMedia(
+          [
+            {
+              uri,
+              type: "audio/m4a",
+              name: name,
+              size: null,
+            },
+          ],
+          projectId,
+        );
+        if (assetResponse.status >= 200 && assetResponse.status < 300) {
+          console.log("This is the assetResponse", assetResponse);
+          await saveAudio(assetResponse.data.result[0].id);
+        }
       }
     } catch (error) {
       onTranscriptionError?.(error.message);
       Alert.alert("Error", "Transcription failed");
-    } finally {
-      setIsTranscribing(false);
     }
   };
 
