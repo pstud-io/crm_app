@@ -32,36 +32,28 @@ index 0000000..7ed749e
 +o/bundleLibRuntimeToDirDebug
 diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/BuildConfig.dex b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/BuildConfig.dex
 new file mode 100644
-index 0000000..8d804f3
-Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/BuildConfig.dex differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManager.dex b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManager.dex
 new file mode 100644
-index 0000000..fd488d3
-Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManager.dex differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.dex b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.dex
 new file mode 100644
-index 0000000..91233ce
-Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.dex differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule.dex b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule.dex
 new file mode 100644
-index 0000000..710f1a5
-Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule.dex differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.dex b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.dex
 new file mode 100644
-index 0000000..ecebfc4
-Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.dex differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener.dex b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener.dex
 new file mode 100644
-index 0000000..2e25a35
-Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener.dex differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallStateUpdateActionModule.dex b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallStateUpdateActionModule.dex
 new file mode 100644
-index 0000000..5463653
-Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallStateUpdateActionModule.dex differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin
 new file mode 100644
-index 0000000..4ef3277
-Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/47fe00ee29f3106a023d9990e0344e99/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-call-detection/android/build/.transforms/4c374fd509e2df4cf778a40abe6a77d4/results.bin b/node_modules/react-native-call-detection/android/build/.transforms/4c374fd509e2df4cf778a40abe6a77d4/results.bin
 new file mode 100644
 index 0000000..0d259dd
@@ -71,8 +63,57 @@ index 0000000..0d259dd
 +o/classes
 diff --git a/node_modules/react-native-call-detection/android/build/.transforms/4c374fd509e2df4cf778a40abe6a77d4/transformed/classes/classes_dex/classes.dex b/node_modules/react-native-call-detection/android/build/.transforms/4c374fd509e2df4cf778a40abe6a77d4/transformed/classes/classes_dex/classes.dex
 new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/results.bin b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/results.bin
+new file mode 100644
+index 0000000..7ed749e
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/results.bin
+@@ -0,0 +1 @@
++o/bundleLibRuntimeToDirDebug
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/BuildConfig.dex b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/BuildConfig.dex
+new file mode 100644
+index 0000000..8d804f3
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/BuildConfig.dex differ
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManager.dex b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManager.dex
+new file mode 100644
+index 0000000..fd488d3
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManager.dex differ
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.dex b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.dex
+new file mode 100644
+index 0000000..91233ce
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule$CallInfo.dex differ
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule.dex b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule.dex
+new file mode 100644
+index 0000000..710f1a5
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionManagerModule.dex differ
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.dex b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.dex
+new file mode 100644
+index 0000000..ecebfc4
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener$PhoneCallStateUpdate.dex differ
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener.dex b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener.dex
+new file mode 100644
+index 0000000..2e25a35
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallDetectionPhoneStateListener.dex differ
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallStateUpdateActionModule.dex b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallStateUpdateActionModule.dex
+new file mode 100644
+index 0000000..5463653
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/bundleLibRuntimeToDirDebug_dex/com/pritesh/calldetection/CallStateUpdateActionModule.dex differ
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin
+new file mode 100644
+index 0000000..4ef3277
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/56882e314b3b16752b6ac77b7a1da27e/transformed/bundleLibRuntimeToDirDebug/desugar_graph.bin differ
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/d47ce67209ed7a6b0f1fb981231402cc/results.bin b/node_modules/react-native-call-detection/android/build/.transforms/d47ce67209ed7a6b0f1fb981231402cc/results.bin
+new file mode 100644
+index 0000000..0d259dd
+--- /dev/null
++++ b/node_modules/react-native-call-detection/android/build/.transforms/d47ce67209ed7a6b0f1fb981231402cc/results.bin
+@@ -0,0 +1 @@
++o/classes
+diff --git a/node_modules/react-native-call-detection/android/build/.transforms/d47ce67209ed7a6b0f1fb981231402cc/transformed/classes/classes_dex/classes.dex b/node_modules/react-native-call-detection/android/build/.transforms/d47ce67209ed7a6b0f1fb981231402cc/transformed/classes/classes_dex/classes.dex
+new file mode 100644
 index 0000000..2ac6358
-Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/4c374fd509e2df4cf778a40abe6a77d4/transformed/classes/classes_dex/classes.dex differ
+Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/.transforms/d47ce67209ed7a6b0f1fb981231402cc/transformed/classes/classes_dex/classes.dex differ
 diff --git a/node_modules/react-native-call-detection/android/build/generated/source/buildConfig/debug/com/pritesh/calldetection/BuildConfig.java b/node_modules/react-native-call-detection/android/build/generated/source/buildConfig/debug/com/pritesh/calldetection/BuildConfig.java
 new file mode 100644
 index 0000000..c38a363
@@ -173,11 +214,11 @@ index 0000000..a9551e5
 +int string app_name 0x0
 diff --git a/node_modules/react-native-call-detection/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties b/node_modules/react-native-call-detection/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
 new file mode 100644
-index 0000000..f17c917
+index 0000000..31a7797
 --- /dev/null
 +++ b/node_modules/react-native-call-detection/android/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties
 @@ -0,0 +1 @@
-+#Fri Jul 24 22:43:55 IST 2026
++#Thu Oct 29 19:46:51 IST 2026
 diff --git a/node_modules/react-native-call-detection/android/build/intermediates/incremental/debug/packageDebugResources/merged.dir/values/values.xml b/node_modules/react-native-call-detection/android/build/intermediates/incremental/debug/packageDebugResources/merged.dir/values/values.xml
 new file mode 100644
 index 0000000..5743252
@@ -421,23 +462,19 @@ index 0000000..1f5be8b
 +		INJECTED from /Users/aditya/Code/ProjectStudio/pipeline/node_modules/react-native-call-detection/android/src/main/AndroidManifest.xml
 diff --git a/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManager.class.uniqueId1 b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManager.class.uniqueId1
 new file mode 100644
-index 0000000..20de944
-Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManager.class.uniqueId1 differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule$1.class.uniqueId0 b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule$1.class.uniqueId0
 new file mode 100644
-index 0000000..5080cc1
-Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule$1.class.uniqueId0 differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule$CallInfo.class.uniqueId2 b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule$CallInfo.class.uniqueId2
 new file mode 100644
-index 0000000..6242120
-Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule$CallInfo.class.uniqueId2 differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule.class.uniqueId3 b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule.class.uniqueId3
 new file mode 100644
-index 0000000..5293f97
-Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/compileTransaction/stash-dir/CallDetectionManagerModule.class.uniqueId3 differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
 new file mode 100644
-index 0000000..c7936cf
+index 0000000..87d7e8d
 Binary files /dev/null and b/node_modules/react-native-call-detection/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
 diff --git a/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionManagerModule.java b/node_modules/react-native-call-detection/android/src/main/java/com/pritesh/calldetection/CallDetectionManagerModule.java
 index d480f0f..38ed980 100644
@@ -781,10 +818,10 @@ index 86bdf9d..e6b90f6 100644
 -
  }
 diff --git a/node_modules/react-native-call-detection/iOS/RCTCallDetection/RCTCallDetection/CallDetectionManager.m b/node_modules/react-native-call-detection/iOS/RCTCallDetection/RCTCallDetection/CallDetectionManager.m
-index 7deb00e..263d03c 100644
+index 7deb00e..1b3ac3a 100644
 --- a/node_modules/react-native-call-detection/iOS/RCTCallDetection/RCTCallDetection/CallDetectionManager.m
 +++ b/node_modules/react-native-call-detection/iOS/RCTCallDetection/RCTCallDetection/CallDetectionManager.m
-@@ -1,64 +1,311 @@
+@@ -1,64 +1,667 @@
  //
  //  CallDetectionManager.m
  //
@@ -796,6 +833,7 @@ index 7deb00e..263d03c 100644
  
  #import "CallDetectionManager.h"
 +#import <UIKit/UIKit.h>
++#import <BackgroundTasks/BackgroundTasks.h>
  @import CallKit;
  
  typedef void (^CallBack)();
@@ -808,6 +846,12 @@ index 7deb00e..263d03c 100644
 +
 +@property(nonatomic, assign) CFAbsoluteTime connectedAt;
 +@property(nonatomic, assign) UIBackgroundTaskIdentifier backgroundTask;
++
++@property (nonatomic, strong) BGContinuedProcessingTask *continuedTask;
++@property (nonatomic, strong) dispatch_source_t diagnosticTimer;
++@property (nonatomic, assign) BOOL continuedTaskRegistered;
++@property (nonatomic, assign) int64_t diagnosticElapsed;
++@property (nonatomic, copy) NSString *continuedTaskIdentifier;
  
  @end
 +
@@ -828,6 +872,353 @@ index 7deb00e..263d03c 100644
  }
  
 -RCT_EXPORT_MODULE()
++#pragma mark - BGContinuedProcessingTask
++
++
++- (void)registerContinuedProcessingTask {
++
++    if (@available(iOS 26.0, *)) {
++
++        if (self.continuedTaskRegistered) {
++            return;
++        }
++
++        NSString *wildcardIdentifier =
++            [NSString stringWithFormat:@"%@.continuedProcessing.*",
++             NSBundle.mainBundle.bundleIdentifier];
++
++        __weak typeof(self) weakSelf = self;
++
++        BOOL registered =
++        [[BGTaskScheduler sharedScheduler]
++         registerForTaskWithIdentifier:wildcardIdentifier
++         usingQueue:dispatch_get_main_queue()
++         launchHandler:^(__kindof BGTask *task) {
++
++            __strong typeof(weakSelf) strongSelf = weakSelf;
++
++            if (!strongSelf) {
++                [task setTaskCompletedWithSuccess:NO];
++                return;
++            }
++
++            if (![task isKindOfClass:[BGContinuedProcessingTask class]]) {
++                [task setTaskCompletedWithSuccess:NO];
++                return;
++            }
++
++            BGContinuedProcessingTask *continuedTask =
++                (BGContinuedProcessingTask *)task;
++
++            NSLog(@"[ContinuedTask] Handler launched");
++            NSLog(@"[ContinuedTask] Identifier: %@", task.identifier);
++
++            strongSelf.continuedTask = continuedTask;
++
++            [strongSelf startDiagnosticExecution];
++        }];
++
++        self.continuedTaskRegistered = registered;
++
++        NSLog(@"[ContinuedTask] Registration: %d", registered);
++        NSLog(@"[ContinuedTask] Wildcard: %@", wildcardIdentifier);
++    }
++}
++
++
++- (void)submitContinuedProcessingTask:
++    (RCTPromiseResolveBlock)resolve
++    rejecter:(RCTPromiseRejectBlock)reject {
++
++    if (@available(iOS 26.0, *)) {
++
++        if (self.continuedTask != nil) {
++            resolve(self.continuedTask.identifier);
++            return;
++        }
++
++        NSString *identifier =
++            [NSString stringWithFormat:@"%@.continuedProcessing.%@",
++             NSBundle.mainBundle.bundleIdentifier,
++             NSUUID.UUID.UUIDString];
++
++        BGContinuedProcessingTaskRequest *request =
++            [[BGContinuedProcessingTaskRequest alloc]
++             initWithIdentifier:identifier
++             title:@"Call monitoring"
++             subtitle:@"Monitoring call activity"];
++
++        request.strategy =
++            BGContinuedProcessingTaskRequestSubmissionStrategyFail;
++
++        NSError *error = nil;
++
++        BOOL submitted =
++            [[BGTaskScheduler sharedScheduler]
++             submitTaskRequest:request
++             error:&error];
++
++        if (!submitted) {
++
++            NSLog(@"[ContinuedTask] Submission failed: %@", error);
++
++            reject(
++                @"CONTINUED_TASK_SUBMISSION_FAILED",
++                error.localizedDescription,
++                error
++            );
++
++            return;
++        }
++
++        self.continuedTaskIdentifier = identifier;
++
++        NSLog(@"[ContinuedTask] Submitted: %@", identifier);
++
++        resolve(identifier);
++
++    } else {
++
++        reject(
++            @"UNSUPPORTED_IOS",
++            @"BGContinuedProcessingTask requires iOS 26 or later",
++            nil
++        );
++    }
++}
++
++
++- (void)startDiagnosticExecution {
++
++    if (@available(iOS 26.0, *)) {
++
++        if (self.diagnosticTimer != nil) {
++            dispatch_source_cancel(self.diagnosticTimer);
++            self.diagnosticTimer = nil;
++        }
++
++        self.diagnosticElapsed = 0;
++
++        BGContinuedProcessingTask *task = self.continuedTask;
++
++        task.progress.totalUnitCount = 120;
++        task.progress.completedUnitCount = 0;
++
++        __weak typeof(self) weakSelf = self;
++
++        task.expirationHandler = ^{
++
++            NSLog(@"[ContinuedTask] EXPIRATION HANDLER CALLED");
++
++            dispatch_async(dispatch_get_main_queue(), ^{
++
++                __strong typeof(weakSelf) strongSelf = weakSelf;
++
++                if (strongSelf) {
++                    [strongSelf finishContinuedProcessingTask:NO];
++                }
++            });
++        };
++
++        dispatch_source_t timer =
++            dispatch_source_create(
++                DISPATCH_SOURCE_TYPE_TIMER,
++                0,
++                0,
++                dispatch_get_main_queue()
++            );
++
++        dispatch_source_set_timer(
++            timer,
++            dispatch_time(DISPATCH_TIME_NOW, 0),
++            NSEC_PER_SEC,
++            100 * NSEC_PER_MSEC
++        );
++
++        dispatch_source_set_event_handler(timer, ^{
++
++            __strong typeof(weakSelf) strongSelf = weakSelf;
++
++            if (!strongSelf) {
++                return;
++            }
++
++            strongSelf.diagnosticElapsed++;
++
++            NSLog(
++                @"[ContinuedTask] Executing: %lld seconds | %@",
++                strongSelf.diagnosticElapsed,
++                NSDate.date
++            );
++
++            task.progress.completedUnitCount =
++                strongSelf.diagnosticElapsed;
++
++            [task updateTitle:task.title
++                     subtitle:[NSString stringWithFormat:
++                               @"Diagnostic: %lld seconds",
++                               strongSelf.diagnosticElapsed]];
++
++            if (strongSelf.diagnosticElapsed >= 120) {
++
++                NSLog(@"[ContinuedTask] Diagnostic finished");
++
++                [strongSelf finishContinuedProcessingTask:YES];
++            }
++        });
++
++        self.diagnosticTimer = timer;
++
++        dispatch_resume(timer);
++    }
++}
++
++
++- (void)finishContinuedProcessingTask:(BOOL)success {
++
++    if (@available(iOS 26.0, *)) {
++
++        if (self.diagnosticTimer != nil) {
++
++            dispatch_source_cancel(self.diagnosticTimer);
++            self.diagnosticTimer = nil;
++        }
++
++        BGContinuedProcessingTask *task = self.continuedTask;
++
++        self.continuedTask = nil;
++        self.continuedTaskIdentifier = nil;
++
++        if (task != nil) {
++
++            [task setTaskCompletedWithSuccess:success];
++
++            NSLog(
++                @"[ContinuedTask] Completed. Success: %d",
++                success
++            );
++        }
++    }
++}
++
++
++RCT_EXPORT_METHOD(startContinuedProcessingTask:
++                  (RCTPromiseResolveBlock)resolve
++                  rejecter:(RCTPromiseRejectBlock)reject) {
++
++    if (@available(iOS 26.0, *)) {
++
++        dispatch_async(dispatch_get_main_queue(), ^{
++
++            NSString *identifier =
++                [NSString stringWithFormat:
++                 @"%@.continuedProcessing.%@",
++                 NSBundle.mainBundle.bundleIdentifier,
++                 NSUUID.UUID.UUIDString];
++
++            NSLog(@"[ContinuedTask] Registering: %@", identifier);
++
++            __weak typeof(self) weakSelf = self;
++
++            BOOL registered =
++            [[BGTaskScheduler sharedScheduler]
++             registerForTaskWithIdentifier:identifier
++             usingQueue:dispatch_get_main_queue()
++             launchHandler:^(__kindof BGTask *task) {
++
++                __strong typeof(weakSelf) strongSelf = weakSelf;
++
++                if (!strongSelf) {
++                    [task setTaskCompletedWithSuccess:NO];
++                    return;
++                }
++
++                if (![task isKindOfClass:
++                      [BGContinuedProcessingTask class]]) {
++
++                    [task setTaskCompletedWithSuccess:NO];
++                    return;
++                }
++
++                BGContinuedProcessingTask *continuedTask =
++                    (BGContinuedProcessingTask *)task;
++
++                NSLog(@"[ContinuedTask] Handler launched");
++                NSLog(@"[ContinuedTask] ID: %@", task.identifier);
++
++                strongSelf.continuedTask = continuedTask;
++
++                [strongSelf startDiagnosticExecution];
++            }];
++
++            NSLog(@"[ContinuedTask] Registration: %d", registered);
++
++            if (!registered) {
++
++                reject(
++                    @"CONTINUED_TASK_REGISTRATION_FAILED",
++                    @"Could not register continued processing handler",
++                    nil
++                );
++
++                return;
++            }
++
++            BGContinuedProcessingTaskRequest *request =
++                [[BGContinuedProcessingTaskRequest alloc]
++                 initWithIdentifier:identifier
++                 title:@"Call monitoring"
++                 subtitle:@"Monitoring call activity"];
++
++            request.strategy =
++                BGContinuedProcessingTaskRequestSubmissionStrategyFail;
++
++            NSError *error = nil;
++
++            BOOL submitted =
++                [[BGTaskScheduler sharedScheduler]
++                 submitTaskRequest:request
++                 error:&error];
++
++            if (!submitted) {
++
++                NSLog(@"[ContinuedTask] Submission failed: %@", error);
++
++                reject(
++                    @"CONTINUED_TASK_SUBMISSION_FAILED",
++                    error.localizedDescription,
++                    error
++                );
++
++                return;
++            }
++
++            self.continuedTaskIdentifier = identifier;
++
++            NSLog(@"[ContinuedTask] Submitted: %@", identifier);
++
++            resolve(identifier);
++        });
++
++    } else {
++
++        reject(
++            @"UNSUPPORTED_IOS",
++            @"Requires iOS 26 or later",
++            nil
++        );
++    }
++}
++
++
++RCT_EXPORT_METHOD(stopContinuedProcessingTask) {
++
++    dispatch_async(dispatch_get_main_queue(), ^{
++
++        [self finishContinuedProcessingTask:NO];
++    });
++}
++
 +#pragma mark - Background Task
 +
 +- (void)beginBackgroundTask {
@@ -936,6 +1327,7 @@ index 7deb00e..263d03c 100644
 +
 +    NSLog(@"CustomLog startListener");
 +
++
 +    if (self.callObserver != nil) {
 +
 +        NSLog(@"CustomLog callObserver already exists");
@@ -1041,7 +1433,7 @@ index 7deb00e..263d03c 100644
 +        NSLog(@"CustomLog ----------------------------------------");
 +
 +        return;
-+    }
+     }
 +
 +    //
 +    // Disconnected
@@ -1072,6 +1464,7 @@ index 7deb00e..263d03c 100644
 +        self.connectedAt = 0;
 +
 +        [self endBackgroundTask];
++        [self finishContinuedProcessingTask:YES];
 +
 +        NSLog(@"CustomLog Sending Event -> Disconnected");
 +
@@ -1101,7 +1494,7 @@ index 7deb00e..263d03c 100644
 +                           body:@"Dialing"];
 +
 +        NSLog(@"CustomLog Dialing Event Sent");
-     }
++    }
 +    else {
 +
 +        NSLog(@"");
@@ -1120,9 +1513,8 @@ index 7deb00e..263d03c 100644
  }
  
  @end
-\ No newline at end of file
 diff --git a/node_modules/react-native-call-detection/index.d.ts b/node_modules/react-native-call-detection/index.d.ts
-index e3c9564..c9cb164 100644
+index e3c9564..4d7b351 100644
 --- a/node_modules/react-native-call-detection/index.d.ts
 +++ b/node_modules/react-native-call-detection/index.d.ts
 @@ -1,7 +1,8 @@
@@ -1135,11 +1527,21 @@ index e3c9564..c9cb164 100644
  
    export type PermissionDeniedCallback = () => void;
  
+@@ -12,6 +13,9 @@ declare module 'react-native-call-detection' {
+ 
+   export default class CallDetectorManager {
+     constructor(callback: CallDetectorManagerCallback, readPhoneNumberAndroid?: boolean, permissionDeniedCallback?: PermissionDeniedCallback, permissionMessage?: PermissionMessage);
++    startContinuedProcessingTask(): Promise<string | null>;
++
++    stopContinuedProcessingTask(): void;
+ 
+     dispose: () => void;
+   }
 diff --git a/node_modules/react-native-call-detection/index.js b/node_modules/react-native-call-detection/index.js
-index de8a861..a4a89f3 100644
+index de8a861..386c50d 100644
 --- a/node_modules/react-native-call-detection/index.js
 +++ b/node_modules/react-native-call-detection/index.js
-@@ -1,76 +1,131 @@
+@@ -1,76 +1,148 @@
  /*
 -* @providesModule react-native-call-detection
 -*/
@@ -1221,21 +1623,7 @@ index de8a861..a4a89f3 100644
 +      title: "Phone State Permission",
 +      message:
 +        "This app needs access to your phone state in order to react and/or adapt to incoming calls.",
-     }
--    else {
--      if (NativeCallDetectorAndroid) {
--        if (readPhoneNumberAndroid) {
--
--          requestPermissionsAndroid(permissionMessage)
--            .then((permissionGrantedReadState) => {
--              if (!permissionGrantedReadState) {
--                permissionDeniedCallback(permissionDenied)
--              }
--            })
--            .catch(permissionDeniedCallback)
--
--        }
--        NativeCallDetectorAndroid.startListener();
++    }
 +  ) {
 +    this.callback = callback;
 +
@@ -1254,8 +1642,7 @@ index de8a861..a4a89f3 100644
 +      (data) => {
 +        console.log("Native event:", data);
 +        callback(data);
-       }
--      CallStateUpdateActionModule.callback = callback
++      }
 +    );
 +    console.log("[CallDetection] C");
 +  }
@@ -1270,7 +1657,21 @@ index de8a861..a4a89f3 100644
 +        "CallDetectionManagerAndroid native module not found."
 +      );
 +      return;
-+    }
+     }
+-    else {
+-      if (NativeCallDetectorAndroid) {
+-        if (readPhoneNumberAndroid) {
+-
+-          requestPermissionsAndroid(permissionMessage)
+-            .then((permissionGrantedReadState) => {
+-              if (!permissionGrantedReadState) {
+-                permissionDeniedCallback(permissionDenied)
+-              }
+-            })
+-            .catch(permissionDeniedCallback)
+-
+-        }
+-        NativeCallDetectorAndroid.startListener();
 +
 +    const startListening = () => {
 +      const emitter = new NativeEventEmitter();
@@ -1279,7 +1680,8 @@ index de8a861..a4a89f3 100644
 +      "PhoneCallStateUpdate",
 +      ({ event, phoneNumber, duration, answered }) => {
 +        callback(event, phoneNumber, duration, answered);
-+      }
+       }
+-      CallStateUpdateActionModule.callback = callback
 +    );
 +
 +      NativeCallDetectorAndroid.startListener();
@@ -1318,8 +1720,25 @@ index de8a861..a4a89f3 100644
 -      this.subscription = undefined
 +      this.subscription.remove();
 +      this.subscription = null;
++    }
++  }
++
++    startContinuedProcessingTask() {
++    if (Platform.OS !== "ios" || !NativeCallDetector) {
++      return Promise.resolve(null);
      }
++
++    return NativeCallDetector.startContinuedProcessingTask();
    }
++
++  stopContinuedProcessingTask() {
++    if (Platform.OS !== "ios" || !NativeCallDetector) {
++      return;
++    }
++
++    NativeCallDetector.stopContinuedProcessingTask();
++  }
++
  }
 -export default module.exports = CallDetectorManager;
 +

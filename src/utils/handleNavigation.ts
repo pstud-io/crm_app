@@ -5,6 +5,7 @@ import { openAddProjectBottomSheet } from "@/screens/dashboard/utils/addProjectB
 import { LeadRecord } from "@/store/slices/activeLeadGlobal";
 import { openRequestLeaveBottomSheet } from "@/screens/Attendance/utils/requestLeaveBottomSheetRef";
 import { openCallLogBottomSheetManual } from "@/screens/CallHistory/components/CallLogBottomSheetManual";
+import { openOvertimeBottomSheet } from "@/screens/Attendance/utils/overtimeBottomSheeetService";
 
 export const handleNavigation = (
   activeSubButtonGlobal: string | null,
@@ -97,5 +98,8 @@ export const handleNavigation = (
   } else if (activeSubButtonGlobal === "leads-calls") {
     console.log("Hitting for calls");
     openCallLogBottomSheetManual(activeLead.id!);
+  } else if (activeSubButtonGlobal === "overtime") {
+    console.log("Hitting for overtime");
+    openOvertimeBottomSheet();
   }
 };

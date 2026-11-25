@@ -11,6 +11,7 @@ import {
 import { Colors, formatTimeHHMM } from "../../../utils";
 import { Alert, Linking } from "react-native";
 import { useGeneralEndpoints } from "../../../hooks/useGeneralEndpoints";
+import { closeOvertimeBottomSheet } from "../utils/overtimeBottomSheeetService";
 
 export const useAttendanceEndpoints = () => {
   const token = useSelector((state) => state.auth.token);
@@ -498,7 +499,7 @@ export const useAttendanceEndpoints = () => {
         autoHide: true,
       });
     } finally {
-      setLoading((prev) => ({ ...prev, savingPunchInRemarks: true }));
+      setLoading((prev) => ({ ...prev, savingPunchInRemarks: false }));
     }
   };
 
@@ -644,6 +645,124 @@ export const useAttendanceEndpoints = () => {
     }
   };
 
+  const getOvertime = async (setLoading, setOvertimeData) => {
+    setLoading((prev) => ({ ...prev, getOvertime: true }));
+    try {
+      const response = await axios.get(
+        `${apiEndpoint}/manpower/overtime-requests/`,
+        {
+          headers: {
+            Accept: "application/json", // Added valid Accept header
+            Authorization: `token ${token}`,
+            "X-OrganizationID": organization_id,
+          },
+        },
+      );
+
+      if (response.status >= 200 && response.status < 300) {
+        console.log("Response data for overtmie:", response.data.result);
+        setOvertimeData(response.data.result);
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Response error:", error.response.data);
+      } else if (error.request) {
+        console.error("Network error:", error.request);
+      } else {
+        console.error("Request error:", error.message);
+      }
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2:
+          error.response?.data?.result ||
+          "Failed to fetch overtime data. Check your network connection.",
+      });
+    } finally {
+      setLoading((prev) => ({ ...prev, getOvertime: false }));
+    }
+  };
+
+  const getOvertimePolicy = async (setLoading, setOvertimePolicy) => {
+    setLoading((prev) => ({ ...prev, getOvertimePolicy: true }));
+
+    try {
+      const response = await axios.get(
+        `${apiEndpoint}/manpower/organization-overtime/`,
+        {
+          headers: {
+            Accept: "application/json", // Added valid Accept header
+            Authorization: `token ${token}`,
+            "X-OrganizationID": organization_id,
+          },
+        },
+      );
+
+      if (response.status >= 200 && response.status < 300) {
+        console.log("Response data for overtime policy:", response.data.result);
+        setOvertimePolicy(response.data.result);
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Response error:", error.response.data);
+      } else if (error.request) {
+        console.error("Network error:", error.request);
+      } else {
+        console.error("Request error:", error.message);
+      }
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2:
+          error.response?.data?.result ||
+          "Failed to fetch overtime policy. Check your network connection.",
+      });
+    } finally {
+      setLoading((prev) => ({ ...prev, getOvertimePolicy: false }));
+    }
+  };
+
+  const addOvertime = async (setLoading, payload, onRefresh) => {
+    try {
+      setLoading((prev) => ({ ...prev, addingOvertime: true }));
+      console.log("Payload in save punch in remarks", payload);
+      const response = await axios.post(
+        `${apiEndpoint}/manpower/overtime-requests/`,
+        payload,
+        {
+          headers: {
+            Authorization: `token ${token}`,
+            "Content-Type": "application/json",
+            "X-OrganizationID": organization_id,
+          },
+        },
+      );
+
+      if (response.status >= 200 && response.status < 300) {
+        closeOvertimeBottomSheet();
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Overtime added successfully",
+          visibilityTime: 1000,
+          autoHide: true,
+        });
+        await onRefresh();
+      }
+    } catch (error) {
+      console.error("Rename API Error:", error.response?.data || error.message);
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Failed to add overtime",
+        visibilityTime: 1000,
+        autoHide: true,
+      });
+    } finally {
+      setLoading((prev) => ({ ...prev, addingOvertime: false }));
+    }
+  };
+
   return {
     getAttendance,
     getAttendanceSummary,
@@ -654,5 +773,8 @@ export const useAttendanceEndpoints = () => {
     fetchLocation,
     getCustomWeekends,
     savePunchInRemarks,
+    getOvertime,
+    getOvertimePolicy,
+    addOvertime,
   };
 };

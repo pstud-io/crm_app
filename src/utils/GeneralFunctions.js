@@ -86,6 +86,20 @@ export const badFormatDate = (dateString) => {
   // date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })
 };
 
+export const formatTime = (time) => {
+  if (!time) return;
+  const [hours, minutes] = time?.split(":").map(Number);
+
+  const date = new Date();
+  date.setHours(hours, minutes, 0, 0);
+
+  return date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
+
 export const truncate = (text, length) => {
   if (text.length <= length) return text;
   return `${text.substring(0, length)}...`;

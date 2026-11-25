@@ -48,6 +48,9 @@ import MonthYearPicker from "./components/attendance/MonthYearPicker";
 import { CalendarOutline } from "@/svg";
 import AfterPunchInBottomSheet from "./components/attendance/AfterPunchInBottomSheet";
 import { openPunchInBottomSheet } from "./utils/attendance/punchoutBottomSheetService";
+import { ListOvertime } from "./ListOvertime";
+import AddOvertimeBottomSheet from "./components/overtime/AddOvertimeBottomSheet";
+import { openOvertimeBottomSheet } from "./utils/overtimeBottomSheeetService";
 
 const Attendance = ({ navigation, route }) => {
   console.log("This is the route", route);
@@ -69,6 +72,7 @@ const Attendance = ({ navigation, route }) => {
         buttons.push({ id: "payroll", title: "Payroll" });
       }
     }
+    buttons.push({ id: "overtime", title: "Overtime" });
     return buttons;
   }, [organizationDetails]);
 
@@ -76,7 +80,11 @@ const Attendance = ({ navigation, route }) => {
     if (autoOpenLeaveBottomSheet) {
       console.log("IN use effect of auto open");
       setTimeout(() => {
-        openRequestLeaveBottomSheet();
+        if (activeSubButton === "overtime") {
+          openOvertimeBottomSheet();
+        } else if (activeSubButton === "leaves") {
+          openRequestLeaveBottomSheet();
+        }
       }, 300);
     }
   }, [autoOpenLeaveBottomSheet]);
@@ -87,7 +95,8 @@ const Attendance = ({ navigation, route }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
-
+  const [overtimePolicy, setOvertimePolicy] = useState(null);
+  const [overtimeData, setOvertimeData] = useState([]);
   const [attendanceData, setAttendanceData] = useState([]);
   const [attendanceSummaryData, setAttendanceSummaryData] = useState([]);
   const [requestsData, setRequestsData] = useState([]);
@@ -110,6 +119,8 @@ const Attendance = ({ navigation, route }) => {
     getRequests,
     getAttendanceSummary,
     getCustomWeekends,
+    getOvertime,
+    getOvertimePolicy,
   } = useAttendanceEndpoints();
 
   const [loading, setLoading] = useState({
@@ -122,11 +133,15 @@ const Attendance = ({ navigation, route }) => {
     getRequests: false,
     getCustomWeekends: false,
     savingPunchInRemarks: false,
+    getOvertime: false,
+    getOvertimePolicy: false,
   });
 
   const [initialLoading, setInitialLoading] = useState({
     getAttendance: false,
     getAttendanceSummary: false,
+    getOvertime: false,
+    getOvertimePolicy: false,
   });
 
   const month = selectedDate.getMonth();
@@ -143,6 +158,8 @@ const Attendance = ({ navigation, route }) => {
               month + 1,
               year,
             ),
+            getOvertime(setInitialLoading, setOvertimeData),
+            getOvertimePolicy(setInitialLoading, setOvertimePolicy),
             getAttendanceSummary(
               setInitialLoading,
               setAttendanceSummaryData,
@@ -172,56 +189,32 @@ const Attendance = ({ navigation, route }) => {
         dispatch(setActiveSubButtonGlobal("leaves"));
       } else if (activeSubButton === "payroll") {
         dispatch(setActiveSubButtonGlobal("payroll"));
+      } else if (activeSubButton === "overtime") {
+        dispatch(setActiveSubButtonGlobal("overtime"));
       }
     }, [activeSubButton]),
   );
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     if (activeSubButton !== "leaves") {
-  //       dispatch(
-  //         setCustomAddButton({
-  //           cannotAdd: true,
-  //           onPress: "DO_NOTHING",
-  //         }),
-  //       );
-  //     }
-  //     if (activeSubButton === "leaves") {
-  //       dispatch(
-  //         setCustomAddButton({
-  //           cannotAdd: false,
-  //           onPress: "ADD_LEAVE",
-  //         }),
-  //       );
-  //     }
-  //   }, [activeSubButton]),
-  // );
-
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     console.log(
-  //       "This is the active tab and focused",
-  //       activeTabButtonID,
-  //       isFocused,
-  //     );
-  //     if (isFocused) {
-  //       setTimeout(() => {
-  //         dispatch(setActiveSubButtonGlobal("hmrs"));
-  //       }, 0);
-  //     }
-  //   }, []),
-  // );
-
   const refreshCurrentData = async () => {
     setRefreshing(true);
-    await getAttendance(setLoading, setAttendanceData, month + 1, year);
-    (await getAttendanceSummary(
-      setLoading,
-      setAttendanceSummaryData,
-      month + 1,
-      year,
-    ),
-      setRefreshing(false));
+    await Promise.all([
+      getAttendance(setInitialLoading, setAttendanceData, month + 1, year),
+      getOvertime(setInitialLoading, setOvertimeData),
+      getOvertimePolicy(setInitialLoading, setOvertimePolicy),
+      getAttendanceSummary(
+        setInitialLoading,
+        setAttendanceSummaryData,
+        month + 1,
+        year,
+      ),
+      getPayrollSummary(setLoading, setPayrollSummaryData),
+      getPayroll(setLoading, setPayrollData),
+      getRequests(setLoading, setRequestsData),
+      getCustomWeekends(setLoading, (res) => {
+        setWeekendsData(res?.weekend_days || ["Sunday"]);
+      }),
+    ]);
+    setRefreshing(false);
   };
 
   // Helper to provide static headers based on active tab
@@ -302,6 +295,7 @@ const Attendance = ({ navigation, route }) => {
               alignItems: "center",
               justifyContent: "space-between",
               height: "100%",
+              marginLeft: 8,
             }}
             onPress={() => setShowDatePicker(true)}
           >
@@ -336,6 +330,14 @@ const Attendance = ({ navigation, route }) => {
           payrollSummaryData={payrollSummaryData}
           payrollData={payrollData}
           loading={loading}
+        />
+      )}
+      {activeSubButton === "overtime" && (
+        <ListOvertime
+          overtimeData={overtimeData}
+          refreshCurrentData={refreshCurrentData}
+          loading={initialLoading.getOvertime}
+          refreshing={refreshing}
         />
       )}
 
@@ -407,6 +409,11 @@ const Attendance = ({ navigation, route }) => {
         loading={loading}
         setLoading={setLoading}
         onRefresh={refreshCurrentData}
+      />
+      <AddOvertimeBottomSheet
+        onRefresh={refreshCurrentData}
+        overtimePolicy={overtimePolicy}
+        projectId={project?.id}
       />
       <RegularlizationBottomSheet onRefresh={refreshCurrentData} />
     </View>

@@ -4,11 +4,22 @@ import {
 } from "@/store/slices/callHistorySlice";
 import { RootState } from "@/store/store";
 import { universalPopoverRef } from "@/utils/universalPopover";
-import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import {
+  createRef,
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+} from "react";
 import { AppState, Platform } from "react-native";
 import CallDetectorManager from "react-native-call-detection";
 import { useDispatch, useSelector } from "react-redux";
 import * as Sentry from "@sentry/react-native";
+
+export const callMonitoringRef = createRef<{
+  startCallMonitoringTask: () => Promise<string | null | undefined>;
+}>();
 
 export function useCallDetection(
   enabled: boolean,
@@ -25,6 +36,24 @@ export function useCallDetection(
 
   const callHistoryRef = useRef(callHistory);
 
+  const startCallMonitoringTask = useCallback(async () => {
+    if (Platform.OS !== "ios") return null;
+
+    try {
+      const identifier = await detector.current?.startContinuedProcessingTask();
+
+      console.log("[CallDetection] Continued task submitted:", identifier);
+
+      return identifier;
+    } catch (error) {
+      console.log("[CallDetection] Continued task submission failed:", error);
+
+      Sentry.captureException(error);
+
+      return null;
+    }
+  }, []);
+
   const getiOSDuration = () => {
     const duration =
       connectedAt.current == null
@@ -33,6 +62,16 @@ export function useCallDetection(
     connectedAt.current = null;
     return duration;
   };
+
+  useEffect(() => {
+    callMonitoringRef.current = {
+      startCallMonitoringTask,
+    };
+
+    return () => {
+      callMonitoringRef.current = null;
+    };
+  }, [startCallMonitoringTask]);
 
   useEffect(() => {
     callHistoryRef.current = callHistory;
@@ -113,4 +152,8 @@ export function useCallDetection(
       detector.current?.dispose();
     };
   }, [enabled]);
+
+  return {
+    startCallMonitoringTask,
+  };
 }

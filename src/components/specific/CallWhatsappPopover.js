@@ -10,6 +10,7 @@ import WhatsappIcon from "../../svg/whatsapp";
 import { useTheme } from "@/hooks/useTheme";
 import { useDispatch } from "react-redux";
 import { setCallHistory } from "@/store/slices/callHistorySlice";
+import { callMonitoringRef } from "@/hooks/useCallDetection";
 
 const CallWhatsappPopover = ({
   value,
@@ -51,7 +52,8 @@ const CallWhatsappPopover = ({
     );
 
     CallWhatsappPopoverRef.current.requestClose();
-    setTimeout(() => {
+    setTimeout(async () => {
+      // await callMonitoringRef.current?.startCallMonitoringTask();
       Linking.openURL(url)
         .then((supported) => {
           if (supported) {

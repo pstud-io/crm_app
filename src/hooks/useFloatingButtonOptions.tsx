@@ -22,6 +22,7 @@ import { UserNavigationProp } from "@/navigation/UserNavigation";
 import { Dispatch, SetStateAction } from "react";
 import UserCheck from "assets/icons/UserCheck";
 import LeaveIcon from "assets/icons/LeaveIcon";
+import ClockIcon from "@/svg/clock-icon";
 export const useFloatingButtonOptions = ({
   setExpanded,
 }: {
@@ -154,6 +155,32 @@ export const useFloatingButtonOptions = ({
       }, 200);
     },
   };
+  const add_overtime = {
+    id: "add_overtime",
+    icon: (
+      <ClockIcon
+        stroke={theme.text}
+        strokeWidth={borderWidth.xxl}
+        fill={"transparent"}
+        width={20}
+        height={20}
+        style={{}}
+      />
+    ),
+    title: "Add Overtime",
+    onPress: () => {
+      setExpanded((prev) => !prev);
+      setTimeout(() => {
+        navigation.navigate("Attendance", {
+          screen: "ListAttendance",
+          params: {
+            initialActiveSubButton: "overtime",
+            autoOpenLeaveBottomSheet: true,
+          },
+        });
+      }, 200);
+    },
+  };
   const add_call = {
     id: "add_call",
     icon: (
@@ -186,6 +213,7 @@ export const useFloatingButtonOptions = ({
     add_note,
     add_followup,
     add_leave,
+    add_overtime,
     add_call,
   ];
   return { floatingButtonOptions };

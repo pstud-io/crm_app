@@ -3,7 +3,7 @@
     "name": "Pipeline",
     "slug": "pipeline",
     "scheme": "pipeline",
-    "version": "1.0.9",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/ios-icon.png",
     "userInterfaceStyle": "light",
@@ -13,7 +13,11 @@
       "associatedDomains": ["applinks:pipeline.projectstudio.ai"],
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
-        "LSApplicationQueriesSchemes": ["whatsapp"]
+        "LSApplicationQueriesSchemes": ["whatsapp"],
+        "BGTaskSchedulerPermittedIdentifiers": [
+          "ai.projectstudio.pipeline.continuedProcessing.*"
+        ],
+        "UIBackgroundModes": ["processing"]
       }
     },
     "android": {
